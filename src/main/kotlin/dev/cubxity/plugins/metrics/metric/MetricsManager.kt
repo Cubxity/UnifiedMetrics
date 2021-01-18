@@ -57,6 +57,8 @@ class MetricsManager(private val plugin: UnifiedMetrics) {
         executor.shutdownNow()
         Bukkit.getScheduler().cancelTasks(plugin)
         influxDBClient = null
+
+        metrics.forEach { unregisterMetric(it) }
     }
 
     fun registerMetric(metric: Metric<*>) {
@@ -65,6 +67,7 @@ class MetricsManager(private val plugin: UnifiedMetrics) {
 
     fun unregisterMetric(metric: Metric<*>) {
         _metrics.remove(metric)
+        metric.dispose(plugin)
     }
 
     private inner class MetricsRunnable(private val sync: Boolean) : Runnable {
