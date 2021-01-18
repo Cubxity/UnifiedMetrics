@@ -16,28 +16,19 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics
+package dev.cubxity.plugins.metrics.measurement
 
-import org.bukkit.configuration.Configuration
+import com.influxdb.annotations.Column
+import com.influxdb.annotations.Measurement
 
-class UnifiedMetricsConfig(config: Configuration) {
-    val influx: Influx = Influx(
-        config.getBoolean("influx.enabled", false),
-        config.getString("influx.url", "http://influxdb:8086"),
-        config.getString("influx.server", "main"),
-        config.getString("influx.bucket", "unifiedmetrics"),
-        config.getString("influx.username", "influx"),
-        config.getString("influx.password", "influx"),
-        config.getInt("influx.interval", 10)
-    )
-
-    data class Influx(
-        val isEnabled: Boolean,
-        val url: String,
-        val server: String,
-        val bucket: String,
-        val username: String,
-        val password: String,
-        val interval: Int
-    )
-}
+@Measurement(name = "events")
+data class EventsMeasurement(
+    @Column
+    val server: String,
+    @Column(name = "join_count")
+    val joinCount: Long,
+    @Column(name = "quit_count")
+    val quitCount: Long,
+    @Column(name = "chat_count")
+    val chatCount: Long
+)

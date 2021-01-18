@@ -37,6 +37,7 @@ class UnifiedMetrics : JavaPlugin() {
         _metricsConfig = UnifiedMetricsConfig(config)
 
         if (metricsConfig.influx.isEnabled) {
+            metricsManager.registerMetric(EventsMetric())
             metricsManager.registerMetric(JVMMetric())
             metricsManager.registerMetric(MemoryMetric())
             metricsManager.registerMetric(ServerMetric())
