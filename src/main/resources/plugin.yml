@@ -1,0 +1,5 @@
+name: UnifiedMetrics
+main: dev.cubxity.plugins.metrics.UnifiedMetrics
+description: "Fully-featured metrics plugin for Spigot servers"
+version: @version@
+load: STARTUP

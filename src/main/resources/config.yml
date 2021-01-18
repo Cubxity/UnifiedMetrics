@@ -1,0 +1,8 @@
+influx:
+  enabled: true
+  url: "http://influxdb:8086" # InfluxDB's URL
+  bucket: "unifiedmetrics" # The Database/Bucket to use
+  server: "main" # The server's name, this is useful for multiple servers
+  username: "influx"
+  password: "influx"
+  interval: 10 # Collection interval in seconds
