@@ -21,9 +21,11 @@ package dev.cubxity.plugins.metrics
 import dev.cubxity.plugins.metrics.metric.*
 import org.bukkit.plugin.java.JavaPlugin
 
+@Suppress("MemberVisibilityCanBePrivate")
 class UnifiedMetrics : JavaPlugin() {
-    private val manager = MetricsManager(this)
     private var _metricsConfig: UnifiedMetricsConfig? = null
+
+    val metricsManager = MetricsManager(this)
 
     val metricsConfig: UnifiedMetricsConfig
         get() = _metricsConfig ?: error("The plugin has not been initialized")
@@ -35,18 +37,18 @@ class UnifiedMetrics : JavaPlugin() {
         _metricsConfig = UnifiedMetricsConfig(config)
 
         if (metricsConfig.influx.isEnabled) {
-            manager.registerMetric(JVMMetric())
-            manager.registerMetric(MemoryMetric())
-            manager.registerMetric(ServerMetric())
-            manager.registerMetric(TPSMetric())
-            manager.registerMetric(WorldMetric())
-            manager.start()
+            metricsManager.registerMetric(JVMMetric())
+            metricsManager.registerMetric(MemoryMetric())
+            metricsManager.registerMetric(ServerMetric())
+            metricsManager.registerMetric(TPSMetric())
+            metricsManager.registerMetric(WorldMetric())
+            metricsManager.start()
         }
     }
 
     override fun onDisable() {
         if (metricsConfig.influx.isEnabled) {
-            manager.stop()
+            metricsManager.stop()
         }
         _metricsConfig = null
     }

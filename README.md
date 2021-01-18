@@ -1,7 +1,7 @@
 # UnifiedMetrics (W.I.P)
 
-Unified is a fully-featured free and open-source metrics collection plugin for Spigot-based Minecraft servers.
-This project is licensed under [GNU AGPLv3](blob/master/LICENSE)
+UnifiedMetrics is a fully-featured free and open-source metrics collection plugin for Spigot-based Minecraft servers.
+This project is licensed under [GNU AGPLv3](LICENSE)
 
 ## Features
 - Supports 1.8+ Spigot-based Minecraft servers
