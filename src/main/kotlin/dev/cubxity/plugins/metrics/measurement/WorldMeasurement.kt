@@ -28,6 +28,8 @@ data class WorldMeasurement(
     @Column(tag = true)
     private val world: String,
     @Column
+    private val players: Int,
+    @Column
     private val entities: Int,
     @Column
     private val chunks: Int

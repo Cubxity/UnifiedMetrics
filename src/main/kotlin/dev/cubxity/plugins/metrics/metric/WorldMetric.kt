@@ -36,7 +36,9 @@ class WorldMetric : Metric<WorldMeasurement> {
             measurements.add(
                 WorldMeasurement(
                     server, world.name,
-                    world.entities.size, world.loadedChunks.size
+                    world.players.size,
+                    world.entities.size,
+                    world.loadedChunks.size
                 )
             )
         }
