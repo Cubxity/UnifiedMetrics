@@ -1,5 +1,5 @@
 /*
- *     UnifiedMetrics is a fully-featured metrics collection plugin for Spigot.
+ *     UnifiedMetrics is a fully-featured metrics collection plugin for Minecraft servers.
  *     Copyright (C) 2021  Cubxity
  *
  *     This program is free software: you can redistribute it and/or modify
@@ -16,14 +16,24 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-rootProject.name = "UnifiedMetrics"
+package dev.cubxity.plugins.metrics.bukkit.metric
 
-val modulePrefix = ":unifiedmetrics-"
+import dev.cubxity.plugins.metrics.api.UnifiedMetrics
+import dev.cubxity.plugins.metrics.api.metric.Metric
+import dev.cubxity.plugins.metrics.common.measurement.ServerMeasurement
+import org.bukkit.Bukkit
 
-include(modulePrefix + "api")
-include(modulePrefix + "common")
-include(modulePrefix + "bukkit")
+class ServerMetric : Metric<ServerMeasurement> {
+    override val isSync: Boolean
+        get() = true
 
-project(modulePrefix + "api").projectDir = File(rootDir, "api")
-project(modulePrefix + "common").projectDir = File(rootDir, "common")
-project(modulePrefix + "bukkit").projectDir = File(rootDir, "bukkit")
+    override fun getMeasurements(api: UnifiedMetrics): List<ServerMeasurement> {
+        return listOf(
+            ServerMeasurement(
+                Bukkit.getPluginManager().plugins.size,
+                Bukkit.getOnlinePlayers().size,
+                Bukkit.getMaxPlayers()
+            )
+        )
+    }
+}

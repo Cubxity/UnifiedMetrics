@@ -1,5 +1,5 @@
 /*
- *     UnifiedMetrics is a fully-featured metrics collection plugin for Spigot.
+ *     UnifiedMetrics is a fully-featured metrics collection plugin for Minecraft servers.
  *     Copyright (C) 2021  Cubxity
  *
  *     This program is free software: you can redistribute it and/or modify
@@ -16,14 +16,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-rootProject.name = "UnifiedMetrics"
+package dev.cubxity.plugins.metrics.common.measurement
 
-val modulePrefix = ":unifiedmetrics-"
+import dev.cubxity.plugins.metrics.api.metric.data.Measurement
+import dev.cubxity.plugins.metrics.api.metric.data.Point
 
-include(modulePrefix + "api")
-include(modulePrefix + "common")
-include(modulePrefix + "bukkit")
-
-project(modulePrefix + "api").projectDir = File(rootDir, "api")
-project(modulePrefix + "common").projectDir = File(rootDir, "common")
-project(modulePrefix + "bukkit").projectDir = File(rootDir, "bukkit")
+data class WorldMeasurement(
+    val world: String,
+    val players: Int,
+    val entities: Int,
+    val chunks: Int
+) : Measurement {
+    override fun serialize() = Point("world")
+        .tag("world", world)
+        .field("players", players)
+        .field("entities", entities)
+        .field("chunks", chunks)
+}

@@ -1,5 +1,5 @@
 /*
- *     UnifiedMetrics is a fully-featured metrics collection plugin for Spigot.
+ *     UnifiedMetrics is a fully-featured metrics collection plugin for Minecraft servers.
  *     Copyright (C) 2021  Cubxity
  *
  *     This program is free software: you can redistribute it and/or modify
@@ -16,14 +16,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-rootProject.name = "UnifiedMetrics"
+package dev.cubxity.plugins.metrics.common.config
 
-val modulePrefix = ":unifiedmetrics-"
+import com.uchuhimo.konf.ConfigSpec
 
-include(modulePrefix + "api")
-include(modulePrefix + "common")
-include(modulePrefix + "bukkit")
+object MetricsSpec : ConfigSpec("metrics") {
+    val enabled by optional(true, "enabled")
+    val interval by optional(10L, "interval", "Data collection interval, in seconds")
 
-project(modulePrefix + "api").projectDir = File(rootDir, "api")
-project(modulePrefix + "common").projectDir = File(rootDir, "common")
-project(modulePrefix + "bukkit").projectDir = File(rootDir, "bukkit")
+    object InfluxSpec : ConfigSpec("influx") {
+        val url by optional("http://influxdb:8086", "url")
+        val bucket by optional("unifiedmetrics", "bucket")
+        val username by optional("influx", "influx")
+        val password by optional("influx", "password")
+    }
+}

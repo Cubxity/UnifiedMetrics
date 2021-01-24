@@ -1,5 +1,5 @@
 /*
- *     UnifiedMetrics is a fully-featured metrics collection plugin for Spigot.
+ *     UnifiedMetrics is a fully-featured metrics collection plugin for Minecraft servers.
  *     Copyright (C) 2021  Cubxity
  *
  *     This program is free software: you can redistribute it and/or modify
@@ -16,14 +16,15 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-rootProject.name = "UnifiedMetrics"
+package dev.cubxity.plugins.metrics.bukkit
 
-val modulePrefix = ":unifiedmetrics-"
+import dev.cubxity.plugins.metrics.bukkit.bootstrap.UnifiedMetricsBukkitBootstrap
+import dev.cubxity.plugins.metrics.common.plugin.scheduler.AbstractJavaScheduler
+import org.bukkit.Bukkit
+import java.util.concurrent.Executor
 
-include(modulePrefix + "api")
-include(modulePrefix + "common")
-include(modulePrefix + "bukkit")
-
-project(modulePrefix + "api").projectDir = File(rootDir, "api")
-project(modulePrefix + "common").projectDir = File(rootDir, "common")
-project(modulePrefix + "bukkit").projectDir = File(rootDir, "bukkit")
+class BukkitSchedulerAdapter(private val bootstrap: UnifiedMetricsBukkitBootstrap) : AbstractJavaScheduler() {
+    override val sync: Executor = Executor {
+        Bukkit.getScheduler().scheduleSyncDelayedTask(bootstrap, it)
+    }
+}

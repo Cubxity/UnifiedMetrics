@@ -1,5 +1,5 @@
 /*
- *     UnifiedMetrics is a fully-featured metrics collection plugin for Spigot.
+ *     UnifiedMetrics is a fully-featured metrics collection plugin for Minecraft servers.
  *     Copyright (C) 2021  Cubxity
  *
  *     This program is free software: you can redistribute it and/or modify
@@ -16,14 +16,32 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-rootProject.name = "UnifiedMetrics"
+package dev.cubxity.plugins.metrics.api
 
-val modulePrefix = ":unifiedmetrics-"
+import dev.cubxity.plugins.metrics.api.metric.MetricsManager
+import dev.cubxity.plugins.metrics.api.platform.Platform
 
-include(modulePrefix + "api")
-include(modulePrefix + "common")
-include(modulePrefix + "bukkit")
+/**
+ * The UnifiedMetrics API
+ */
+interface UnifiedMetrics {
+    /**
+     * The platform UnifiedMetrics is running on.
+     */
+    val platform: Platform
 
-project(modulePrefix + "api").projectDir = File(rootDir, "api")
-project(modulePrefix + "common").projectDir = File(rootDir, "common")
-project(modulePrefix + "bukkit").projectDir = File(rootDir, "bukkit")
+    /**
+     * The name of this server.
+     *
+     * This is defined in the UnifiedMetrics configuration file, and is used for
+     * grouping server data.
+     *
+     * The default server name is "main"
+     */
+    val serverName: String
+
+    /**
+     * Metrics api.
+     */
+    val metricsManager: MetricsManager
+}
