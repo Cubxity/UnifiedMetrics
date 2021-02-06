@@ -5,7 +5,7 @@ repositories {
 }
 
 dependencies {
-    api(project(":unifiedmetrics-common"))
+    api(project(":unifiedmetrics-core"))
     compileOnly("org.spigotmc", "spigot-api", "1.8-R0.1-SNAPSHOT")
 }
 

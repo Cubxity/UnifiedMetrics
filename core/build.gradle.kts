@@ -16,46 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.common
-
-import dev.cubxity.plugins.metrics.api.logging.Logger
-import dev.cubxity.plugins.metrics.api.platform.PlatformType
-import dev.cubxity.plugins.metrics.api.scheduler.SchedulerAdapter
-import java.nio.file.Path
-
-interface UnifiedMetricsBootstrap {
-    /**
-     * The plugin's platform type
-     */
-    val type: PlatformType
-
-    /**
-     * The installed plugin's version
-     */
-    val version: String
-
-    /**
-     * The server's brand
-     */
-    val serverBrand: String
-
-    /**
-     * The plugin's data directory
-     */
-    val dataDirectory: Path
-
-    /**
-     * The plugin's config directory
-     */
-    val configDirectory: Path
-
-    /**
-     * The platform's logger
-     */
-    val logger: Logger
-
-    /**
-     * The platform's scheduler
-     */
-    val scheduler: SchedulerAdapter
+dependencies {
+    api(project(":unifiedmetrics-common"))
+    api(project(":unifiedmetrics-influx-driver"))
 }

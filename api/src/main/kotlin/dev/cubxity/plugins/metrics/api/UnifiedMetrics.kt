@@ -18,8 +18,10 @@
 
 package dev.cubxity.plugins.metrics.api
 
+import dev.cubxity.plugins.metrics.api.logging.Logger
 import dev.cubxity.plugins.metrics.api.metric.MetricsManager
 import dev.cubxity.plugins.metrics.api.platform.Platform
+import dev.cubxity.plugins.metrics.api.scheduler.SchedulerAdapter
 
 /**
  * The UnifiedMetrics API
@@ -41,7 +43,17 @@ interface UnifiedMetrics {
     val serverName: String
 
     /**
-     * Metrics api.
+     * The platform's logger.
+     */
+    val logger: Logger
+
+    /**
+     * The platform's scheduler.
+     */
+    val scheduler: SchedulerAdapter
+
+    /**
+     * The metrics api.
      */
     val metricsManager: MetricsManager
 }

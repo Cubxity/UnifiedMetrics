@@ -16,8 +16,29 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.common.plugin.scheduler
+package dev.cubxity.plugins.metrics.common.plugin.logger
 
-fun interface SchedulerTask {
-    fun cancel()
+import dev.cubxity.plugins.metrics.api.logging.Logger
+import java.util.logging.Level
+
+class JavaLogger(private val logger: java.util.logging.Logger) : Logger {
+    override fun info(message: String) {
+        logger.log(Level.INFO, message)
+    }
+
+    override fun warn(message: String) {
+        logger.log(Level.WARNING, message)
+    }
+
+    override fun warn(message: String, error: Throwable) {
+        logger.log(Level.WARNING, message, error)
+    }
+
+    override fun severe(message: String) {
+        logger.log(Level.SEVERE, message)
+    }
+
+    override fun severe(message: String, error: Throwable) {
+        logger.log(Level.SEVERE, message, error)
+    }
 }

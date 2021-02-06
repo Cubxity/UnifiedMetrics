@@ -22,12 +22,5 @@ import com.uchuhimo.konf.ConfigSpec
 
 object MetricsSpec : ConfigSpec("metrics") {
     val enabled by optional(true, "enabled")
-    val interval by optional(10L, "interval", "Data collection interval, in seconds")
-
-    object InfluxSpec : ConfigSpec("influx") {
-        val url by optional("http://influxdb:8086", "url")
-        val bucket by optional("unifiedmetrics", "bucket")
-        val username by optional("influx", "influx")
-        val password by optional("influx", "password")
-    }
+    val driver by optional("influx", "driver")
 }

@@ -24,14 +24,14 @@ import dev.cubxity.plugins.metrics.bukkit.metric.EventsMetric
 import dev.cubxity.plugins.metrics.bukkit.metric.ServerMetric
 import dev.cubxity.plugins.metrics.bukkit.metric.TPSMetric
 import dev.cubxity.plugins.metrics.bukkit.metric.WorldMetric
-import dev.cubxity.plugins.metrics.common.plugin.AbstractUnifiedMetricsPlugin
+import dev.cubxity.plugins.metrics.core.plugin.CoreUnifiedMetricsPlugin
 import org.bukkit.Bukkit
 import org.bukkit.plugin.ServicePriority
 import java.util.concurrent.Executors
 
 class UnifiedMetricsBukkitPlugin(
     override val bootstrap: UnifiedMetricsBukkitBootstrap
-) : AbstractUnifiedMetricsPlugin() {
+) : CoreUnifiedMetricsPlugin() {
     private val executor = Executors.newScheduledThreadPool(1)
 
     override fun disable() {

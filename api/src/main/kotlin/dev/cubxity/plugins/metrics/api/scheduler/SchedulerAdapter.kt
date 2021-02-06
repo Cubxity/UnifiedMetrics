@@ -16,46 +16,15 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.common
+package dev.cubxity.plugins.metrics.api.scheduler
 
-import dev.cubxity.plugins.metrics.api.logging.Logger
-import dev.cubxity.plugins.metrics.api.platform.PlatformType
-import dev.cubxity.plugins.metrics.api.scheduler.SchedulerAdapter
-import java.nio.file.Path
+import java.util.concurrent.Executor
+import java.util.concurrent.TimeUnit
 
-interface UnifiedMetricsBootstrap {
-    /**
-     * The plugin's platform type
-     */
-    val type: PlatformType
+interface SchedulerAdapter {
+    val sync: Executor
 
-    /**
-     * The installed plugin's version
-     */
-    val version: String
+    fun asyncRepeating(task: Runnable, interval: Long, unit: TimeUnit): SchedulerTask
 
-    /**
-     * The server's brand
-     */
-    val serverBrand: String
-
-    /**
-     * The plugin's data directory
-     */
-    val dataDirectory: Path
-
-    /**
-     * The plugin's config directory
-     */
-    val configDirectory: Path
-
-    /**
-     * The platform's logger
-     */
-    val logger: Logger
-
-    /**
-     * The platform's scheduler
-     */
-    val scheduler: SchedulerAdapter
+    fun shutdown()
 }

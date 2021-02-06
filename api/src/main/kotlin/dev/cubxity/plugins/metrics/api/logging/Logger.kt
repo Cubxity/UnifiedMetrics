@@ -16,46 +16,16 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.common
+package dev.cubxity.plugins.metrics.api.logging
 
-import dev.cubxity.plugins.metrics.api.logging.Logger
-import dev.cubxity.plugins.metrics.api.platform.PlatformType
-import dev.cubxity.plugins.metrics.api.scheduler.SchedulerAdapter
-import java.nio.file.Path
+interface Logger {
+    fun info(message: String)
 
-interface UnifiedMetricsBootstrap {
-    /**
-     * The plugin's platform type
-     */
-    val type: PlatformType
+    fun warn(message: String)
 
-    /**
-     * The installed plugin's version
-     */
-    val version: String
+    fun warn(message: String, error: Throwable)
 
-    /**
-     * The server's brand
-     */
-    val serverBrand: String
+    fun severe(message: String)
 
-    /**
-     * The plugin's data directory
-     */
-    val dataDirectory: Path
-
-    /**
-     * The plugin's config directory
-     */
-    val configDirectory: Path
-
-    /**
-     * The platform's logger
-     */
-    val logger: Logger
-
-    /**
-     * The platform's scheduler
-     */
-    val scheduler: SchedulerAdapter
+    fun severe(message: String, error: Throwable)
 }

@@ -27,6 +27,8 @@ interface MetricsManager {
 
     fun unregisterMetric(metric: Metric<*>)
 
+    fun registerDriver(name: String, factory: MetricsDriverFactory)
+
     fun writeMetrics(isSync: Boolean)
 
     fun dispose()

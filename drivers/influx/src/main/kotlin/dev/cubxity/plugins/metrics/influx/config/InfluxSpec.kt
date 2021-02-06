@@ -16,15 +16,14 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.common.plugin.scheduler
+package dev.cubxity.plugins.metrics.influx.config
 
-import java.util.concurrent.Executor
-import java.util.concurrent.TimeUnit
+import com.uchuhimo.konf.ConfigSpec
 
-interface SchedulerAdapter {
-    val sync: Executor
-
-    fun asyncRepeating(task: Runnable, interval: Long, unit: TimeUnit): SchedulerTask
-
-    fun shutdown()
+object InfluxSpec : ConfigSpec("metrics.influx") {
+    val url by optional("http://influxdb:8086", "url")
+    val bucket by optional("unifiedmetrics", "bucket")
+    val username by optional("influx", "influx")
+    val password by optional("influx", "password")
+    val interval by optional(10L, "interval", "Data collection interval, in seconds")
 }

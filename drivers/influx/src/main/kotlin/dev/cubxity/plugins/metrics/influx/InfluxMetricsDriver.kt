@@ -16,31 +16,30 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.common.metric.influx
+package dev.cubxity.plugins.metrics.influx
 
 import com.influxdb.client.InfluxDBClient
 import com.influxdb.client.InfluxDBClientFactory
 import com.influxdb.client.InfluxDBClientOptions
+import com.uchuhimo.konf.Config
+import dev.cubxity.plugins.metrics.api.UnifiedMetrics
 import dev.cubxity.plugins.metrics.api.metric.MetricsDriver
 import dev.cubxity.plugins.metrics.api.metric.data.Point
-import dev.cubxity.plugins.metrics.common.config.MetricsSpec
-import dev.cubxity.plugins.metrics.common.plugin.UnifiedMetricsPlugin
+import dev.cubxity.plugins.metrics.influx.config.InfluxSpec
 import java.util.concurrent.TimeUnit
 import com.influxdb.client.write.Point as InfluxPoint
 
-class InfluxMetricsDriver(private val plugin: UnifiedMetricsPlugin) : MetricsDriver {
+class InfluxMetricsDriver(private val api: UnifiedMetrics, private val config: Config) : MetricsDriver {
     private var influxDBClient: InfluxDBClient? = null
 
     override fun connect() {
-        val config = plugin.config
-
         val options = InfluxDBClientOptions.builder()
-            .url(config[MetricsSpec.InfluxSpec.url])
+            .url(config[InfluxSpec.url])
             .authenticate(
-                config[MetricsSpec.InfluxSpec.username],
-                config[MetricsSpec.InfluxSpec.password].toCharArray()
+                config[InfluxSpec.username],
+                config[InfluxSpec.password].toCharArray()
             )
-            .bucket(config[MetricsSpec.InfluxSpec.bucket])
+            .bucket(config[InfluxSpec.bucket])
             .org("-")
             .build()
 
@@ -48,17 +47,17 @@ class InfluxMetricsDriver(private val plugin: UnifiedMetricsPlugin) : MetricsDri
     }
 
     override fun scheduleTasks() {
-        val interval = plugin.config[MetricsSpec.interval]
+        val interval = config[InfluxSpec.interval]
 
-        val scheduler = plugin.bootstrap.scheduler
+        val scheduler = api.scheduler
 
         scheduler.asyncRepeating({
             // Async
-            plugin.apiProvider.metricsManager.writeMetrics(false)
+            api.metricsManager.writeMetrics(false)
 
             // Sync
             scheduler.sync.execute {
-                plugin.apiProvider.metricsManager.writeMetrics(true)
+                api.metricsManager.writeMetrics(true)
             }
         }, interval, TimeUnit.SECONDS)
     }

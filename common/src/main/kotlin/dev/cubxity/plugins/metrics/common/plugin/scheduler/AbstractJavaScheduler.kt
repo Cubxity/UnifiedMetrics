@@ -18,6 +18,8 @@
 
 package dev.cubxity.plugins.metrics.common.plugin.scheduler
 
+import dev.cubxity.plugins.metrics.api.scheduler.SchedulerAdapter
+import dev.cubxity.plugins.metrics.api.scheduler.SchedulerTask
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 

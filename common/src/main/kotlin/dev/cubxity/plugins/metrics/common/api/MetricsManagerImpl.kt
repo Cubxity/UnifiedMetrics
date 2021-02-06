@@ -19,22 +19,36 @@
 package dev.cubxity.plugins.metrics.common.api
 
 import dev.cubxity.plugins.metrics.api.metric.Metric
+import dev.cubxity.plugins.metrics.api.metric.MetricsDriver
+import dev.cubxity.plugins.metrics.api.metric.MetricsDriverFactory
 import dev.cubxity.plugins.metrics.api.metric.MetricsManager
-import dev.cubxity.plugins.metrics.common.metric.influx.InfluxMetricsDriver
+import dev.cubxity.plugins.metrics.common.config.MetricsSpec
 import dev.cubxity.plugins.metrics.common.plugin.UnifiedMetricsPlugin
 import java.util.*
+import kotlin.collections.HashMap
 
 class MetricsManagerImpl(private val plugin: UnifiedMetricsPlugin) : MetricsManager {
-    private val driver = InfluxMetricsDriver(plugin)
+    private val metricDrivers: MutableMap<String, MetricsDriverFactory> = HashMap()
+    private val _metrics: MutableList<Metric<*>> = ArrayList()
 
-    private var _metrics: MutableList<Metric<*>> = ArrayList()
+    private var shouldInitialize: Boolean = false
+    private var driver: MetricsDriver? = null
 
     override val metrics: List<Metric<*>>
         get() = _metrics
 
     override fun initialize() {
-        driver.connect()
-        driver.scheduleTasks()
+        shouldInitialize = true
+
+        val driverName = plugin.config[MetricsSpec.driver]
+        val factory = metricDrivers[driverName]
+
+        if (factory !== null) {
+            plugin.bootstrap.logger.warn("Initializing driver '$driverName'.")
+            initializeDriver(factory)
+        } else {
+            plugin.bootstrap.logger.warn("Driver '$driverName' not found. Metrics will be enabled when the driver is loaded.")
+        }
     }
 
     override fun registerMetric(metric: Metric<*>) {
@@ -46,16 +60,44 @@ class MetricsManagerImpl(private val plugin: UnifiedMetricsPlugin) : MetricsMana
         metric.dispose()
     }
 
-    override fun writeMetrics(isSync: Boolean) {
-        val points = metrics.filter { it.isSync == isSync }
-            .flatMap { it.getMeasurements(plugin.apiProvider) }
-            .map { it.serialize().tag("server", plugin.apiProvider.serverName) }
+    override fun registerDriver(name: String, factory: MetricsDriverFactory) {
+        metricDrivers[name] = factory
 
-        driver.writePoints(points)
+        if (shouldInitialize && driver === null) {
+            val driverName = plugin.config[MetricsSpec.driver]
+
+            if (name == driverName) {
+                plugin.bootstrap.logger.warn("Initializing driver '$driverName'.")
+                initializeDriver(factory)
+            }
+        }
+    }
+
+    override fun writeMetrics(isSync: Boolean) {
+        driver?.apply {
+            val points = metrics.filter { it.isSync == isSync }
+                .flatMap { it.getMeasurements(plugin.apiProvider) }
+                .map { it.serialize().tag("server", plugin.apiProvider.serverName) }
+
+            writePoints(points)
+        }
     }
 
     override fun dispose() {
+        shouldInitialize = false
+
         metrics.forEach { unregisterMetric(it) }
-        driver.close()
+        driver?.close()
+        driver = null
+    }
+
+    private fun initializeDriver(factory: MetricsDriverFactory) {
+        factory.registerConfig(plugin.config)
+        val driver = factory.createDriver(plugin.apiProvider, plugin.config)
+
+        driver.connect()
+        driver.scheduleTasks()
+
+        this.driver = driver
     }
 }

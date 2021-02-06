@@ -22,7 +22,7 @@ import dev.cubxity.plugins.metrics.api.platform.PlatformType
 import dev.cubxity.plugins.metrics.bukkit.BukkitSchedulerAdapter
 import dev.cubxity.plugins.metrics.bukkit.UnifiedMetricsBukkitPlugin
 import dev.cubxity.plugins.metrics.common.UnifiedMetricsBootstrap
-import dev.cubxity.plugins.metrics.common.plugin.scheduler.SchedulerAdapter
+import dev.cubxity.plugins.metrics.common.plugin.logger.JavaLogger
 import org.bukkit.plugin.java.JavaPlugin
 import java.nio.file.Path
 
@@ -44,6 +44,8 @@ class UnifiedMetricsBukkitBootstrap : JavaPlugin(), UnifiedMetricsBootstrap {
 
     override val configDirectory: Path
         get() = dataFolder.toPath()
+
+    override val logger = JavaLogger(getLogger())
 
     override val scheduler = BukkitSchedulerAdapter(this)
 
