@@ -52,6 +52,7 @@ class MetricsManagerImpl(private val plugin: UnifiedMetricsPlugin) : MetricsMana
     }
 
     override fun registerMetric(metric: Metric<*>) {
+        metric.initialize()
         _metrics.add(metric)
     }
 

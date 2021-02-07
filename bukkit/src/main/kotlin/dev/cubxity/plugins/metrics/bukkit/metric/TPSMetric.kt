@@ -28,7 +28,7 @@ class TPSMetric(private val bootstrap: UnifiedMetricsBukkitBootstrap) : Metric<T
     private var taskId = -1
     private var currentSec: Long = 0
     private var ticks = 0
-    private var tps = 20.0
+    private var tps = 20
 
     override val isSync: Boolean
         get() = false
@@ -51,7 +51,7 @@ class TPSMetric(private val bootstrap: UnifiedMetricsBukkitBootstrap) : Metric<T
             ticks++
         } else {
             currentSec = sec
-            tps = if (tps == 0.0) ticks.toDouble() else (tps + ticks) / 2
+            tps = ticks + 1
             ticks = 0
         }
     }

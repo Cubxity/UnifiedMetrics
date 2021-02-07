@@ -21,6 +21,6 @@ package dev.cubxity.plugins.metrics.common.measurement
 import dev.cubxity.plugins.metrics.api.metric.data.Measurement
 import dev.cubxity.plugins.metrics.api.metric.data.Point
 
-data class TPSMeasurement(val tps: Double) : Measurement {
+data class TPSMeasurement(val tps: Int) : Measurement {
     override fun serialize() = Point("tps").field("tps", tps)
 }
