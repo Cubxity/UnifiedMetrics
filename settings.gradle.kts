@@ -1,5 +1,5 @@
 /*
- *     UnifiedMetrics is a fully-featured metrics collection plugin for Spigot.
+ *     UnifiedMetrics is a fully-featured metrics collection plugin for Minecraft servers.
  *     Copyright (C) 2021  Cubxity
  *
  *     This program is free software: you can redistribute it and/or modify
@@ -24,6 +24,7 @@ include(modulePrefix + "api")
 include(modulePrefix + "common")
 include(modulePrefix + "core")
 include(modulePrefix + "bukkit")
+include(modulePrefix + "velocity")
 
 include(modulePrefix + "influx-driver")
 
@@ -31,6 +32,7 @@ project(modulePrefix + "api").projectDir = File(rootDir, "api")
 project(modulePrefix + "common").projectDir = File(rootDir, "common")
 project(modulePrefix + "core").projectDir = File(rootDir, "core")
 project(modulePrefix + "bukkit").projectDir = File(rootDir, "bukkit")
+project(modulePrefix + "velocity").projectDir = File(rootDir, "velocity")
 
 val driversDir = File(rootDir, "drivers")
 project(modulePrefix + "influx-driver").projectDir = File(driversDir, "influx")
