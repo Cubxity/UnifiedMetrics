@@ -1,7 +1,7 @@
 name: gradle-preview-ci
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "dev" ]
 
 jobs:
   build:
