@@ -16,7 +16,7 @@ This project is licensed under [GNU AGPLv3](LICENSE)
 ## Features
 - Server metrics collection (TPS, Players, Plugins)
 - World metrics collection (Entities, Chunks)
-- Events metrics collection (Player flow, chat)
+- Events metrics collection (Player flow, chat, pings)
 - JVM metrics collection (Memory, CPU Load, Threads, Uptime)
 - Extensible API (Custom metrics, measurements, metrics driver) 
 - More features upcoming (Logging to ElasticSearch, etc)
