@@ -20,4 +20,5 @@ package dev.cubxity.plugins.metrics.api.platform
 
 sealed class PlatformType(val name: String) {
     object Bukkit : PlatformType("Bukkit")
+    object Velocity : PlatformType("Velocity")
 }

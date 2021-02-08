@@ -16,37 +16,28 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+package dev.cubxity.plugins.metrics.velocity.logger
 
-plugins {
-    kotlin("jvm") version "1.4.21"
-    kotlin("kapt") version "1.4.21"
-    id("com.github.johnrengelman.shadow") version "6.1.0" apply false
-}
+import dev.cubxity.plugins.metrics.api.logging.Logger
 
-allprojects {
-    group = "dev.cubxity.plugins"
-    description = "Fully featured metrics plugin for Minecraft servers."
-    version = "0.1.0"
-
-    repositories {
-        mavenCentral()
+class Slf4jLogger(private val logger: org.slf4j.Logger) : Logger {
+    override fun info(message: String) {
+        logger.info(message)
     }
-}
 
-subprojects {
-    apply(plugin = "java")
-    apply(plugin = "kotlin")
-    apply(plugin = "kotlin-kapt")
-    apply(plugin = "com.github.johnrengelman.shadow")
-
-    tasks.withType<KotlinCompile> {
-        kotlinOptions {
-            jvmTarget = "1.8"
-        }
+    override fun warn(message: String) {
+        logger.warn(message)
     }
-    tasks.withType<ShadowJar> {
-        archiveClassifier.set("")
+
+    override fun warn(message: String, error: Throwable) {
+        logger.warn(message, error)
+    }
+
+    override fun severe(message: String) {
+        logger.error(message)
+    }
+
+    override fun severe(message: String, error: Throwable) {
+        logger.error(message, error)
     }
 }
