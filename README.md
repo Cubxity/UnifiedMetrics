@@ -11,7 +11,7 @@ This project is licensed under [GNU AGPLv3](LICENSE)
 
 ## Compatbility
 - 1.8+ Spigot servers
-- Velocity (coming soon)
+- Velocity
 
 ## Features
 - Server metrics collection (TPS, Players, Plugins)
