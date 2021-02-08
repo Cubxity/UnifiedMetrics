@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 #
-#     UnifiedMetrics is a fully-featured metrics collection plugin for Spigot.
+#     UnifiedMetrics is a fully-featured metrics collection plugin for Minecraft servers.
 #     Copyright (C) 2021  Cubxity
 #
 #     This program is free software: you can redistribute it and/or modify
