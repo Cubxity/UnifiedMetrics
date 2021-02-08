@@ -20,8 +20,8 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.4.21"
-    kotlin("kapt") version "1.4.21"
+    kotlin("jvm") version "1.4.30"
+    kotlin("kapt") version "1.4.30"
     id("com.github.johnrengelman.shadow") version "6.1.0" apply false
 }
 
