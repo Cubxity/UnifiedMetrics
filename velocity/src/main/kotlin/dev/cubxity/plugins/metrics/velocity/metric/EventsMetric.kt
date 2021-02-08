@@ -22,6 +22,7 @@ import com.velocitypowered.api.event.Subscribe
 import com.velocitypowered.api.event.connection.DisconnectEvent
 import com.velocitypowered.api.event.connection.LoginEvent
 import com.velocitypowered.api.event.player.PlayerChatEvent
+import com.velocitypowered.api.event.proxy.ProxyPingEvent
 import dev.cubxity.plugins.metrics.api.UnifiedMetrics
 import dev.cubxity.plugins.metrics.api.metric.Metric
 import dev.cubxity.plugins.metrics.common.measurement.EventsMeasurement
@@ -32,6 +33,7 @@ class EventsMetric(private val bootstrap: UnifiedMetricsVelocityBootstrap) : Met
     private val joinCount = AtomicLong()
     private val quitCount = AtomicLong()
     private val chatCount = AtomicLong()
+    private val pingCount = AtomicLong()
 
     override val isSync: Boolean
         get() = false
@@ -44,8 +46,9 @@ class EventsMetric(private val bootstrap: UnifiedMetricsVelocityBootstrap) : Met
         val joinCount = joinCount.getAndSet(0)
         val quitCount = quitCount.getAndSet(0)
         val chatCount = chatCount.getAndSet(0)
+        val pingCount = pingCount.getAndSet(0)
 
-        return listOf(EventsMeasurement(joinCount, quitCount, chatCount))
+        return listOf(EventsMeasurement(joinCount, quitCount, chatCount, pingCount))
     }
 
     override fun dispose() {
@@ -65,5 +68,10 @@ class EventsMetric(private val bootstrap: UnifiedMetricsVelocityBootstrap) : Met
     @Subscribe
     fun onChat(event: PlayerChatEvent) {
         chatCount.incrementAndGet()
+    }
+
+    @Subscribe
+    fun onPing(event: ProxyPingEvent) {
+        pingCount.incrementAndGet()
     }
 }
