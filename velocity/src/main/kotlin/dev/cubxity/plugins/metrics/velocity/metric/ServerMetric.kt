@@ -16,27 +16,23 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.velocity
+package dev.cubxity.plugins.metrics.velocity.metric
 
 import dev.cubxity.plugins.metrics.api.UnifiedMetrics
-import dev.cubxity.plugins.metrics.core.plugin.CoreUnifiedMetricsPlugin
+import dev.cubxity.plugins.metrics.api.metric.Metric
+import dev.cubxity.plugins.metrics.common.measurement.ServerMeasurement
 import dev.cubxity.plugins.metrics.velocity.bootstrap.UnifiedMetricsVelocityBootstrap
-import dev.cubxity.plugins.metrics.velocity.metric.EventsMetric
-import dev.cubxity.plugins.metrics.velocity.metric.ServerMetric
 
-class UnifiedMetricsVelocityPlugin(
-    override val bootstrap: UnifiedMetricsVelocityBootstrap
-) : CoreUnifiedMetricsPlugin() {
-    override fun registerPlatformService(api: UnifiedMetrics) {
-        // Velocity doesn't have a service manager
-    }
+class ServerMetric(private val bootstrap: UnifiedMetricsVelocityBootstrap) : Metric<ServerMeasurement> {
+    override val isSync: Boolean
+        get() = false
 
-    override fun registerPlatformMetrics() {
-        super.registerPlatformMetrics()
+    override fun getMeasurements(api: UnifiedMetrics): List<ServerMeasurement> {
+        val server = bootstrap.server
+        val plugins = server.pluginManager.plugins.size
+        val playerCount = server.playerCount
+        val maxPlayers = server.configuration.showMaxPlayers
 
-        apiProvider.metricsManager.apply {
-            registerMetric(EventsMetric(bootstrap))
-            registerMetric(ServerMetric(bootstrap))
-        }
+        return listOf(ServerMeasurement(plugins, playerCount, maxPlayers))
     }
 }
