@@ -29,12 +29,14 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.AsyncPlayerChatEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
+import org.bukkit.event.server.ServerListPingEvent
 import java.util.concurrent.atomic.AtomicLong
 
 class EventsMetric(private val bootstrap: UnifiedMetricsBukkitBootstrap) : Metric<EventsMeasurement>, Listener {
     private var joinCount: Long = 0
     private var quitCount: Long = 0
     private val chatCount = AtomicLong()
+    private var pingCount: Long = 0
 
     override val isSync: Boolean
         get() = true
@@ -47,11 +49,13 @@ class EventsMetric(private val bootstrap: UnifiedMetricsBukkitBootstrap) : Metri
         val joinCount = joinCount
         val quitCount = quitCount
         val chatCount = chatCount.getAndSet(0)
+        val pingCount = pingCount
 
         this.joinCount = 0
         this.quitCount = 0
+        this.pingCount = 0
 
-        return listOf(EventsMeasurement(joinCount, quitCount, chatCount))
+        return listOf(EventsMeasurement(joinCount, quitCount, chatCount, pingCount))
     }
 
     override fun dispose() {
@@ -71,5 +75,10 @@ class EventsMetric(private val bootstrap: UnifiedMetricsBukkitBootstrap) : Metri
     @EventHandler
     fun onChat(event: AsyncPlayerChatEvent) {
         chatCount.addAndGet(1)
+    }
+
+    @EventHandler
+    fun onPing(event: ServerListPingEvent) {
+        pingCount++
     }
 }
