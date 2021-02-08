@@ -23,4 +23,7 @@ jobs:
           automatic_release_tag: "latest"
           prerelease: true
           title: "Development Build"
-          files: "**/build/libs/*.jar"
+          files: |
+            api/build/libs/*.jar
+            bukkit/build/libs/*.jar
+            velocity/build/libs/*.jar
