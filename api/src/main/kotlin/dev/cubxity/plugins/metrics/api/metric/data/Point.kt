@@ -41,12 +41,6 @@ class Point(val name: String) {
         }
     }
 
-    inline fun field(key: String, value: String?): Point = apply {
-        if (value !== null) {
-            fields[key] = value
-        }
-    }
-
     inline fun tag(key: String, value: String?): Point = apply {
         if (value !== null) {
             tags[key] = value
