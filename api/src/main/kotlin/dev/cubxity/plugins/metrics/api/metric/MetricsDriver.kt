@@ -18,16 +18,10 @@
 
 package dev.cubxity.plugins.metrics.api.metric
 
-import dev.cubxity.plugins.metrics.api.metric.data.Point
 import java.io.Closeable
 
 interface MetricsDriver : Closeable {
     fun connect()
 
     fun scheduleTasks() {}
-
-    /**
-     * Data should be written asynchronously.
-     */
-    fun writePoints(points: List<Point>)
 }

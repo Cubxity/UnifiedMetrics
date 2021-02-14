@@ -22,10 +22,9 @@ import dev.cubxity.plugins.metrics.api.metric.Metric
 import dev.cubxity.plugins.metrics.api.metric.MetricsDriver
 import dev.cubxity.plugins.metrics.api.metric.MetricsDriverFactory
 import dev.cubxity.plugins.metrics.api.metric.MetricsManager
+import dev.cubxity.plugins.metrics.api.metric.data.Point
 import dev.cubxity.plugins.metrics.common.config.MetricsSpec
 import dev.cubxity.plugins.metrics.common.plugin.UnifiedMetricsPlugin
-import java.util.*
-import kotlin.collections.HashMap
 
 class MetricsManagerImpl(private val plugin: UnifiedMetricsPlugin) : MetricsManager {
     private val metricDrivers: MutableMap<String, MetricsDriverFactory> = HashMap()
@@ -74,20 +73,16 @@ class MetricsManagerImpl(private val plugin: UnifiedMetricsPlugin) : MetricsMana
         }
     }
 
-    override fun writeMetrics(isSync: Boolean) {
-        driver?.apply {
-            val points = metrics.filter { it.isSync == isSync }
-                .flatMap { it.getMeasurements(plugin.apiProvider) }
-                .map { it.serialize().tag("server", plugin.apiProvider.serverName) }
-
-            writePoints(points)
-        }
+    override fun serializeMetrics(isSync: Boolean): List<Point> {
+        return metrics.filter { it.isSync == isSync }
+            .flatMap { it.getMeasurements(plugin.apiProvider) }
+            .map { it.serialize().tag("server", plugin.apiProvider.serverName) }
     }
 
     override fun dispose() {
         shouldInitialize = false
 
-        metrics.forEach { unregisterMetric(it) }
+        metrics.toList().forEach { unregisterMetric(it) }
         driver?.close()
         driver = null
     }

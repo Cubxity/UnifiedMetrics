@@ -21,6 +21,7 @@ package dev.cubxity.plugins.metrics.influx
 import com.influxdb.client.InfluxDBClient
 import com.influxdb.client.InfluxDBClientFactory
 import com.influxdb.client.InfluxDBClientOptions
+import com.influxdb.client.WriteApi
 import com.uchuhimo.konf.Config
 import dev.cubxity.plugins.metrics.api.UnifiedMetrics
 import dev.cubxity.plugins.metrics.api.metric.MetricsDriver
@@ -31,6 +32,7 @@ import com.influxdb.client.write.Point as InfluxPoint
 
 class InfluxMetricsDriver(private val api: UnifiedMetrics, private val config: Config) : MetricsDriver {
     private var influxDBClient: InfluxDBClient? = null
+    private var writeApi: WriteApi? = null
 
     override fun connect() {
         val options = InfluxDBClientOptions.builder()
@@ -44,6 +46,7 @@ class InfluxMetricsDriver(private val api: UnifiedMetrics, private val config: C
             .build()
 
         influxDBClient = InfluxDBClientFactory.create(options)
+        writeApi = influxDBClient?.writeApi
     }
 
     override fun scheduleTasks() {
@@ -53,29 +56,29 @@ class InfluxMetricsDriver(private val api: UnifiedMetrics, private val config: C
 
         scheduler.asyncRepeating({
             // Async
-            api.metricsManager.writeMetrics(false)
+            writePoints(api.metricsManager.serializeMetrics(false))
 
             // Sync
             scheduler.sync.execute {
-                api.metricsManager.writeMetrics(true)
+                writePoints(api.metricsManager.serializeMetrics(true))
             }
         }, interval, TimeUnit.SECONDS)
     }
 
-    override fun writePoints(points: List<Point>) {
-        influxDBClient?.writeApi?.use { api ->
-            for (point in points) {
-                val influxPoint = InfluxPoint(point.name)
-                influxPoint.addFields(point.fields)
-                influxPoint.addTags(point.tags)
-
-                api.writePoint(influxPoint)
-            }
-        }
-    }
-
     override fun close() {
+        writeApi?.close()
         influxDBClient?.close()
         influxDBClient = null
+    }
+
+    private fun writePoints(points: List<Point>) {
+        val api = writeApi ?: return
+        for (point in points) {
+            val influxPoint = InfluxPoint(point.name)
+            influxPoint.addFields(point.fields)
+            influxPoint.addTags(point.tags)
+
+            api.writePoint(influxPoint)
+        }
     }
 }

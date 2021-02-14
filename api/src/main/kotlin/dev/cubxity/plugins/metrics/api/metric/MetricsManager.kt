@@ -18,6 +18,8 @@
 
 package dev.cubxity.plugins.metrics.api.metric
 
+import dev.cubxity.plugins.metrics.api.metric.data.Point
+
 interface MetricsManager {
     val metrics: List<Metric<*>>
 
@@ -29,7 +31,7 @@ interface MetricsManager {
 
     fun registerDriver(name: String, factory: MetricsDriverFactory)
 
-    fun writeMetrics(isSync: Boolean)
+    fun serializeMetrics(isSync: Boolean): List<Point>
 
     fun dispose()
 }
