@@ -16,43 +16,29 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.bukkit.metric
+package dev.cubxity.plugins.metrics.bukkit.metric.tps
 
 import dev.cubxity.plugins.metrics.api.UnifiedMetrics
 import dev.cubxity.plugins.metrics.api.metric.Metric
 import dev.cubxity.plugins.metrics.bukkit.bootstrap.UnifiedMetricsBukkitBootstrap
+import dev.cubxity.plugins.metrics.bukkit.util.Environment
 import dev.cubxity.plugins.metrics.common.measurement.TPSMeasurement
-import org.bukkit.Bukkit
 
-class TPSMetric(private val bootstrap: UnifiedMetricsBukkitBootstrap) : Metric<TPSMeasurement>, Runnable {
-    private var taskId = -1
-    private var currentSec: Long = 0
-    private var ticks = 0
-    private var tps = 20
+class TPSMetric(private val bootstrap: UnifiedMetricsBukkitBootstrap) : Metric<TPSMeasurement> {
+    private val provider = if (Environment.majorMinecraftVersion >= 15 && Environment.isPaper) {
+        PaperTPSProvider()
+    } else {
+        NMSTPSProvider()
+    }
 
     override val isSync: Boolean
-        get() = false
+        get() = true
 
     override fun initialize() {
-        taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(bootstrap, this, 0, 1)
+        bootstrap.logger.info("TPSMetric: Using ${provider.javaClass.name}")
     }
 
     override fun getMeasurements(api: UnifiedMetrics): List<TPSMeasurement> {
-        return listOf(TPSMeasurement(tps))
-    }
-
-    override fun dispose() {
-        Bukkit.getScheduler().cancelTask(taskId)
-    }
-
-    override fun run() {
-        val sec = System.currentTimeMillis() / 1000
-        if (currentSec == sec) {
-            ticks++
-        } else {
-            currentSec = sec
-            tps = ticks + 1
-            ticks = 0
-        }
+        return listOf(TPSMeasurement(provider.tps, provider.mspt))
     }
 }

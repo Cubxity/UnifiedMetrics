@@ -22,7 +22,7 @@ import dev.cubxity.plugins.metrics.api.UnifiedMetrics
 import dev.cubxity.plugins.metrics.bukkit.bootstrap.UnifiedMetricsBukkitBootstrap
 import dev.cubxity.plugins.metrics.bukkit.metric.EventsMetric
 import dev.cubxity.plugins.metrics.bukkit.metric.ServerMetric
-import dev.cubxity.plugins.metrics.bukkit.metric.TPSMetric
+import dev.cubxity.plugins.metrics.bukkit.metric.tps.TPSMetric
 import dev.cubxity.plugins.metrics.bukkit.metric.WorldMetric
 import dev.cubxity.plugins.metrics.core.plugin.CoreUnifiedMetricsPlugin
 import org.bukkit.Bukkit

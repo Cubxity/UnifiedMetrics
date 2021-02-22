@@ -14,7 +14,7 @@ This project is licensed under [GNU AGPLv3](LICENSE)
 - Velocity
 
 ## Features
-- Server metrics collection (TPS, Players, Plugins)
+- Server metrics collection (TPS, MSPT, Players, Plugins)
 - World metrics collection (Entities, Chunks)
 - Events metrics collection (Player flow, chat, pings)
 - JVM metrics collection (Memory, CPU Load, Threads, Uptime)
@@ -43,6 +43,7 @@ val api = UnifiedMetricsProvider.get()
 Currently, [InfluxDB](https://www.influxdata.com/) is required to collect metrics.
 We recommend using an internal network for InfluxDB.
 
+**config.toml**
 ```toml
 [server]
 server = "main"
@@ -50,11 +51,14 @@ server = "main"
 [metrics]
 enabled = true
 driver = "influx"
+```
 
-[metrics.influx]
+**driver/influx.toml**
+```toml
+[influx]
 url = "http://influxdb:8086"
 bucket = "unifiedmetrics"
-influx = "influx"
+username = "influx"
 password = "influx"
 interval = 10 # Interval in seconds
 ```

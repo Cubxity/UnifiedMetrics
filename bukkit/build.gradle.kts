@@ -19,12 +19,12 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
 repositories {
-    maven("https://hub.spigotmc.org/nexus/content/groups/public")
+    maven("https://papermc.io/repo/repository/maven-public")
 }
 
 dependencies {
     api(project(":unifiedmetrics-core"))
-    compileOnly("org.spigotmc", "spigot-api", "1.8-R0.1-SNAPSHOT")
+    compileOnly("com.destroystokyo.paper", "paper-api", "1.16.5-R0.1-SNAPSHOT")
 }
 
 tasks {
