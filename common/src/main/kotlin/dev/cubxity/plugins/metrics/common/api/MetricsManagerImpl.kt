@@ -18,6 +18,10 @@
 
 package dev.cubxity.plugins.metrics.common.api
 
+import com.uchuhimo.konf.Config
+import com.uchuhimo.konf.Feature
+import com.uchuhimo.konf.source.toml
+import com.uchuhimo.konf.source.toml.toToml
 import dev.cubxity.plugins.metrics.api.metric.Metric
 import dev.cubxity.plugins.metrics.api.metric.MetricsDriver
 import dev.cubxity.plugins.metrics.api.metric.MetricsDriverFactory
@@ -25,8 +29,10 @@ import dev.cubxity.plugins.metrics.api.metric.MetricsManager
 import dev.cubxity.plugins.metrics.api.metric.data.Point
 import dev.cubxity.plugins.metrics.common.config.MetricsSpec
 import dev.cubxity.plugins.metrics.common.plugin.UnifiedMetricsPlugin
+import java.nio.file.Files
 
 class MetricsManagerImpl(private val plugin: UnifiedMetricsPlugin) : MetricsManager {
+    private val driverDirectory = plugin.bootstrap.configDirectory.resolve("driver")
     private val metricDrivers: MutableMap<String, MetricsDriverFactory> = HashMap()
     private val _metrics: MutableList<Metric<*>> = ArrayList()
 
@@ -42,9 +48,11 @@ class MetricsManagerImpl(private val plugin: UnifiedMetricsPlugin) : MetricsMana
         val driverName = plugin.config[MetricsSpec.driver]
         val factory = metricDrivers[driverName]
 
+        Files.createDirectories(driverDirectory)
+
         if (factory !== null) {
             plugin.bootstrap.logger.warn("Initializing driver '$driverName'.")
-            initializeDriver(factory)
+            initializeDriver(driverName, factory)
         } else {
             plugin.bootstrap.logger.warn("Driver '$driverName' not found. Metrics will be enabled when the driver is loaded.")
         }
@@ -68,7 +76,7 @@ class MetricsManagerImpl(private val plugin: UnifiedMetricsPlugin) : MetricsMana
 
             if (name == driverName) {
                 plugin.bootstrap.logger.warn("Initializing driver '$driverName'.")
-                initializeDriver(factory)
+                initializeDriver(name, factory)
             }
         }
     }
@@ -87,9 +95,15 @@ class MetricsManagerImpl(private val plugin: UnifiedMetricsPlugin) : MetricsMana
         driver = null
     }
 
-    private fun initializeDriver(factory: MetricsDriverFactory) {
-        factory.registerConfig(plugin.config)
-        val driver = factory.createDriver(plugin.apiProvider, plugin.config)
+    private fun initializeDriver(name: String, factory: MetricsDriverFactory) {
+        val file = driverDirectory.toFile().resolve("$name.toml")
+        val config = Config { factory.registerConfig(this) }
+            .enable(Feature.OPTIONAL_SOURCE_BY_DEFAULT)
+            .from.toml.file(file)
+
+        config.toToml.toFile(file)
+
+        val driver = factory.createDriver(plugin.apiProvider, config)
 
         driver.connect()
         driver.scheduleTasks()

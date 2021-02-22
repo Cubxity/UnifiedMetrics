@@ -20,7 +20,7 @@ package dev.cubxity.plugins.metrics.influx.config
 
 import com.uchuhimo.konf.ConfigSpec
 
-object InfluxSpec : ConfigSpec("metrics.influx") {
+object InfluxSpec : ConfigSpec("influx") {
     val url by optional("http://influxdb:8086", "url")
     val bucket by optional("unifiedmetrics", "bucket")
     val username by optional("influx", "influx")
