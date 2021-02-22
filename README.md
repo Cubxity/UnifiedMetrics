@@ -58,7 +58,7 @@ driver = "influx"
 [influx]
 url = "http://influxdb:8086"
 bucket = "unifiedmetrics"
-influx = "influx"
+username = "influx"
 password = "influx"
 interval = 10 # Interval in seconds
 ```
