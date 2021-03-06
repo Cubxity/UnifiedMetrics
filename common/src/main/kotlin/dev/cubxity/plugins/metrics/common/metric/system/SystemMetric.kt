@@ -16,8 +16,15 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.metric.data
+package dev.cubxity.plugins.metrics.common.metric.system
 
-interface Measurement {
-    fun serialize(): Point
+import dev.cubxity.plugins.metrics.api.metric.Metric
+import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+
+class SystemMetric : Metric {
+    override val collectors: List<MetricCollector> = listOf(
+        MemoryCollector(),
+        ProcessCollector(),
+        ThreadCollector()
+    )
 }

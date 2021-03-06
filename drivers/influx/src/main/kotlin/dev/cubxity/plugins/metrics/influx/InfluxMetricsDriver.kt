@@ -25,7 +25,8 @@ import com.influxdb.client.WriteApi
 import com.uchuhimo.konf.Config
 import dev.cubxity.plugins.metrics.api.UnifiedMetrics
 import dev.cubxity.plugins.metrics.api.metric.MetricsDriver
-import dev.cubxity.plugins.metrics.api.metric.data.Point
+import dev.cubxity.plugins.metrics.api.metric.collect
+import dev.cubxity.plugins.metrics.api.metric.data.MetricSample
 import dev.cubxity.plugins.metrics.influx.config.InfluxSpec
 import java.util.concurrent.TimeUnit
 import com.influxdb.client.write.Point as InfluxPoint
@@ -34,7 +35,7 @@ class InfluxMetricsDriver(private val api: UnifiedMetrics, private val config: C
     private var influxDBClient: InfluxDBClient? = null
     private var writeApi: WriteApi? = null
 
-    override fun connect() {
+    override fun initialize() {
         val options = InfluxDBClientOptions.builder()
             .url(config[InfluxSpec.url])
             .authenticate(
@@ -47,22 +48,8 @@ class InfluxMetricsDriver(private val api: UnifiedMetrics, private val config: C
 
         influxDBClient = InfluxDBClientFactory.create(options)
         writeApi = influxDBClient?.writeApi
-    }
 
-    override fun scheduleTasks() {
-        val interval = config[InfluxSpec.interval]
-
-        val scheduler = api.scheduler
-
-        scheduler.asyncRepeating({
-            // Async
-            writePoints(api.metricsManager.serializeMetrics(false))
-
-            // Sync
-            scheduler.sync.execute {
-                writePoints(api.metricsManager.serializeMetrics(true))
-            }
-        }, interval, TimeUnit.SECONDS)
+        scheduleTasks()
     }
 
     override fun close() {
@@ -71,14 +58,25 @@ class InfluxMetricsDriver(private val api: UnifiedMetrics, private val config: C
         influxDBClient = null
     }
 
-    private fun writePoints(points: List<Point>) {
-        val api = writeApi ?: return
-        for (point in points) {
-            val influxPoint = InfluxPoint(point.name)
-            influxPoint.addFields(point.fields)
-            influxPoint.addTags(point.tags)
+    private fun scheduleTasks() {
+        val interval = config[InfluxSpec.interval]
 
-            api.writePoint(influxPoint)
+        val scheduler = api.scheduler
+
+        scheduler.asyncRepeating({
+            writeSamples(api.metricsManager.collect())
+        }, interval, TimeUnit.SECONDS)
+    }
+
+    private fun writeSamples(samples: List<MetricSample>) {
+        val writeApi = writeApi ?: return
+        for (point in samples) {
+            val influxPoint = InfluxPoint(point.name)
+            influxPoint.addTags(point.tags)
+            influxPoint.addField("value", point.value)
+            influxPoint.addField("server", api.serverName)
+
+            writeApi.writePoint(influxPoint)
         }
     }
 }

@@ -16,23 +16,11 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.velocity.metric
+package dev.cubxity.plugins.metrics.bukkit.metric.server
 
-import dev.cubxity.plugins.metrics.api.UnifiedMetrics
 import dev.cubxity.plugins.metrics.api.metric.Metric
-import dev.cubxity.plugins.metrics.common.measurement.ServerMeasurement
-import dev.cubxity.plugins.metrics.velocity.bootstrap.UnifiedMetricsVelocityBootstrap
+import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
 
-class ServerMetric(private val bootstrap: UnifiedMetricsVelocityBootstrap) : Metric<ServerMeasurement> {
-    override val isSync: Boolean
-        get() = false
-
-    override fun getMeasurements(api: UnifiedMetrics): List<ServerMeasurement> {
-        val server = bootstrap.server
-        val plugins = server.pluginManager.plugins.size
-        val playerCount = server.playerCount
-        val maxPlayers = server.configuration.showMaxPlayers
-
-        return listOf(ServerMeasurement(plugins, playerCount, maxPlayers))
-    }
+class ServerMetric : Metric {
+    override val collectors: List<MetricCollector> = listOf(ServerCollector())
 }

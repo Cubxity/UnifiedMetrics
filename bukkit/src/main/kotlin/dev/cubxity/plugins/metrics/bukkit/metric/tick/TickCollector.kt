@@ -16,10 +16,16 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.metric
+package dev.cubxity.plugins.metrics.bukkit.metric.tick
 
-import java.io.Closeable
+import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+import dev.cubxity.plugins.metrics.api.metric.collector.NANOSECONDS_PER_SECOND
+import dev.cubxity.plugins.metrics.api.metric.data.GaugeSample
+import dev.cubxity.plugins.metrics.api.metric.data.MetricSample
 
-interface MetricsDriver : Closeable {
-    fun initialize()
+class TickCollector(private val provider: TickProvider) : MetricCollector {
+    override fun collect(): List<MetricSample> = listOf(
+        GaugeSample("minecraft_tps", provider.tps),
+        GaugeSample("minecraft_tick_duration_seconds", provider.mspt / NANOSECONDS_PER_SECOND)
+    )
 }

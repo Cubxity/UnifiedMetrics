@@ -16,20 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.common.measurement
-
-import dev.cubxity.plugins.metrics.api.metric.data.Measurement
-import dev.cubxity.plugins.metrics.api.metric.data.Point
-
-data class EventsMeasurement(
-    val joinCount: Long,
-    val quitCount: Long,
-    val chatCount: Long,
-    val pingCount: Long
-): Measurement {
-    override fun serialize() = Point("events")
-        .field("join_count", joinCount)
-        .field("quit_count", quitCount)
-        .field("chat_count", chatCount)
-        .field("ping_count", pingCount)
+dependencies {
+    api(project(":unifiedmetrics-api"))
+    api("io.prometheus", "simpleclient_httpserver", "0.10.0")
 }

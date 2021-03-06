@@ -16,16 +16,19 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.bukkit.metric.tps
+package dev.cubxity.plugins.metrics.prometheus
 
-interface TPSProvider {
-    /**
-     * Ticks per second
-     */
-    val tps: Double
+import com.uchuhimo.konf.Config
+import dev.cubxity.plugins.metrics.api.UnifiedMetrics
+import dev.cubxity.plugins.metrics.api.metric.MetricsDriver
+import dev.cubxity.plugins.metrics.api.metric.MetricsDriverFactory
+import dev.cubxity.plugins.metrics.prometheus.config.PrometheusSpec
 
-    /**
-     * Tick time in nanoseconds
-     */
-    val mspt: Long
+object PrometheusMetricsDriverFactory : MetricsDriverFactory {
+    override fun registerConfig(config: Config) {
+        config.addSpec(PrometheusSpec)
+    }
+
+    override fun createDriver(api: UnifiedMetrics, config: Config): MetricsDriver =
+        PrometheusMetricsDriver(api, config)
 }

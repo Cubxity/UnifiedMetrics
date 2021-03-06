@@ -16,31 +16,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.common.metric
+package dev.cubxity.plugins.metrics.bukkit.metric.tick
 
-import com.sun.management.OperatingSystemMXBean
-import dev.cubxity.plugins.metrics.api.UnifiedMetrics
 import dev.cubxity.plugins.metrics.api.metric.Metric
-import dev.cubxity.plugins.metrics.common.measurement.JVMMeasurement
-import java.lang.management.ManagementFactory
+import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+import dev.cubxity.plugins.metrics.bukkit.util.Environment
 
-class JVMMetric : Metric<JVMMeasurement> {
-    override val isSync: Boolean
-        get() = false
-
-    override fun getMeasurements(api: UnifiedMetrics): List<JVMMeasurement> {
-        val runtime = Runtime.getRuntime()
-
-        val runtimeMXBean = ManagementFactory.getRuntimeMXBean()
-        val osMXBean = ManagementFactory.getOperatingSystemMXBean() as? OperatingSystemMXBean
-
-        return listOf(
-            JVMMeasurement(
-                osMXBean?.processCpuLoad,
-                runtime.availableProcessors(),
-                Thread.activeCount(),
-                runtimeMXBean.uptime
-            )
-        )
+class TickMetric : Metric {
+    private val provider = if (Environment.majorMinecraftVersion >= 15 && Environment.isPaper) {
+        PaperTickProvider()
+    } else {
+        NMSTickProvider()
     }
+
+    override val collectors: List<MetricCollector> = listOf(TickCollector(provider))
 }

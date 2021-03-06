@@ -16,18 +16,13 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.common.measurement
+package dev.cubxity.plugins.metrics.api.metric.data
 
-import dev.cubxity.plugins.metrics.api.metric.data.Measurement
-import dev.cubxity.plugins.metrics.api.metric.data.Point
-
-data class ServerMeasurement(
-    val plugins: Int,
-    val players: Int,
-    val maxPlayers: Int
-): Measurement {
-    override fun serialize() = Point("server")
-        .field("plugins", plugins)
-        .field("players", players)
-        .field("max_players", maxPlayers)
+/**
+ * Prometheus-compatible metric types. The Prometheus server does not yet make use of the type information.
+ */
+sealed class MetricType {
+    object Unknown : MetricType()
+    object Counter : MetricType()
+    object Gauge : MetricType()
 }

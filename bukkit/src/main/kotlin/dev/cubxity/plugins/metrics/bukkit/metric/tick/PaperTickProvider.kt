@@ -16,10 +16,13 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.metric
+package dev.cubxity.plugins.metrics.bukkit.metric.tick
 
-import java.io.Closeable
+import org.bukkit.Bukkit
 
-interface MetricsDriver : Closeable {
-    fun initialize()
+class PaperTickProvider : TickProvider {
+    override val tps: Double
+        get() = Bukkit.getServer().tps[0]
+    override val mspt: Long
+        get() = Bukkit.getServer().tickTimes[0]
 }

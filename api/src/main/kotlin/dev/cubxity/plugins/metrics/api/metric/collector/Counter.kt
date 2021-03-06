@@ -16,34 +16,37 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.metric.data
+package dev.cubxity.plugins.metrics.api.metric.collector
 
-@Suppress("NOTHING_TO_INLINE")
-class Point(val name: String) {
-    val fields = HashMap<String, Any>()
-    val tags = HashMap<String, String>()
+import dev.cubxity.plugins.metrics.api.metric.data.CounterSample
+import dev.cubxity.plugins.metrics.api.metric.data.MetricSample
+import java.util.concurrent.atomic.AtomicInteger
 
-    inline fun field(key: String, value: Boolean?): Point = apply {
-        if (value !== null) {
-            fields[key] = value
-        }
+/**
+ * @param name name of the sample. Should end with '_total'
+ */
+class Counter(val name: String) : MetricCollector {
+    private val tags: MutableMap<String, String> = HashMap()
+    private val count = AtomicInteger()
+
+    override fun collect(): List<MetricSample> {
+        val sample = CounterSample(name, count.get().toDouble(), tags)
+        return listOf(sample)
     }
 
-    inline fun field(key: String, value: Long?): Point = apply {
-        if (value !== null) {
-            fields[key] = value
-        }
+    fun inc() {
+        count.incrementAndGet()
     }
 
-    inline fun field(key: String, value: Number?): Point = apply {
-        if (value !== null) {
-            fields[key] = value
-        }
+    fun dec() {
+        count.decrementAndGet()
     }
 
-    inline fun tag(key: String, value: String?): Point = apply {
-        if (value !== null) {
-            tags[key] = value
-        }
+    operator fun plusAssign(delta: Int) {
+        count.addAndGet(delta)
+    }
+
+    operator fun minusAssign(delta: Int) {
+        count.addAndGet(-delta)
     }
 }

@@ -16,20 +16,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.common.measurement
+package dev.cubxity.plugins.metrics.velocity.metric.server
 
-import dev.cubxity.plugins.metrics.api.metric.data.Measurement
-import dev.cubxity.plugins.metrics.api.metric.data.Point
+import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+import dev.cubxity.plugins.metrics.api.metric.data.GaugeSample
+import dev.cubxity.plugins.metrics.api.metric.data.MetricSample
+import dev.cubxity.plugins.metrics.velocity.bootstrap.UnifiedMetricsVelocityBootstrap
 
-data class WorldMeasurement(
-    val world: String,
-    val players: Int,
-    val entities: Int,
-    val chunks: Int
-) : Measurement {
-    override fun serialize() = Point("world")
-        .tag("world", world)
-        .field("players", players)
-        .field("entities", entities)
-        .field("chunks", chunks)
+class ServerCollector(private val bootstrap: UnifiedMetricsVelocityBootstrap) : MetricCollector {
+    override fun collect(): List<MetricSample> {
+        val server = bootstrap.server
+        return listOf(
+            GaugeSample("minecraft_plugins", server.pluginManager.plugins.size),
+            GaugeSample("minecraft_players_count", server.playerCount),
+            GaugeSample("minecraft_players_max", server.configuration.showMaxPlayers)
+        )
+    }
 }

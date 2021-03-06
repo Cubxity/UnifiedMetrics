@@ -23,32 +23,23 @@ import com.velocitypowered.api.event.connection.DisconnectEvent
 import com.velocitypowered.api.event.connection.LoginEvent
 import com.velocitypowered.api.event.player.PlayerChatEvent
 import com.velocitypowered.api.event.proxy.ProxyPingEvent
-import dev.cubxity.plugins.metrics.api.UnifiedMetrics
 import dev.cubxity.plugins.metrics.api.metric.Metric
-import dev.cubxity.plugins.metrics.common.measurement.EventsMeasurement
+import dev.cubxity.plugins.metrics.api.metric.collector.Counter
+import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
 import dev.cubxity.plugins.metrics.velocity.bootstrap.UnifiedMetricsVelocityBootstrap
-import java.util.concurrent.atomic.AtomicLong
 
-class EventsMetric(private val bootstrap: UnifiedMetricsVelocityBootstrap) : Metric<EventsMeasurement> {
-    private val joinCount = AtomicLong()
-    private val quitCount = AtomicLong()
-    private val chatCount = AtomicLong()
-    private val pingCount = AtomicLong()
+@Suppress("UNUSED_PARAMETER")
+class EventsMetric(private val bootstrap: UnifiedMetricsVelocityBootstrap) : Metric {
+    private val joinCounter = Counter("minecraft_events_join_total")
+    private val quitCounter = Counter("minecraft_events_quit_total")
+    private val chatCounter = Counter("minecraft_events_chat_total")
+    private val pingCounter = Counter("minecraft_events_ping_total")
 
-    override val isSync: Boolean
-        get() = false
+    override val collectors: List<MetricCollector> =
+        listOf(joinCounter, quitCounter, chatCounter, pingCounter)
 
     override fun initialize() {
         bootstrap.server.eventManager.register(bootstrap, this)
-    }
-
-    override fun getMeasurements(api: UnifiedMetrics): List<EventsMeasurement> {
-        val joinCount = joinCount.getAndSet(0)
-        val quitCount = quitCount.getAndSet(0)
-        val chatCount = chatCount.getAndSet(0)
-        val pingCount = pingCount.getAndSet(0)
-
-        return listOf(EventsMeasurement(joinCount, quitCount, chatCount, pingCount))
     }
 
     override fun dispose() {
@@ -57,21 +48,21 @@ class EventsMetric(private val bootstrap: UnifiedMetricsVelocityBootstrap) : Met
 
     @Subscribe
     fun onConnect(event: LoginEvent) {
-        joinCount.incrementAndGet()
+        joinCounter.inc()
     }
 
     @Subscribe
     fun onDisconnect(event: DisconnectEvent) {
-        quitCount.incrementAndGet()
+        quitCounter.inc()
     }
 
     @Subscribe
     fun onChat(event: PlayerChatEvent) {
-        chatCount.incrementAndGet()
+        chatCounter.inc()
     }
 
     @Subscribe
     fun onPing(event: ProxyPingEvent) {
-        pingCount.incrementAndGet()
+        pingCounter.dec()
     }
 }

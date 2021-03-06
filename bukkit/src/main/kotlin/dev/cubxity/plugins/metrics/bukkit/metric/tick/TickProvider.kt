@@ -16,21 +16,16 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.common.metric
+package dev.cubxity.plugins.metrics.bukkit.metric.tick
 
-import dev.cubxity.plugins.metrics.api.UnifiedMetrics
-import dev.cubxity.plugins.metrics.api.metric.Metric
-import dev.cubxity.plugins.metrics.common.measurement.MemoryMeasurement
+interface TickProvider {
+    /**
+     * Ticks per second
+     */
+    val tps: Double
 
-class MemoryMetric : Metric<MemoryMeasurement> {
-    override val isSync: Boolean
-        get() = false
-
-    override fun getMeasurements(api: UnifiedMetrics): List<MemoryMeasurement> {
-        val runtime = Runtime.getRuntime()
-        val total = runtime.totalMemory()
-        val used = total - runtime.freeMemory()
-
-        return listOf(MemoryMeasurement(used, total, runtime.maxMemory()))
-    }
+    /**
+     * Tick time in nanoseconds
+     */
+    val mspt: Long
 }

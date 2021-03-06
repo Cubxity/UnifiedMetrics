@@ -16,10 +16,11 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.metric
+package dev.cubxity.plugins.metrics.bukkit.metric.world
 
-import java.io.Closeable
+import dev.cubxity.plugins.metrics.api.metric.Metric
+import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
 
-interface MetricsDriver : Closeable {
-    fun initialize()
+class WorldMetric : Metric {
+    override val collectors: List<MetricCollector> = listOf(WorldCollector())
 }

@@ -16,20 +16,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.common.measurement
+package dev.cubxity.plugins.metrics.bukkit.metric.server
 
-import dev.cubxity.plugins.metrics.api.metric.data.Measurement
-import dev.cubxity.plugins.metrics.api.metric.data.Point
+import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+import dev.cubxity.plugins.metrics.api.metric.data.GaugeSample
+import dev.cubxity.plugins.metrics.api.metric.data.MetricSample
+import org.bukkit.Bukkit
 
-data class JVMMeasurement(
-    val load: Double?,
-    val cpus: Int,
-    val threads: Int,
-    val uptime: Long
-): Measurement {
-    override fun serialize() = Point("jvm")
-        .field("load", load)
-        .field("cpus", cpus)
-        .field("threads", threads)
-        .field("uptime", uptime)
+class ServerCollector : MetricCollector {
+    override fun collect(): List<MetricSample> = listOf(
+        GaugeSample("minecraft_plugins", Bukkit.getPluginManager().plugins.size),
+        GaugeSample("minecraft_players_count", Bukkit.getOnlinePlayers().size),
+        GaugeSample("minecraft_players_max", Bukkit.getMaxPlayers())
+    )
 }

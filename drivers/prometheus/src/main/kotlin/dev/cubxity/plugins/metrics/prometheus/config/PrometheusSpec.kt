@@ -16,13 +16,10 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.bukkit.metric.tps
+package dev.cubxity.plugins.metrics.prometheus.config
 
-import org.bukkit.Bukkit
+import com.uchuhimo.konf.ConfigSpec
 
-class PaperTPSProvider : TPSProvider {
-    override val tps: Double
-        get() = Bukkit.getServer().tps[0]
-    override val mspt: Long
-        get() = Bukkit.getServer().tickTimes[0]
+object PrometheusSpec : ConfigSpec("prometheus") {
+    val port by optional(8080, "Port for Prometheus exporter")
 }
