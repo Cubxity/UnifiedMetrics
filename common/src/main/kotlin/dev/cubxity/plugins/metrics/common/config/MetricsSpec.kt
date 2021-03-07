@@ -22,5 +22,5 @@ import com.uchuhimo.konf.ConfigSpec
 
 object MetricsSpec : ConfigSpec("metrics") {
     val enabled by optional(true, "enabled")
-    val driver by optional("influx", "driver")
+    val driver by optional("prometheus", "driver")
 }
