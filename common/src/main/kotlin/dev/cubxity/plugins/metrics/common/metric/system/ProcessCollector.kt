@@ -33,7 +33,7 @@ class ProcessCollector : MetricCollector {
 
     override fun collect(): List<MetricSample> = ArrayList<MetricSample>().apply {
         (osBean as? OperatingSystemMXBean)?.apply {
-            add(GaugeSample("process_cpu_load_percent", processCpuLoad))
+            add(GaugeSample("process_cpu_load_ratio", processCpuLoad))
             add(CounterSample("process_cpu_seconds_total", processCpuTime / NANOSECONDS_PER_SECOND))
         }
 
