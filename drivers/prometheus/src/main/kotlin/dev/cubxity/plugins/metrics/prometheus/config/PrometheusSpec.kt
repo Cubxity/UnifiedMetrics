@@ -21,5 +21,5 @@ package dev.cubxity.plugins.metrics.prometheus.config
 import com.uchuhimo.konf.ConfigSpec
 
 object PrometheusSpec : ConfigSpec("prometheus") {
-    val port by optional(8080, "Port for Prometheus exporter")
+    val port by optional(8080, "port", "Port for Prometheus exporter")
 }
