@@ -73,8 +73,8 @@ class InfluxMetricsDriver(private val api: UnifiedMetrics, private val config: C
         for (point in samples) {
             val influxPoint = InfluxPoint(point.name)
             influxPoint.addTags(point.tags)
+            influxPoint.addTag("server", api.serverName)
             influxPoint.addField("value", point.value)
-            influxPoint.addField("server", api.serverName)
 
             writeApi.writePoint(influxPoint)
         }
