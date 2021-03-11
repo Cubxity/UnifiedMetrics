@@ -16,8 +16,16 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.metric.data
+package dev.cubxity.plugins.metrics.bukkit.metric.tick
 
-interface Measurement {
-    fun serialize(): Point
+interface TickProvider {
+    /**
+     * Ticks per second
+     */
+    val tps: Double
+
+    /**
+     * Tick time in nanoseconds
+     */
+    val mspt: Long
 }

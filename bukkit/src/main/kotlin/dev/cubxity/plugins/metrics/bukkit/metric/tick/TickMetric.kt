@@ -16,20 +16,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.common.measurement
+package dev.cubxity.plugins.metrics.bukkit.metric.tick
 
-import dev.cubxity.plugins.metrics.api.metric.data.Measurement
-import dev.cubxity.plugins.metrics.api.metric.data.Point
+import dev.cubxity.plugins.metrics.api.metric.Metric
+import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+import dev.cubxity.plugins.metrics.bukkit.util.Environment
 
-data class JVMMeasurement(
-    val load: Double?,
-    val cpus: Int,
-    val threads: Int,
-    val uptime: Long
-): Measurement {
-    override fun serialize() = Point("jvm")
-        .field("load", load)
-        .field("cpus", cpus)
-        .field("threads", threads)
-        .field("uptime", uptime)
+class TickMetric : Metric {
+    private val provider = if (Environment.majorMinecraftVersion >= 15 && Environment.isPaper) {
+        PaperTickProvider()
+    } else {
+        NMSTickProvider()
+    }
+
+    override val collectors: List<MetricCollector> = listOf(TickCollector(provider))
 }

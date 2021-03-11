@@ -16,12 +16,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.bukkit.metric.tps
+package dev.cubxity.plugins.metrics.bukkit.metric.tick
 
 import dev.cubxity.plugins.metrics.bukkit.util.getNMSClass
 import dev.cubxity.plugins.metrics.bukkit.util.getStaticMethodHandle
 
-class NMSTPSProvider : TPSProvider {
+class NMSTickProvider : TickProvider {
     private val minecraftServerClass = getNMSClass("MinecraftServer")
     private val getServerMethod = minecraftServerClass.getStaticMethodHandle("getServer", minecraftServerClass)
     private val recentTpsField = minecraftServerClass.getDeclaredField("recentTps")

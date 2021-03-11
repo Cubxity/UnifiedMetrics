@@ -16,31 +16,26 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.common.metric
+package dev.cubxity.plugins.metrics.prometheus
 
-import com.sun.management.OperatingSystemMXBean
 import dev.cubxity.plugins.metrics.api.UnifiedMetrics
-import dev.cubxity.plugins.metrics.api.metric.Metric
-import dev.cubxity.plugins.metrics.common.measurement.JVMMeasurement
-import java.lang.management.ManagementFactory
+import dev.cubxity.plugins.metrics.api.metric.collect
+import dev.cubxity.plugins.metrics.api.metric.data.MetricType
+import io.prometheus.client.Collector
 
-class JVMMetric : Metric<JVMMeasurement> {
-    override val isSync: Boolean
-        get() = false
+class UnifiedMetricsCollector(private val api: UnifiedMetrics) : Collector() {
+    override fun collect(): List<MetricFamilySamples> {
+        return api.metricsManager.collect().map {
+            val keys = it.tags.keys.toList()
+            val values = it.tags.values.toList()
+            val sample = MetricFamilySamples.Sample(it.name, keys, values, it.value)
+            val type = when (it.type) {
+                MetricType.Counter -> Type.COUNTER
+                MetricType.Gauge -> Type.GAUGE
+                else -> Type.UNKNOWN
+            }
 
-    override fun getMeasurements(api: UnifiedMetrics): List<JVMMeasurement> {
-        val runtime = Runtime.getRuntime()
-
-        val runtimeMXBean = ManagementFactory.getRuntimeMXBean()
-        val osMXBean = ManagementFactory.getOperatingSystemMXBean() as? OperatingSystemMXBean
-
-        return listOf(
-            JVMMeasurement(
-                osMXBean?.processCpuLoad,
-                runtime.availableProcessors(),
-                Thread.activeCount(),
-                runtimeMXBean.uptime
-            )
-        )
+            MetricFamilySamples(it.name, type, "", listOf(sample))
+        }
     }
 }

@@ -16,25 +16,41 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.metric
+package dev.cubxity.plugins.metrics.api.metric.collector
 
-import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+import dev.cubxity.plugins.metrics.api.metric.data.GaugeSample
 import dev.cubxity.plugins.metrics.api.metric.data.MetricSample
+import java.util.concurrent.atomic.AtomicInteger
 
-interface Metric {
-    /**
-     * List of collectors associated with this metric.
-     */
-    val collectors: List<MetricCollector>
+/**
+ * @param name name of the sample.
+ */
+class Gauge(val name: String) : MetricCollector {
+    private val tags: MutableMap<String, String> = HashMap()
+    private val count = AtomicInteger()
 
-    fun initialize() {
-        // Do nothing
+    override fun collect(): List<MetricSample> {
+        val sample = GaugeSample(name, count.get().toDouble(), tags)
+        return listOf(sample)
     }
 
-    fun dispose() {
-        // Do nothing
+    fun set(value: Int) {
+        count.set(value)
+    }
+
+    fun inc() {
+        count.incrementAndGet()
+    }
+
+    fun dec() {
+        count.decrementAndGet()
+    }
+
+    operator fun plusAssign(delta: Int) {
+        count.addAndGet(delta)
+    }
+
+    operator fun minusAssign(delta: Int) {
+        count.addAndGet(-delta)
     }
 }
-
-fun Metric.collect(): List<MetricSample> =
-    collectors.flatMap { it.collect() }

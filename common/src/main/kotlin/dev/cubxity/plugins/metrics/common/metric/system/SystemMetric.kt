@@ -16,20 +16,15 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.common.measurement
+package dev.cubxity.plugins.metrics.common.metric.system
 
-import dev.cubxity.plugins.metrics.api.metric.data.Measurement
-import dev.cubxity.plugins.metrics.api.metric.data.Point
+import dev.cubxity.plugins.metrics.api.metric.Metric
+import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
 
-data class WorldMeasurement(
-    val world: String,
-    val players: Int,
-    val entities: Int,
-    val chunks: Int
-) : Measurement {
-    override fun serialize() = Point("world")
-        .tag("world", world)
-        .field("players", players)
-        .field("entities", entities)
-        .field("chunks", chunks)
+class SystemMetric : Metric {
+    override val collectors: List<MetricCollector> = listOf(
+        MemoryCollector(),
+        ProcessCollector(),
+        ThreadCollector()
+    )
 }

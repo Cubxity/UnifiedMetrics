@@ -16,11 +16,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.common.config
+package dev.cubxity.plugins.metrics.api.metric.collector
 
-import com.uchuhimo.konf.ConfigSpec
+import dev.cubxity.plugins.metrics.api.metric.data.MetricSample
 
-object MetricsSpec : ConfigSpec("metrics") {
-    val enabled by optional(true, "enabled")
-    val driver by optional("prometheus", "driver")
+const val NANOSECONDS_PER_SECOND: Double = 1E9
+const val MILLISECONDS_PER_SECOND: Double = 1E3
+
+interface MetricCollector {
+    /**
+     * Collects the metric and returns a list of samples.
+     *
+     * @return [List] of [MetricSample]
+     */
+    fun collect(): List<MetricSample>
 }

@@ -10,16 +10,32 @@ This project is licensed under [GNU AGPLv3](LICENSE)
 ![Grafana Dashboard](.github/assets/grafana.png)
 
 ## Compatbility
+**Server:**
 - 1.8+ Spigot servers
 - Velocity
+
+**Metrics:**
+- Prometheus
+- InfluxDB
 
 ## Features
 - Server metrics collection (TPS, MSPT, Players, Plugins)
 - World metrics collection (Entities, Chunks)
 - Events metrics collection (Player flow, chat, pings)
 - JVM metrics collection (Memory, CPU Load, Threads, Uptime)
-- Extensible API (Custom metrics, measurements, metrics driver) 
+- Extensible API (Custom metrics, samples, metrics driver) 
 - More features upcoming (Logging to ElasticSearch, etc)
+
+## Getting started
+Read the [wiki](https://github.com/Cubxity/UnifiedMetrics/wiki) for instructions.
+
+## Data visualization and analysis
+We recommend using [Grafana](https://grafana.com/) as it provides highly customizable diagrams.
+Grafana provides out-of-box support for Prometheus and InfluxDB.
+
+- Add Prometheus/InfluxDB datasource to Grafana
+- Import our [Prometheus dashboard](https://grafana.com/grafana/dashboards/14017) or [InfluxDB dashboard](https://grafana.com/grafana/dashboards/13860)
+- Configure the dashboard and set up alerts *(optional)*
 
 ## API
 Add `:unifiedmetrics-api` as a dependency (compileOnly/provided).
@@ -31,42 +47,3 @@ import dev.cubxity.plugins.metrics.api.UnifiedMetricsProvider
 
 val api = UnifiedMetricsProvider.get()
 ```
-
-## Installation
-
-- Add the plugin to your `plugins` folder.
-- Configure the plugin. (See [Configuration](#Configuration)).
-- Restart the server. **(NOTE: Reload is not supported and may cause issues)**
-
-## Configuration
-
-Currently, [InfluxDB](https://www.influxdata.com/) is required to collect metrics.
-We recommend using an internal network for InfluxDB.
-
-**config.toml**
-```toml
-[server]
-server = "main"
-
-[metrics]
-enabled = true
-driver = "influx"
-```
-
-**driver/influx.toml**
-```toml
-[influx]
-url = "http://influxdb:8086"
-bucket = "unifiedmetrics"
-username = "influx"
-password = "influx"
-interval = 10 # Interval in seconds
-```
-
-## Data visualization and analysis
-We recommend using [Grafana](https://grafana.com/) as it provides highly customizable diagrams.
-Grafana provides out-of-box support for InfluxDB.
-
-- Add InfluxDB datasource to Grafana
-- Import our [dashboard](https://grafana.com/grafana/dashboards/13860)
-- Configure the dashboard and set up alerts *(optional)*

@@ -16,21 +16,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.common.metric
+package dev.cubxity.plugins.metrics.bukkit.metric.server
 
-import dev.cubxity.plugins.metrics.api.UnifiedMetrics
-import dev.cubxity.plugins.metrics.api.metric.Metric
-import dev.cubxity.plugins.metrics.common.measurement.MemoryMeasurement
+import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+import dev.cubxity.plugins.metrics.api.metric.data.GaugeSample
+import dev.cubxity.plugins.metrics.api.metric.data.MetricSample
+import org.bukkit.Bukkit
 
-class MemoryMetric : Metric<MemoryMeasurement> {
-    override val isSync: Boolean
-        get() = false
-
-    override fun getMeasurements(api: UnifiedMetrics): List<MemoryMeasurement> {
-        val runtime = Runtime.getRuntime()
-        val total = runtime.totalMemory()
-        val used = total - runtime.freeMemory()
-
-        return listOf(MemoryMeasurement(used, total, runtime.maxMemory()))
-    }
+class ServerCollector : MetricCollector {
+    override fun collect(): List<MetricSample> = listOf(
+        GaugeSample("minecraft_plugins", Bukkit.getPluginManager().plugins.size),
+        GaugeSample("minecraft_players_count", Bukkit.getOnlinePlayers().size),
+        GaugeSample("minecraft_players_max", Bukkit.getMaxPlayers())
+    )
 }

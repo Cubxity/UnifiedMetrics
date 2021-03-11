@@ -16,29 +16,30 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.bukkit.metric.tps
+package dev.cubxity.plugins.metrics.prometheus
 
+import com.uchuhimo.konf.Config
 import dev.cubxity.plugins.metrics.api.UnifiedMetrics
-import dev.cubxity.plugins.metrics.api.metric.Metric
-import dev.cubxity.plugins.metrics.bukkit.bootstrap.UnifiedMetricsBukkitBootstrap
-import dev.cubxity.plugins.metrics.bukkit.util.Environment
-import dev.cubxity.plugins.metrics.common.measurement.TPSMeasurement
+import dev.cubxity.plugins.metrics.api.metric.MetricsDriver
+import dev.cubxity.plugins.metrics.prometheus.config.PrometheusSpec
+import io.prometheus.client.CollectorRegistry
+import io.prometheus.client.exporter.HTTPServer
+import java.net.InetSocketAddress
 
-class TPSMetric(private val bootstrap: UnifiedMetricsBukkitBootstrap) : Metric<TPSMeasurement> {
-    private val provider = if (Environment.majorMinecraftVersion >= 15 && Environment.isPaper) {
-        PaperTPSProvider()
-    } else {
-        NMSTPSProvider()
+class PrometheusMetricsDriver(api: UnifiedMetrics, private val config: Config) : MetricsDriver {
+    private val registry = CollectorRegistry()
+    private var server: HTTPServer? = null
+
+    init {
+        registry.register(UnifiedMetricsCollector(api))
     }
-
-    override val isSync: Boolean
-        get() = true
 
     override fun initialize() {
-        bootstrap.logger.info("TPSMetric: Using ${provider.javaClass.name}")
+        server = HTTPServer(InetSocketAddress(config[PrometheusSpec.port]), registry)
     }
 
-    override fun getMeasurements(api: UnifiedMetrics): List<TPSMeasurement> {
-        return listOf(TPSMeasurement(provider.tps, provider.mspt))
+    override fun close() {
+        server?.stop()
+        server = null
     }
 }

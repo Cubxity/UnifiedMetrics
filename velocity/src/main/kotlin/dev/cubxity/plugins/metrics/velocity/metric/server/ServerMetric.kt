@@ -16,18 +16,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.common.measurement
+package dev.cubxity.plugins.metrics.velocity.metric.server
 
-import dev.cubxity.plugins.metrics.api.metric.data.Measurement
-import dev.cubxity.plugins.metrics.api.metric.data.Point
+import dev.cubxity.plugins.metrics.api.metric.Metric
+import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+import dev.cubxity.plugins.metrics.velocity.bootstrap.UnifiedMetricsVelocityBootstrap
 
-data class MemoryMeasurement(
-    val used: Long,
-    val total: Long,
-    val max: Long,
-): Measurement {
-    override fun serialize() = Point("mem")
-        .field("used", used)
-        .field("total", total)
-        .field("max", max)
+class ServerMetric(bootstrap: UnifiedMetricsVelocityBootstrap) : Metric {
+    override val collectors: List<MetricCollector> = listOf(ServerCollector(bootstrap))
 }

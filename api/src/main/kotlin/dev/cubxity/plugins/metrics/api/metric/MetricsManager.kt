@@ -18,20 +18,21 @@
 
 package dev.cubxity.plugins.metrics.api.metric
 
-import dev.cubxity.plugins.metrics.api.metric.data.Point
+import dev.cubxity.plugins.metrics.api.metric.data.MetricSample
 
 interface MetricsManager {
-    val metrics: List<Metric<*>>
+    val metrics: List<Metric>
 
     fun initialize()
 
-    fun registerMetric(metric: Metric<*>)
+    fun registerMetric(metric: Metric)
 
-    fun unregisterMetric(metric: Metric<*>)
+    fun unregisterMetric(metric: Metric)
 
     fun registerDriver(name: String, factory: MetricsDriverFactory)
 
-    fun serializeMetrics(isSync: Boolean): List<Point>
-
     fun dispose()
 }
+
+fun MetricsManager.collect(): List<MetricSample> =
+    metrics.flatMap { it.collect() }
