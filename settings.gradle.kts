@@ -27,6 +27,7 @@ include(modulePrefix + "bukkit")
 include(modulePrefix + "velocity")
 
 include(modulePrefix + "influx-driver")
+include(modulePrefix + "prometheus-driver")
 
 project(modulePrefix + "api").projectDir = File(rootDir, "api")
 project(modulePrefix + "common").projectDir = File(rootDir, "common")
@@ -36,3 +37,4 @@ project(modulePrefix + "velocity").projectDir = File(rootDir, "velocity")
 
 val driversDir = File(rootDir, "drivers")
 project(modulePrefix + "influx-driver").projectDir = File(driversDir, "influx")
+project(modulePrefix + "prometheus-driver").projectDir = File(driversDir, "prometheus")

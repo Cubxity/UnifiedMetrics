@@ -18,10 +18,10 @@
 
 package dev.cubxity.plugins.metrics.bukkit.metric
 
-import dev.cubxity.plugins.metrics.api.UnifiedMetrics
 import dev.cubxity.plugins.metrics.api.metric.Metric
+import dev.cubxity.plugins.metrics.api.metric.collector.Counter
+import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
 import dev.cubxity.plugins.metrics.bukkit.bootstrap.UnifiedMetricsBukkitBootstrap
-import dev.cubxity.plugins.metrics.common.measurement.EventsMeasurement
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.event.HandlerList
@@ -30,32 +30,19 @@ import org.bukkit.event.player.AsyncPlayerChatEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.event.server.ServerListPingEvent
-import java.util.concurrent.atomic.AtomicLong
 
-class EventsMetric(private val bootstrap: UnifiedMetricsBukkitBootstrap) : Metric<EventsMeasurement>, Listener {
-    private var joinCount: Long = 0
-    private var quitCount: Long = 0
-    private val chatCount = AtomicLong()
-    private var pingCount: Long = 0
+@Suppress("UNUSED_PARAMETER")
+class EventsMetric(private val bootstrap: UnifiedMetricsBukkitBootstrap) : Metric, Listener {
+    private val joinCounter = Counter("minecraft_events_join_total")
+    private val quitCounter = Counter("minecraft_events_quit_total")
+    private val chatCounter = Counter("minecraft_events_chat_total")
+    private val pingCounter = Counter("minecraft_events_ping_total")
 
-    override val isSync: Boolean
-        get() = true
+    override val collectors: List<MetricCollector> =
+        listOf(joinCounter, quitCounter, chatCounter, pingCounter)
 
     override fun initialize() {
         Bukkit.getPluginManager().registerEvents(this, bootstrap)
-    }
-
-    override fun getMeasurements(api: UnifiedMetrics): List<EventsMeasurement> {
-        val joinCount = joinCount
-        val quitCount = quitCount
-        val chatCount = chatCount.getAndSet(0)
-        val pingCount = pingCount
-
-        this.joinCount = 0
-        this.quitCount = 0
-        this.pingCount = 0
-
-        return listOf(EventsMeasurement(joinCount, quitCount, chatCount, pingCount))
     }
 
     override fun dispose() {
@@ -64,21 +51,21 @@ class EventsMetric(private val bootstrap: UnifiedMetricsBukkitBootstrap) : Metri
 
     @EventHandler
     fun onJoin(event: PlayerJoinEvent) {
-        joinCount++
+        joinCounter.inc()
     }
 
     @EventHandler
     fun onQuit(event: PlayerQuitEvent) {
-        quitCount++
+        quitCounter.inc()
     }
 
     @EventHandler
     fun onChat(event: AsyncPlayerChatEvent) {
-        chatCount.addAndGet(1)
+        chatCounter.inc()
     }
 
     @EventHandler
     fun onPing(event: ServerListPingEvent) {
-        pingCount++
+        pingCounter.inc()
     }
 }

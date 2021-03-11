@@ -21,9 +21,9 @@ package dev.cubxity.plugins.metrics.bukkit
 import dev.cubxity.plugins.metrics.api.UnifiedMetrics
 import dev.cubxity.plugins.metrics.bukkit.bootstrap.UnifiedMetricsBukkitBootstrap
 import dev.cubxity.plugins.metrics.bukkit.metric.EventsMetric
-import dev.cubxity.plugins.metrics.bukkit.metric.ServerMetric
-import dev.cubxity.plugins.metrics.bukkit.metric.tps.TPSMetric
-import dev.cubxity.plugins.metrics.bukkit.metric.WorldMetric
+import dev.cubxity.plugins.metrics.bukkit.metric.server.ServerMetric
+import dev.cubxity.plugins.metrics.bukkit.metric.tick.TickMetric
+import dev.cubxity.plugins.metrics.bukkit.metric.world.WorldMetric
 import dev.cubxity.plugins.metrics.core.plugin.CoreUnifiedMetricsPlugin
 import org.bukkit.Bukkit
 import org.bukkit.plugin.ServicePriority
@@ -47,10 +47,10 @@ class UnifiedMetricsBukkitPlugin(
         super.registerPlatformMetrics()
 
         apiProvider.metricsManager.apply {
-            registerMetric(EventsMetric(bootstrap))
             registerMetric(ServerMetric())
-            registerMetric(TPSMetric(bootstrap))
             registerMetric(WorldMetric())
+            registerMetric(TickMetric())
+            registerMetric(EventsMetric(bootstrap))
         }
     }
 }

@@ -16,20 +16,10 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.common.measurement
+package dev.cubxity.plugins.metrics.prometheus.config
 
-import dev.cubxity.plugins.metrics.api.metric.data.Measurement
-import dev.cubxity.plugins.metrics.api.metric.data.Point
+import com.uchuhimo.konf.ConfigSpec
 
-data class EventsMeasurement(
-    val joinCount: Long,
-    val quitCount: Long,
-    val chatCount: Long,
-    val pingCount: Long
-): Measurement {
-    override fun serialize() = Point("events")
-        .field("join_count", joinCount)
-        .field("quit_count", quitCount)
-        .field("chat_count", chatCount)
-        .field("ping_count", pingCount)
+object PrometheusSpec : ConfigSpec("prometheus") {
+    val port by optional(8080, "port", "Port for Prometheus exporter")
 }

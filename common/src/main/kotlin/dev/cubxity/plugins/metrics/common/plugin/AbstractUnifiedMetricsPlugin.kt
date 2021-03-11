@@ -27,8 +27,7 @@ import dev.cubxity.plugins.metrics.api.UnifiedMetricsProvider
 import dev.cubxity.plugins.metrics.common.api.UnifiedMetricsApiProvider
 import dev.cubxity.plugins.metrics.common.config.MetricsSpec
 import dev.cubxity.plugins.metrics.common.config.ServerSpec
-import dev.cubxity.plugins.metrics.common.metric.JVMMetric
-import dev.cubxity.plugins.metrics.common.metric.MemoryMetric
+import dev.cubxity.plugins.metrics.common.metric.system.SystemMetric
 import java.nio.file.Files
 
 abstract class AbstractUnifiedMetricsPlugin : UnifiedMetricsPlugin {
@@ -78,8 +77,7 @@ abstract class AbstractUnifiedMetricsPlugin : UnifiedMetricsPlugin {
 
     open fun registerPlatformMetrics() {
         apiProvider.metricsManager.apply {
-            registerMetric(JVMMetric())
-            registerMetric(MemoryMetric())
+            registerMetric(SystemMetric())
         }
     }
 

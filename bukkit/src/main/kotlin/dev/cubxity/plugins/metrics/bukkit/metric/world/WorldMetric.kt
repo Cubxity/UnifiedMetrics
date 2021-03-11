@@ -16,11 +16,11 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.common.config
+package dev.cubxity.plugins.metrics.bukkit.metric.world
 
-import com.uchuhimo.konf.ConfigSpec
+import dev.cubxity.plugins.metrics.api.metric.Metric
+import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
 
-object MetricsSpec : ConfigSpec("metrics") {
-    val enabled by optional(true, "enabled")
-    val driver by optional("prometheus", "driver")
+class WorldMetric : Metric {
+    override val collectors: List<MetricCollector> = listOf(WorldCollector())
 }

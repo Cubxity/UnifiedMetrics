@@ -16,32 +16,19 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.bukkit.metric
+package dev.cubxity.plugins.metrics.prometheus
 
+import com.uchuhimo.konf.Config
 import dev.cubxity.plugins.metrics.api.UnifiedMetrics
-import dev.cubxity.plugins.metrics.api.metric.Metric
-import dev.cubxity.plugins.metrics.common.measurement.WorldMeasurement
-import org.bukkit.Bukkit
-import java.util.*
+import dev.cubxity.plugins.metrics.api.metric.MetricsDriver
+import dev.cubxity.plugins.metrics.api.metric.MetricsDriverFactory
+import dev.cubxity.plugins.metrics.prometheus.config.PrometheusSpec
 
-class WorldMetric : Metric<WorldMeasurement> {
-    override val isSync: Boolean
-        get() = true
-
-    override fun getMeasurements(api: UnifiedMetrics): List<WorldMeasurement> {
-        val worlds = Bukkit.getWorlds()
-        val measurements: MutableList<WorldMeasurement> = ArrayList(worlds.size)
-
-        for (world in worlds) {
-            measurements.add(
-                WorldMeasurement(
-                    world.name,
-                    world.players.size,
-                    world.entities.size,
-                    world.loadedChunks.size
-                )
-            )
-        }
-        return measurements
+object PrometheusMetricsDriverFactory : MetricsDriverFactory {
+    override fun registerConfig(config: Config) {
+        config.addSpec(PrometheusSpec)
     }
+
+    override fun createDriver(api: UnifiedMetrics, config: Config): MetricsDriver =
+        PrometheusMetricsDriver(api, config)
 }

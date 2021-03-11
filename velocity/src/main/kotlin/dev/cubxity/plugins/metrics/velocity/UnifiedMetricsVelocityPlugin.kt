@@ -22,7 +22,7 @@ import dev.cubxity.plugins.metrics.api.UnifiedMetrics
 import dev.cubxity.plugins.metrics.core.plugin.CoreUnifiedMetricsPlugin
 import dev.cubxity.plugins.metrics.velocity.bootstrap.UnifiedMetricsVelocityBootstrap
 import dev.cubxity.plugins.metrics.velocity.metric.EventsMetric
-import dev.cubxity.plugins.metrics.velocity.metric.ServerMetric
+import dev.cubxity.plugins.metrics.velocity.metric.server.ServerMetric
 
 class UnifiedMetricsVelocityPlugin(
     override val bootstrap: UnifiedMetricsVelocityBootstrap
@@ -35,8 +35,8 @@ class UnifiedMetricsVelocityPlugin(
         super.registerPlatformMetrics()
 
         apiProvider.metricsManager.apply {
-            registerMetric(EventsMetric(bootstrap))
             registerMetric(ServerMetric(bootstrap))
+            registerMetric(EventsMetric(bootstrap))
         }
     }
 }

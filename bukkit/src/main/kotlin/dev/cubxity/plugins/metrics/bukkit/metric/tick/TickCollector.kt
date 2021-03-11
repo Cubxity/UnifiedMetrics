@@ -16,11 +16,16 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.common.config
+package dev.cubxity.plugins.metrics.bukkit.metric.tick
 
-import com.uchuhimo.konf.ConfigSpec
+import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+import dev.cubxity.plugins.metrics.api.metric.collector.NANOSECONDS_PER_SECOND
+import dev.cubxity.plugins.metrics.api.metric.data.GaugeSample
+import dev.cubxity.plugins.metrics.api.metric.data.MetricSample
 
-object MetricsSpec : ConfigSpec("metrics") {
-    val enabled by optional(true, "enabled")
-    val driver by optional("prometheus", "driver")
+class TickCollector(private val provider: TickProvider) : MetricCollector {
+    override fun collect(): List<MetricSample> = listOf(
+        GaugeSample("minecraft_tps", provider.tps),
+        GaugeSample("minecraft_tick_duration_seconds", provider.mspt / NANOSECONDS_PER_SECOND)
+    )
 }

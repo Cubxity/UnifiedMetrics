@@ -21,7 +21,5 @@ package dev.cubxity.plugins.metrics.api.metric
 import java.io.Closeable
 
 interface MetricsDriver : Closeable {
-    fun connect()
-
-    fun scheduleTasks() {}
+    fun initialize()
 }

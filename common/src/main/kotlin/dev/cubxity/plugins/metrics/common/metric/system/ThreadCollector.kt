@@ -16,13 +16,21 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.common.measurement
+package dev.cubxity.plugins.metrics.common.metric.system
 
-import dev.cubxity.plugins.metrics.api.metric.data.Measurement
-import dev.cubxity.plugins.metrics.api.metric.data.Point
+import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+import dev.cubxity.plugins.metrics.api.metric.data.CounterSample
+import dev.cubxity.plugins.metrics.api.metric.data.GaugeSample
+import dev.cubxity.plugins.metrics.api.metric.data.MetricSample
+import java.lang.management.ManagementFactory
 
-data class TPSMeasurement(val tps: Double, val mspt: Long) : Measurement {
-    override fun serialize() = Point("tps")
-        .field("tps", tps)
-        .field("mspt", mspt)
+class ThreadCollector : MetricCollector {
+    private val bean = ManagementFactory.getThreadMXBean()
+
+    override fun collect(): List<MetricSample> = listOf(
+        GaugeSample("jvm_threads_current_count", bean.threadCount),
+        GaugeSample("jvm_threads_daemon_count", bean.daemonThreadCount),
+        CounterSample("jvm_threads_started_total", bean.totalStartedThreadCount),
+        GaugeSample("jvm_threads_peak", bean.peakThreadCount),
+    )
 }

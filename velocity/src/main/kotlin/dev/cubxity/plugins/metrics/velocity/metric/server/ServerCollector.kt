@@ -16,13 +16,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.bukkit.metric.tps
+package dev.cubxity.plugins.metrics.velocity.metric.server
 
-import org.bukkit.Bukkit
+import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+import dev.cubxity.plugins.metrics.api.metric.data.GaugeSample
+import dev.cubxity.plugins.metrics.api.metric.data.MetricSample
+import dev.cubxity.plugins.metrics.velocity.bootstrap.UnifiedMetricsVelocityBootstrap
 
-class PaperTPSProvider : TPSProvider {
-    override val tps: Double
-        get() = Bukkit.getServer().tps[0]
-    override val mspt: Long
-        get() = Bukkit.getServer().tickTimes[0]
+class ServerCollector(private val bootstrap: UnifiedMetricsVelocityBootstrap) : MetricCollector {
+    override fun collect(): List<MetricSample> {
+        val server = bootstrap.server
+        return listOf(
+            GaugeSample("minecraft_plugins", server.pluginManager.plugins.size),
+            GaugeSample("minecraft_players_count", server.playerCount),
+            GaugeSample("minecraft_players_max", server.configuration.showMaxPlayers)
+        )
+    }
 }

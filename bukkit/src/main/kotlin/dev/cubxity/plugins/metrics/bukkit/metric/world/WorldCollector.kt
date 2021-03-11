@@ -16,24 +16,25 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.bukkit.metric
+package dev.cubxity.plugins.metrics.bukkit.metric.world
 
-import dev.cubxity.plugins.metrics.api.UnifiedMetrics
-import dev.cubxity.plugins.metrics.api.metric.Metric
-import dev.cubxity.plugins.metrics.common.measurement.ServerMeasurement
+import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+import dev.cubxity.plugins.metrics.api.metric.data.GaugeSample
+import dev.cubxity.plugins.metrics.api.metric.data.MetricSample
 import org.bukkit.Bukkit
 
-class ServerMetric : Metric<ServerMeasurement> {
-    override val isSync: Boolean
-        get() = true
+class WorldCollector : MetricCollector {
+    override fun collect(): List<MetricSample> {
+        val worlds = Bukkit.getWorlds().toList()
+        val samples = ArrayList<MetricSample>(worlds.size * 3)
 
-    override fun getMeasurements(api: UnifiedMetrics): List<ServerMeasurement> {
-        return listOf(
-            ServerMeasurement(
-                Bukkit.getPluginManager().plugins.size,
-                Bukkit.getOnlinePlayers().size,
-                Bukkit.getMaxPlayers()
-            )
-        )
+        for (world in worlds) {
+            val tags = mapOf("name" to world.name)
+            samples.add(GaugeSample("minecraft_world_entities_count", world.entities.size, tags))
+            samples.add(GaugeSample("minecraft_world_players_count", world.players.size, tags))
+            samples.add(GaugeSample("minecraft_world_loaded_chunks", world.loadedChunks.size, tags))
+        }
+
+        return samples
     }
 }

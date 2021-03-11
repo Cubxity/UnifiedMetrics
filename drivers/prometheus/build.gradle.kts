@@ -16,16 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.bukkit.metric.tps
-
-interface TPSProvider {
-    /**
-     * Ticks per second
-     */
-    val tps: Double
-
-    /**
-     * Tick time in nanoseconds
-     */
-    val mspt: Long
+dependencies {
+    api(project(":unifiedmetrics-api"))
+    api("io.prometheus", "simpleclient_httpserver", "0.10.0")
 }
