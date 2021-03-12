@@ -17,6 +17,6 @@
  */
 
 dependencies {
-    api(project(":unifiedmetrics-api"))
+    compileOnly(project(":unifiedmetrics-api"))
     api("io.prometheus", "simpleclient_httpserver", "0.10.0")
 }

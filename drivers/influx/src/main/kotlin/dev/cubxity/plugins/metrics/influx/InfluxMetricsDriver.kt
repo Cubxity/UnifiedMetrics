@@ -64,7 +64,11 @@ class InfluxMetricsDriver(private val api: UnifiedMetrics, private val config: C
         val scheduler = api.scheduler
 
         scheduler.asyncRepeating({
-            writeSamples(api.metricsManager.collect())
+            try {
+                writeSamples(api.metricsManager.collect())
+            } catch (error: Throwable) {
+                api.logger.severe("An error occurred whilst writing samples to InfluxDB", error)
+            }
         }, interval, TimeUnit.SECONDS)
     }
 

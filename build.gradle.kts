@@ -28,7 +28,7 @@ plugins {
 allprojects {
     group = "dev.cubxity.plugins"
     description = "Fully featured metrics collector agent for Minecraft servers."
-    version = "0.2.0"
+    version = "0.2.1"
 
     repositories {
         mavenCentral()

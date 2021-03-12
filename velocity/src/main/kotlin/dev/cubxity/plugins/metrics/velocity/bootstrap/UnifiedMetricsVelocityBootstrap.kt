@@ -34,7 +34,7 @@ import dev.cubxity.plugins.metrics.velocity.logger.Slf4jLogger
 import java.nio.file.Path
 
 // TODO: Automatically replace this at build
-private const val pluginVersion = "0.2.0"
+private const val pluginVersion = "0.2.1"
 
 @Plugin(
     id = "unifiedmetrics",
