@@ -18,6 +18,6 @@
 
 dependencies {
     api(project(":unifiedmetrics-common"))
-    api(project(":unifiedmetrics-influx-driver"))
-    api(project(":unifiedmetrics-prometheus-driver"))
+    implementation(project(":unifiedmetrics-influx-driver"))
+    implementation(project(":unifiedmetrics-prometheus-driver"))
 }

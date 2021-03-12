@@ -17,6 +17,6 @@
  */
 
 dependencies {
-    api(project(":unifiedmetrics-api"))
+    compileOnly(project(":unifiedmetrics-api"))
     api("com.influxdb", "influxdb-client-java", "1.14.0")
 }
