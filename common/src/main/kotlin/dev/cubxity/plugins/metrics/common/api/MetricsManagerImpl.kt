@@ -58,13 +58,21 @@ class MetricsManagerImpl(private val plugin: UnifiedMetricsPlugin) : MetricsMana
     }
 
     override fun registerMetric(metric: Metric) {
-        metric.initialize()
-        _metrics.add(metric)
+        try {
+            metric.initialize()
+            _metrics.add(metric)
+        } catch (error: Throwable) {
+            plugin.bootstrap.logger.warn("An error occurred whilst registering metric", error)
+        }
     }
 
     override fun unregisterMetric(metric: Metric) {
-        _metrics.remove(metric)
-        metric.dispose()
+        try {
+            _metrics.remove(metric)
+            metric.dispose()
+        } catch (error: Throwable) {
+            plugin.bootstrap.logger.warn("An error occurred whilst unregistering metric", error)
+        }
     }
 
     override fun registerDriver(name: String, factory: MetricsDriverFactory) {
@@ -89,16 +97,20 @@ class MetricsManagerImpl(private val plugin: UnifiedMetricsPlugin) : MetricsMana
     }
 
     private fun initializeDriver(name: String, factory: MetricsDriverFactory) {
-        val file = driverDirectory.toFile().resolve("$name.toml")
-        val config = Config { factory.registerConfig(this) }
-            .enable(Feature.OPTIONAL_SOURCE_BY_DEFAULT)
-            .from.toml.file(file)
+        try {
+            val file = driverDirectory.toFile().resolve("$name.toml")
+            val config = Config { factory.registerConfig(this) }
+                .enable(Feature.OPTIONAL_SOURCE_BY_DEFAULT)
+                .from.toml.file(file)
 
-        config.toToml.toFile(file)
+            config.toToml.toFile(file)
 
-        val driver = factory.createDriver(plugin.apiProvider, config)
-        driver.initialize()
+            val driver = factory.createDriver(plugin.apiProvider, config)
+            driver.initialize()
 
-        this.driver = driver
+            this.driver = driver
+        } catch (error: Throwable) {
+            plugin.apiProvider.logger.severe("An error occurred whilst initializing metrics driver $name", error)
+        }
     }
 }
