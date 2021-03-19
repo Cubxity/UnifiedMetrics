@@ -22,6 +22,7 @@ import com.uchuhimo.konf.ConfigSpec
 
 object InfluxSpec : ConfigSpec("influx") {
     val url by optional("http://influxdb:8086", "url")
+    val organization by optional("organization", "org")
     val bucket by optional("unifiedmetrics", "bucket")
     val username by optional("influx", "username")
     val password by optional("influx", "password")
