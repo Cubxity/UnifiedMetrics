@@ -30,8 +30,7 @@ private const val pluginVersion = "0.2.1"
 
 @Suppress("MemberVisibilityCanBePrivate")
 class UnifiedMetricsSpongeBootstrap(
-    internalLogger: Logger?,
-    private var configDir: Path?
+    var plugin: UMSpongePlugin
 ) : UnifiedMetricsBootstrap {
 
     override val type: PlatformType
@@ -44,12 +43,12 @@ class UnifiedMetricsSpongeBootstrap(
         get() = "sponge-powered"
 
     override val dataDirectory: Path
-        get() = configDir!!
+        get() = plugin.configDir!!
 
     override val configDirectory: Path
-        get() = configDir!!
+        get() = plugin.configDir!!
 
-    override val logger = Slf4jLogger(internalLogger!!)
+    override val logger = Slf4jLogger(plugin.internalLogger!!)
 
     override val scheduler = SpongeSchedulerAdapter(this)
 }

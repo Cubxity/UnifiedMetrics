@@ -27,6 +27,6 @@ class SpongeSchedulerAdapter(private val bootstrap: UnifiedMetricsSpongeBootstra
     override val sync: Executor = Executor {
         Sponge.getScheduler().createTaskBuilder()
             .execute(it)
-            .submit(bootstrap)
+            .submit(bootstrap.plugin)
     }
 }

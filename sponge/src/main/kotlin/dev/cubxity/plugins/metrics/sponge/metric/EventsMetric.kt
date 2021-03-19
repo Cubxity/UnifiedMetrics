@@ -39,7 +39,7 @@ class EventsMetric(private val bootstrap: UnifiedMetricsSpongeBootstrap) : Metri
         listOf(joinCounter, quitCounter, chatCounter, pingCounter)
 
     override fun initialize() {
-        Sponge.getEventManager().registerListeners(bootstrap, this)
+        Sponge.getEventManager().registerListeners(bootstrap.plugin, this)
     }
 
     override fun dispose() {

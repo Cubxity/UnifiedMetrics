@@ -41,9 +41,15 @@ public class UMSpongePlugin {
     private final UnifiedMetricsSpongePlugin plugin;
 
     @Inject
-    public UMSpongePlugin(Logger internalLogger, @ConfigDir(sharedRoot = false) Path configDir) {
+    public Logger internalLogger;
+
+    @ConfigDir(sharedRoot = false)
+    @Inject
+    public Path configDir;
+
+    public UMSpongePlugin() {
         plugin = new UnifiedMetricsSpongePlugin(
-                new UnifiedMetricsSpongeBootstrap(internalLogger, configDir));
+                new UnifiedMetricsSpongeBootstrap(this));
     }
 
     @Listener
