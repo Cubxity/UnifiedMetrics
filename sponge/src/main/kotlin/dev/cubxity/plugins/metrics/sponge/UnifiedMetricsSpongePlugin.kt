@@ -26,7 +26,6 @@ import dev.cubxity.plugins.metrics.sponge.metric.tick.TickMetric
 import dev.cubxity.plugins.metrics.sponge.metric.world.WorldMetric
 import dev.cubxity.plugins.metrics.core.plugin.CoreUnifiedMetricsPlugin
 import org.spongepowered.api.Sponge
-import org.spongepowered.api.plugin.Plugin
 import java.util.concurrent.Executors
 
 class UnifiedMetricsSpongePlugin(

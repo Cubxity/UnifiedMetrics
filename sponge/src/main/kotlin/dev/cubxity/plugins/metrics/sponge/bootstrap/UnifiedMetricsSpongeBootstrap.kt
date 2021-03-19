@@ -18,42 +18,21 @@
 
 package dev.cubxity.plugins.metrics.sponge.bootstrap
 
-import com.google.inject.Inject
 import dev.cubxity.plugins.metrics.api.platform.PlatformType
 import dev.cubxity.plugins.metrics.common.UnifiedMetricsBootstrap
 import dev.cubxity.plugins.metrics.sponge.SpongeSchedulerAdapter
-import dev.cubxity.plugins.metrics.sponge.UnifiedMetricsSpongePlugin
 import dev.cubxity.plugins.metrics.sponge.logger.Slf4jLogger
 import org.slf4j.Logger
-import org.spongepowered.api.Game
-import org.spongepowered.api.event.Listener
-import org.spongepowered.api.event.game.state.GameStartedServerEvent
-import org.spongepowered.api.event.game.state.GameStoppedEvent
-import org.spongepowered.api.plugin.Plugin
 import java.nio.file.Path
-import org.spongepowered.api.config.ConfigDir
-import org.spongepowered.api.config.DefaultConfig
 
 // TODO: Automatically replace this at build
 private const val pluginVersion = "0.2.1"
 
-@Plugin(
-    id = "unifiedmetrics",
-    name = "UnifiedMetrics",
-    version = pluginVersion,
-    description = "Fully-featured metrics plugin for Minecraft servers",
-    authors = ["Cubxity", "portlek"]
-)
 @Suppress("MemberVisibilityCanBePrivate")
-class UnifiedMetricsSpongeBootstrap : UnifiedMetricsBootstrap {
-    private val plugin = UnifiedMetricsSpongePlugin(this)
-
-    @Inject
-    private var internalLogger: Logger? = null
-
-    @Inject
-    @ConfigDir(sharedRoot = false)
-    private var configDir: Path? = null
+class UnifiedMetricsSpongeBootstrap(
+    internalLogger: Logger?,
+    private var configDir: Path?
+) : UnifiedMetricsBootstrap {
 
     override val type: PlatformType
         get() = PlatformType.Sponge
@@ -73,14 +52,4 @@ class UnifiedMetricsSpongeBootstrap : UnifiedMetricsBootstrap {
     override val logger = Slf4jLogger(internalLogger!!)
 
     override val scheduler = SpongeSchedulerAdapter(this)
-
-    @Listener
-    fun onEnable(event: GameStartedServerEvent) {
-        plugin.enable()
-    }
-
-    @Listener
-    fun onDisable(event: GameStoppedEvent) {
-        plugin.disable()
-    }
 }

@@ -16,11 +16,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+plugins {
+    id("org.spongepowered.plugin") version "0.9.0"
+}
+
 repositories {
     maven("https://repo.spongepowered.org/maven")
 }
 
 dependencies {
     api(project(":unifiedmetrics-core"))
-    compileOnly("org.spongepowered", "spongeapi", "7.2.0")
+    compileOnly("org.spongepowered", "spongeapi", "7.3.0")
+    annotationProcessor("org.spongepowered:spongeapi:7.3.0")
 }
+
+sponge.plugin.id="umetrics"
