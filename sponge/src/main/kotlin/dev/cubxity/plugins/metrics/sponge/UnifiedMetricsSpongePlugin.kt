@@ -39,7 +39,7 @@ class UnifiedMetricsSpongePlugin(
     }
 
     override fun registerPlatformService(api: UnifiedMetrics) {
-        Sponge.getServiceManager().setProvider(this, UnifiedMetrics::class.java, api)
+        Sponge.getServiceManager().setProvider(bootstrap.plugin, UnifiedMetrics::class.java, api)
     }
 
     override fun registerPlatformMetrics() {
