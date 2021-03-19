@@ -16,9 +16,10 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.sponge;
+package dev.cubxity.plugins.metrics.sponge.bootstrap;
 
 import com.google.inject.Inject;
+import dev.cubxity.plugins.metrics.sponge.UnifiedMetricsSpongePlugin;
 import dev.cubxity.plugins.metrics.sponge.bootstrap.UnifiedMetricsSpongeBootstrap;
 import org.slf4j.Logger;
 import org.spongepowered.api.config.ConfigDir;
