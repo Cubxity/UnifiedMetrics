@@ -16,10 +16,11 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.platform
+repositories {
+    maven("https://repo.spongepowered.org/maven")
+}
 
-sealed class PlatformType(val name: String) {
-    object Bukkit : PlatformType("Bukkit")
-    object Sponge : PlatformType("Sponge")
-    object Velocity : PlatformType("Velocity")
+dependencies {
+    api(project(":unifiedmetrics-core"))
+    compileOnly("org.spongepowered", "spongeapi", "7.2.0")
 }

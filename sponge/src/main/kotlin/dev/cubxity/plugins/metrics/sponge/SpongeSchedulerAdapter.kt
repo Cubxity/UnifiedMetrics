@@ -16,10 +16,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.platform
+package dev.cubxity.plugins.metrics.sponge
 
-sealed class PlatformType(val name: String) {
-    object Bukkit : PlatformType("Bukkit")
-    object Sponge : PlatformType("Sponge")
-    object Velocity : PlatformType("Velocity")
+import dev.cubxity.plugins.metrics.common.plugin.scheduler.AbstractJavaScheduler
+import dev.cubxity.plugins.metrics.sponge.bootstrap.UnifiedMetricsSpongeBootstrap
+import org.spongepowered.api.Sponge
+import java.util.concurrent.Executor
+
+class SpongeSchedulerAdapter(private val bootstrap: UnifiedMetricsSpongeBootstrap) : AbstractJavaScheduler() {
+    override val sync: Executor = Executor {
+        Sponge.getScheduler().createTaskBuilder()
+            .execute(it)
+            .submit(bootstrap)
+    }
 }

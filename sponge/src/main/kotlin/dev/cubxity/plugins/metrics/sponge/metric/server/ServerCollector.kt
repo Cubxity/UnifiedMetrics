@@ -16,10 +16,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.platform
+package dev.cubxity.plugins.metrics.sponge.metric.server
 
-sealed class PlatformType(val name: String) {
-    object Bukkit : PlatformType("Bukkit")
-    object Sponge : PlatformType("Sponge")
-    object Velocity : PlatformType("Velocity")
+import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+import dev.cubxity.plugins.metrics.api.metric.data.GaugeSample
+import dev.cubxity.plugins.metrics.api.metric.data.MetricSample
+import org.spongepowered.api.Sponge
+
+class ServerCollector : MetricCollector {
+    override fun collect(): List<MetricSample> = listOf(
+        GaugeSample("minecraft_plugins", Sponge.getPluginManager().plugins.size),
+        GaugeSample("minecraft_players_count", Sponge.getServer().onlinePlayers.size),
+        GaugeSample("minecraft_players_max", Sponge.getServer().maxPlayers)
+    )
 }

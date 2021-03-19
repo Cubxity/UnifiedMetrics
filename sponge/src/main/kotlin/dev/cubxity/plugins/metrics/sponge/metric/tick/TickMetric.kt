@@ -16,10 +16,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.platform
+package dev.cubxity.plugins.metrics.sponge.metric.tick
 
-sealed class PlatformType(val name: String) {
-    object Bukkit : PlatformType("Bukkit")
-    object Sponge : PlatformType("Sponge")
-    object Velocity : PlatformType("Velocity")
+import dev.cubxity.plugins.metrics.api.metric.Metric
+import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+
+class TickMetric : Metric {
+
+    override val collectors: List<MetricCollector> = listOf(TickCollector())
 }

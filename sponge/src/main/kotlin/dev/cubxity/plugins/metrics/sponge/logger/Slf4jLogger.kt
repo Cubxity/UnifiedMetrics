@@ -16,10 +16,29 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.platform
+package dev.cubxity.plugins.metrics.sponge.logger
 
-sealed class PlatformType(val name: String) {
-    object Bukkit : PlatformType("Bukkit")
-    object Sponge : PlatformType("Sponge")
-    object Velocity : PlatformType("Velocity")
+import dev.cubxity.plugins.metrics.api.logging.Logger
+import java.util.logging.Level
+
+class Slf4jLogger(private val logger: org.slf4j.Logger) : Logger {
+    override fun info(message: String) {
+        logger.info(message)
+    }
+
+    override fun warn(message: String) {
+        logger.warn(message)
+    }
+
+    override fun warn(message: String, error: Throwable) {
+        logger.warn(message, error)
+    }
+
+    override fun severe(message: String) {
+        logger.error(message)
+    }
+
+    override fun severe(message: String, error: Throwable) {
+        logger.error(message, error)
+    }
 }
