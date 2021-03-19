@@ -43,7 +43,7 @@ class EventsMetric(private val bootstrap: UnifiedMetricsSpongeBootstrap) : Metri
     }
 
     override fun dispose() {
-        Sponge.getEventManager().unregisterListeners(this)
+        Sponge.getEventManager().unregisterListeners(bootstrap.plugin)
     }
 
     @Listener
