@@ -43,7 +43,7 @@ class InfluxMetricsDriver(private val api: UnifiedMetrics, private val config: C
                 config[InfluxSpec.password].toCharArray()
             )
             .bucket(config[InfluxSpec.bucket])
-            .org("-")
+            .org(config[InfluxSpec.organization])
             .build()
 
         influxDBClient = InfluxDBClientFactory.create(options)
