@@ -22,11 +22,11 @@ import dev.cubxity.plugins.metrics.api.metric.Metric
 import dev.cubxity.plugins.metrics.api.metric.collector.Counter
 import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
 import dev.cubxity.plugins.metrics.bukkit.bootstrap.UnifiedMetricsBukkitBootstrap
+import io.papermc.paper.event.player.AsyncChatEvent
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
-import org.bukkit.event.player.AsyncPlayerChatEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.event.server.ServerListPingEvent
@@ -60,7 +60,7 @@ class EventsMetric(private val bootstrap: UnifiedMetricsBukkitBootstrap) : Metri
     }
 
     @EventHandler
-    fun onChat(event: AsyncPlayerChatEvent) {
+    fun onChat(event: AsyncChatEvent) {
         chatCounter.inc()
     }
 
