@@ -16,6 +16,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+plugins {
+    kotlin("kapt")
+    id("com.github.johnrengelman.shadow")
+    id("net.kyori.blossom")
+}
+
 repositories {
     maven("https://nexus.velocitypowered.com/repository/maven-public/")
 }
@@ -29,6 +35,12 @@ dependencies {
 
 tasks {
     shadowJar {
+        archiveClassifier.set("")
         relocate("com.moandjiezana.toml", "dev.cubxity.plugins.metrics.lib.toml")
     }
+}
+
+blossom {
+    replaceTokenIn("src/main/kotlin/dev/cubxity/plugins/metrics/velocity/bootstrap/UnifiedMetricsVelocityBootstrap.kt")
+    replaceToken("@version@", version)
 }

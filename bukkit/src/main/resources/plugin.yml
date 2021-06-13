@@ -3,5 +3,5 @@ main: dev.cubxity.plugins.metrics.bukkit.bootstrap.UnifiedMetricsBukkitBootstrap
 description: "Fully-featured metrics plugin for Minecraft servers"
 api-version: 1.16
 author: Cubxity
-version: @version@
+version: ${version}
 load: STARTUP

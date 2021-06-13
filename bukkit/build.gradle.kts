@@ -16,7 +16,9 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import org.apache.tools.ant.filters.ReplaceTokens
+plugins {
+    id("com.github.johnrengelman.shadow")
+}
 
 repositories {
     maven("https://papermc.io/repo/repository/maven-public")
@@ -28,9 +30,15 @@ dependencies {
 }
 
 tasks {
+    shadowJar {
+        archiveClassifier.set("")
+    }
     processResources {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
         from("src/main/resources") {
-            filter(ReplaceTokens::class, "tokens" to mapOf("version" to version))
+            expand("version" to version)
+            include("plugin.yml")
         }
     }
 }
