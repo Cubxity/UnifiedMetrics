@@ -1,7 +1,7 @@
 name: gradle-preview-ci
 on:
   push:
-    branches: [ "dev" ]
+    branches: [ "dev/*" ]
 
 jobs:
   build:
@@ -17,10 +17,13 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew shadowJar --no-daemon
+      - name: Set variables
+        id: vars
+        run: echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
+          automatic_release_tag: "${{ steps.vars.outputs.short_ref }}"
           prerelease: true
           title: "Development Build"
           files: |
