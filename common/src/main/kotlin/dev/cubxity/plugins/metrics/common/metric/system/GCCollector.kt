@@ -18,14 +18,16 @@
 
 package dev.cubxity.plugins.metrics.common.metric.system
 
-import dev.cubxity.plugins.metrics.api.metric.Metric
+import dev.cubxity.plugins.metrics.api.metric.collector.MILLISECONDS_PER_SECOND
 import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+import dev.cubxity.plugins.metrics.api.metric.data.CounterSample
+import dev.cubxity.plugins.metrics.api.metric.data.MetricSample
+import java.lang.management.ManagementFactory
 
-class SystemMetric : Metric {
-    override val collectors: List<MetricCollector> = listOf(
-        MemoryCollector(),
-        ProcessCollector(),
-        ThreadCollector(),
-        GCCollector()
-    )
+class GCCollector : MetricCollector {
+    private val beans = ManagementFactory.getGarbageCollectorMXBeans()
+
+    override fun collect(): List<MetricSample> = beans.map {
+        CounterSample("jvm_gc_seconds_total", it.collectionTime / MILLISECONDS_PER_SECOND, mapOf("gc" to it.name))
+    }
 }
