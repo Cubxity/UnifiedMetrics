@@ -20,5 +20,5 @@ apply(plugin = "kotlinx-serialization")
 
 dependencies {
     compileOnly(project(":unifiedmetrics-api"))
-    api("io.prometheus", "simpleclient_httpserver", "0.10.0")
+    api("io.prometheus", "simpleclient_httpserver", "0.11.0")
 }
