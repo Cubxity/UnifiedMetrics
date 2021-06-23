@@ -18,9 +18,21 @@
 
 package dev.cubxity.plugins.metrics.common.config
 
-import com.uchuhimo.konf.ConfigSpec
+import kotlinx.serialization.Serializable
 
-object MetricsSpec : ConfigSpec("metrics") {
-    val enabled by optional(true, "enabled")
-    val driver by optional("prometheus", "driver")
-}
+@Serializable
+data class UnifiedMetricsConfig(
+    val server: UnifiedMetricsServerConfig = UnifiedMetricsServerConfig(),
+    val metrics: UnifiedMetricsMetricsConfig = UnifiedMetricsMetricsConfig()
+)
+
+@Serializable
+data class UnifiedMetricsServerConfig(
+    val name: String = "global"
+)
+
+@Serializable
+data class UnifiedMetricsMetricsConfig(
+    val enabled: Boolean = true,
+    val driver: String = "prometheus"
+)

@@ -18,14 +18,14 @@
 
 package dev.cubxity.plugins.metrics.common.plugin
 
-import com.uchuhimo.konf.Config
 import dev.cubxity.plugins.metrics.common.UnifiedMetricsBootstrap
 import dev.cubxity.plugins.metrics.common.api.UnifiedMetricsApiProvider
+import dev.cubxity.plugins.metrics.common.config.UnifiedMetricsConfig
 
 interface UnifiedMetricsPlugin {
     val bootstrap: UnifiedMetricsBootstrap
 
-    val config: Config
+    val config: UnifiedMetricsConfig
 
     val apiProvider: UnifiedMetricsApiProvider
 }

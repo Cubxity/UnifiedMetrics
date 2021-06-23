@@ -16,6 +16,9 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+apply(plugin = "kotlinx-serialization")
+
 dependencies {
     api(project(":unifiedmetrics-api"))
+    implementation("com.charleskorn.kaml", "kaml", "0.34.0")
 }

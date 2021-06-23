@@ -29,7 +29,7 @@ interface MetricsManager {
 
     fun unregisterMetric(metric: Metric)
 
-    fun registerDriver(name: String, factory: MetricsDriverFactory)
+    fun registerDriver(name: String, factory: MetricsDriverFactory<out Any>)
 
     fun dispose()
 }

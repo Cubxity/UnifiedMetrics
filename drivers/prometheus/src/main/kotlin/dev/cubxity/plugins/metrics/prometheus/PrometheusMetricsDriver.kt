@@ -18,15 +18,14 @@
 
 package dev.cubxity.plugins.metrics.prometheus
 
-import com.uchuhimo.konf.Config
 import dev.cubxity.plugins.metrics.api.UnifiedMetrics
 import dev.cubxity.plugins.metrics.api.metric.MetricsDriver
-import dev.cubxity.plugins.metrics.prometheus.config.PrometheusSpec
+import dev.cubxity.plugins.metrics.prometheus.config.PrometheusConfig
 import io.prometheus.client.CollectorRegistry
 import io.prometheus.client.exporter.HTTPServer
 import java.net.InetSocketAddress
 
-class PrometheusMetricsDriver(api: UnifiedMetrics, private val config: Config) : MetricsDriver {
+class PrometheusMetricsDriver(api: UnifiedMetrics, private val config: PrometheusConfig) : MetricsDriver {
     private val registry = CollectorRegistry()
     private var server: HTTPServer? = null
 
@@ -35,7 +34,7 @@ class PrometheusMetricsDriver(api: UnifiedMetrics, private val config: Config) :
     }
 
     override fun initialize() {
-        server = HTTPServer(InetSocketAddress(config[PrometheusSpec.port]), registry)
+        server = HTTPServer(InetSocketAddress(config.http.port), registry)
     }
 
     override fun close() {

@@ -22,7 +22,6 @@ import dev.cubxity.plugins.metrics.api.UnifiedMetrics
 import dev.cubxity.plugins.metrics.api.logging.Logger
 import dev.cubxity.plugins.metrics.api.metric.MetricsManager
 import dev.cubxity.plugins.metrics.api.platform.Platform
-import dev.cubxity.plugins.metrics.common.config.ServerSpec
 import dev.cubxity.plugins.metrics.common.plugin.UnifiedMetricsPlugin
 import kotlinx.coroutines.CoroutineDispatcher
 
@@ -30,7 +29,7 @@ open class UnifiedMetricsApiProvider(val plugin: UnifiedMetricsPlugin) : Unified
     override val platform: Platform = PlatformImpl(plugin)
 
     override val serverName: String
-        get() = plugin.config[ServerSpec.name]
+        get() = plugin.config.server.name
 
     override val logger: Logger
         get() = plugin.bootstrap.logger

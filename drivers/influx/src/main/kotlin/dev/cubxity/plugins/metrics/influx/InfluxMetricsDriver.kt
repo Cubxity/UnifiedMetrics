@@ -22,16 +22,15 @@ import com.influxdb.client.InfluxDBClient
 import com.influxdb.client.InfluxDBClientFactory
 import com.influxdb.client.InfluxDBClientOptions
 import com.influxdb.client.WriteApi
-import com.uchuhimo.konf.Config
 import dev.cubxity.plugins.metrics.api.UnifiedMetrics
 import dev.cubxity.plugins.metrics.api.metric.MetricsDriver
 import dev.cubxity.plugins.metrics.api.metric.collect
 import dev.cubxity.plugins.metrics.api.metric.data.MetricSample
-import dev.cubxity.plugins.metrics.influx.config.InfluxSpec
+import dev.cubxity.plugins.metrics.influx.config.InfluxConfig
 import kotlinx.coroutines.*
 import com.influxdb.client.write.Point as InfluxPoint
 
-class InfluxMetricsDriver(private val api: UnifiedMetrics, private val config: Config) : MetricsDriver {
+class InfluxMetricsDriver(private val api: UnifiedMetrics, private val config: InfluxConfig) : MetricsDriver {
     private val coroutineScope = CoroutineScope(Dispatchers.Default) + SupervisorJob()
 
     private var influxDBClient: InfluxDBClient? = null
@@ -39,13 +38,17 @@ class InfluxMetricsDriver(private val api: UnifiedMetrics, private val config: C
 
     override fun initialize() {
         val options = InfluxDBClientOptions.builder()
-            .url(config[InfluxSpec.url])
-            .authenticate(
-                config[InfluxSpec.username],
-                config[InfluxSpec.password].toCharArray()
-            )
-            .bucket(config[InfluxSpec.bucket])
-            .org(config[InfluxSpec.organization])
+            .url(config.output.url)
+            .apply {
+                when (config.authentication.scheme) {
+                    InfluxDBClientOptions.AuthScheme.TOKEN ->
+                        authenticateToken(config.authentication.token.toCharArray())
+                    InfluxDBClientOptions.AuthScheme.SESSION ->
+                        authenticate(config.authentication.username, config.authentication.password.toCharArray())
+                }
+            }
+            .bucket(config.output.bucket)
+            .org(config.output.organization)
             .build()
 
         influxDBClient = InfluxDBClientFactory.create(options)
@@ -62,7 +65,7 @@ class InfluxMetricsDriver(private val api: UnifiedMetrics, private val config: C
     }
 
     private fun scheduleTasks() {
-        val interval = config[InfluxSpec.interval]
+        val interval = config.output.interval
 
         coroutineScope.launch {
             while (true) {

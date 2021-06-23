@@ -18,5 +18,6 @@
 
 dependencies {
     api(kotlin("stdlib"))
-    api("com.uchuhimo", "konf-toml", "1.1.2")
+    api("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.5.0")
+    api("org.jetbrains.kotlinx", "kotlinx-serialization-core", "1.2.1")
 }

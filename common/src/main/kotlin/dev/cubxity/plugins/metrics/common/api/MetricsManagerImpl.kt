@@ -18,21 +18,18 @@
 
 package dev.cubxity.plugins.metrics.common.api
 
-import com.uchuhimo.konf.Config
-import com.uchuhimo.konf.Feature
-import com.uchuhimo.konf.source.toml
-import com.uchuhimo.konf.source.toml.toToml
+import com.charleskorn.kaml.Yaml
 import dev.cubxity.plugins.metrics.api.metric.Metric
 import dev.cubxity.plugins.metrics.api.metric.MetricsDriver
 import dev.cubxity.plugins.metrics.api.metric.MetricsDriverFactory
 import dev.cubxity.plugins.metrics.api.metric.MetricsManager
-import dev.cubxity.plugins.metrics.common.config.MetricsSpec
 import dev.cubxity.plugins.metrics.common.plugin.UnifiedMetricsPlugin
 import java.nio.file.Files
+import kotlin.system.measureTimeMillis
 
 class MetricsManagerImpl(private val plugin: UnifiedMetricsPlugin) : MetricsManager {
     private val driverDirectory = plugin.bootstrap.configDirectory.resolve("driver")
-    private val metricDrivers: MutableMap<String, MetricsDriverFactory> = HashMap()
+    private val metricDrivers: MutableMap<String, MetricsDriverFactory<Any>> = HashMap()
     private val _metrics: MutableList<Metric> = ArrayList()
 
     private var shouldInitialize: Boolean = false
@@ -44,13 +41,12 @@ class MetricsManagerImpl(private val plugin: UnifiedMetricsPlugin) : MetricsMana
     override fun initialize() {
         shouldInitialize = true
 
-        val driverName = plugin.config[MetricsSpec.driver]
+        val driverName = plugin.config.metrics.driver
         val factory = metricDrivers[driverName]
 
         Files.createDirectories(driverDirectory)
 
         if (factory !== null) {
-            plugin.bootstrap.logger.info("Initializing driver '$driverName'.")
             initializeDriver(driverName, factory)
         } else {
             plugin.bootstrap.logger.warn("Driver '$driverName' not found. Metrics will be enabled when the driver is loaded.")
@@ -75,14 +71,12 @@ class MetricsManagerImpl(private val plugin: UnifiedMetricsPlugin) : MetricsMana
         }
     }
 
-    override fun registerDriver(name: String, factory: MetricsDriverFactory) {
-        metricDrivers[name] = factory
+    @Suppress("UNCHECKED_CAST")
+    override fun registerDriver(name: String, factory: MetricsDriverFactory<out Any>) {
+        metricDrivers[name] = factory as MetricsDriverFactory<Any>
 
         if (shouldInitialize && driver === null) {
-            val driverName = plugin.config[MetricsSpec.driver]
-
-            if (name == driverName) {
-                plugin.bootstrap.logger.info("Initializing driver '$driverName'.")
+            if (name == plugin.config.metrics.driver) {
                 initializeDriver(name, factory)
             }
         }
@@ -96,21 +90,32 @@ class MetricsManagerImpl(private val plugin: UnifiedMetricsPlugin) : MetricsMana
         driver = null
     }
 
-    private fun initializeDriver(name: String, factory: MetricsDriverFactory) {
-        try {
-            val file = driverDirectory.toFile().resolve("$name.toml")
-            val config = Config { factory.registerConfig(this) }
-                .enable(Feature.OPTIONAL_SOURCE_BY_DEFAULT)
-                .from.toml.file(file)
+    private fun initializeDriver(name: String, factory: MetricsDriverFactory<Any>) {
+        plugin.bootstrap.logger.info("Initializing driver '$name'.")
+        val time = measureTimeMillis {
+            try {
+                val file = driverDirectory.toFile().resolve("$name.yml")
 
-            config.toToml.toFile(file)
+                val serializer = factory.configSerializer
+                val config = when {
+                    file.exists() -> Yaml.default.decodeFromString(serializer, file.readText())
+                    else -> factory.defaultConfig
+                }
 
-            val driver = factory.createDriver(plugin.apiProvider, config)
-            driver.initialize()
+                try {
+                    file.writeText(Yaml.default.encodeToString(serializer, config))
+                } catch (exception: Exception) {
+                    plugin.apiProvider.logger.severe("An error occurred whilst saving driver config file ", exception)
+                }
 
-            this.driver = driver
-        } catch (error: Throwable) {
-            plugin.apiProvider.logger.severe("An error occurred whilst initializing metrics driver $name", error)
+                val driver = factory.createDriver(plugin.apiProvider, config)
+                driver.initialize()
+
+                this.driver = driver
+            } catch (error: Throwable) {
+                plugin.apiProvider.logger.severe("An error occurred whilst initializing metrics driver $name", error)
+            }
         }
+        plugin.bootstrap.logger.info("Driver '$name' initialized ($time ms).")
     }
 }

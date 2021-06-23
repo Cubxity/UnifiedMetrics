@@ -18,13 +18,27 @@
 
 package dev.cubxity.plugins.metrics.influx.config
 
-import com.uchuhimo.konf.ConfigSpec
+import com.influxdb.client.InfluxDBClientOptions
+import kotlinx.serialization.Serializable
 
-object InfluxSpec : ConfigSpec("influx") {
-    val url by optional("http://influxdb:8086", "url")
-    val organization by optional("-", "organization")
-    val bucket by optional("unifiedmetrics", "bucket")
-    val username by optional("influx", "username")
-    val password by optional("influx", "password")
-    val interval by optional(10L, "interval", "Data collection interval, in seconds")
-}
+@Serializable
+data class InfluxConfig(
+    val output: InfluxOutputConfig = InfluxOutputConfig(),
+    val authentication: InfluxAuthenticationConfig = InfluxAuthenticationConfig()
+)
+
+@Serializable
+data class InfluxOutputConfig(
+    val url: String = "http://influxdb:8086",
+    val organization: String = "-",
+    val bucket: String = "unifiedmetrics",
+    val interval: Long = 10
+)
+
+@Serializable
+data class InfluxAuthenticationConfig(
+    val scheme: InfluxDBClientOptions.AuthScheme = InfluxDBClientOptions.AuthScheme.TOKEN,
+    val username: String = "influx",
+    val password: String = "influx",
+    val token: String = "insert_your_token"
+)

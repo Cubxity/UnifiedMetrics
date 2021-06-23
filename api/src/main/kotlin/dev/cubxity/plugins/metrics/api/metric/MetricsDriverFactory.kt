@@ -18,11 +18,13 @@
 
 package dev.cubxity.plugins.metrics.api.metric
 
-import com.uchuhimo.konf.Config
 import dev.cubxity.plugins.metrics.api.UnifiedMetrics
+import kotlinx.serialization.KSerializer
 
-interface MetricsDriverFactory {
-    fun registerConfig(config: Config)
+interface MetricsDriverFactory<T : Any> {
+    val configSerializer: KSerializer<T>
 
-    fun createDriver(api: UnifiedMetrics, config: Config): MetricsDriver
+    val defaultConfig: T
+
+    fun createDriver(api: UnifiedMetrics, config: T): MetricsDriver
 }

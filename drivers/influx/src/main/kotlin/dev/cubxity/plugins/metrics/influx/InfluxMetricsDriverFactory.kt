@@ -18,17 +18,19 @@
 
 package dev.cubxity.plugins.metrics.influx
 
-import com.uchuhimo.konf.Config
 import dev.cubxity.plugins.metrics.api.UnifiedMetrics
 import dev.cubxity.plugins.metrics.api.metric.MetricsDriver
 import dev.cubxity.plugins.metrics.api.metric.MetricsDriverFactory
-import dev.cubxity.plugins.metrics.influx.config.InfluxSpec
+import dev.cubxity.plugins.metrics.influx.config.InfluxConfig
+import kotlinx.serialization.KSerializer
 
-object InfluxMetricsDriverFactory : MetricsDriverFactory {
-    override fun registerConfig(config: Config) {
-        config.addSpec(InfluxSpec)
-    }
+object InfluxMetricsDriverFactory : MetricsDriverFactory<InfluxConfig> {
+    override val configSerializer: KSerializer<InfluxConfig>
+        get() = InfluxConfig.serializer()
 
-    override fun createDriver(api: UnifiedMetrics, config: Config): MetricsDriver =
+    override val defaultConfig: InfluxConfig
+        get() = InfluxConfig()
+
+    override fun createDriver(api: UnifiedMetrics, config: InfluxConfig): MetricsDriver =
         InfluxMetricsDriver(api, config)
 }

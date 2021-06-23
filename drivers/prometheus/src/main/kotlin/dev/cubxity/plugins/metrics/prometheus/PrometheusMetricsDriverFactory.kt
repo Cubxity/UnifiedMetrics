@@ -18,17 +18,19 @@
 
 package dev.cubxity.plugins.metrics.prometheus
 
-import com.uchuhimo.konf.Config
 import dev.cubxity.plugins.metrics.api.UnifiedMetrics
 import dev.cubxity.plugins.metrics.api.metric.MetricsDriver
 import dev.cubxity.plugins.metrics.api.metric.MetricsDriverFactory
-import dev.cubxity.plugins.metrics.prometheus.config.PrometheusSpec
+import dev.cubxity.plugins.metrics.prometheus.config.PrometheusConfig
+import kotlinx.serialization.KSerializer
 
-object PrometheusMetricsDriverFactory : MetricsDriverFactory {
-    override fun registerConfig(config: Config) {
-        config.addSpec(PrometheusSpec)
-    }
+object PrometheusMetricsDriverFactory : MetricsDriverFactory<PrometheusConfig> {
+    override val configSerializer: KSerializer<PrometheusConfig>
+        get() = PrometheusConfig.serializer()
 
-    override fun createDriver(api: UnifiedMetrics, config: Config): MetricsDriver =
+    override val defaultConfig: PrometheusConfig
+        get() = PrometheusConfig()
+
+    override fun createDriver(api: UnifiedMetrics, config: PrometheusConfig): MetricsDriver =
         PrometheusMetricsDriver(api, config)
 }

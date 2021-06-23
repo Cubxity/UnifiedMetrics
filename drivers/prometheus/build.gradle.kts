@@ -16,6 +16,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+apply(plugin = "kotlinx-serialization")
+
 dependencies {
     compileOnly(project(":unifiedmetrics-api"))
     api("io.prometheus", "simpleclient_httpserver", "0.10.0")

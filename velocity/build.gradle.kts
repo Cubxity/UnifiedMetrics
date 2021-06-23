@@ -36,7 +36,6 @@ dependencies {
 tasks {
     shadowJar {
         archiveClassifier.set("")
-        relocate("com.moandjiezana.toml", "dev.cubxity.plugins.metrics.lib.toml")
     }
 }
 

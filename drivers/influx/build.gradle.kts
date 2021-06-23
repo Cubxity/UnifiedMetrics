@@ -16,6 +16,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+apply(plugin = "kotlinx-serialization")
+
 dependencies {
     compileOnly(project(":unifiedmetrics-api"))
     api("com.influxdb", "influxdb-client-java", "1.14.0")

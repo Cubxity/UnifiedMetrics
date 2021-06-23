@@ -18,8 +18,14 @@
 
 package dev.cubxity.plugins.metrics.prometheus.config
 
-import com.uchuhimo.konf.ConfigSpec
+import kotlinx.serialization.Serializable
 
-object PrometheusSpec : ConfigSpec("prometheus") {
-    val port by optional(8080, "port", "Port for Prometheus exporter")
-}
+@Serializable
+data class PrometheusConfig(
+    val http: PrometheusHttpConfig = PrometheusHttpConfig()
+)
+
+@Serializable
+data class PrometheusHttpConfig(
+    val port: Int = 9100
+)
