@@ -34,5 +34,15 @@ data class UnifiedMetricsServerConfig(
 @Serializable
 data class UnifiedMetricsMetricsConfig(
     val enabled: Boolean = true,
-    val driver: String = "prometheus"
+    val driver: String = "prometheus",
+    val collectors: UnifiedMetricsCollectorsConfig = UnifiedMetricsCollectorsConfig()
+)
+
+@Serializable
+data class UnifiedMetricsCollectorsConfig(
+    val system: Boolean = true,
+    val server: Boolean = true,
+    val world: Boolean = true,
+    val tick: Boolean = true,
+    val events: Boolean = true
 )

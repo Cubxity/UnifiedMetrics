@@ -35,8 +35,10 @@ class UnifiedMetricsVelocityPlugin(
         super.registerPlatformMetrics()
 
         apiProvider.metricsManager.apply {
-            registerMetric(ServerMetric(bootstrap))
-            registerMetric(EventsMetric(bootstrap))
+            with(config.metrics.collectors) {
+                if (server) registerMetric(ServerMetric(bootstrap))
+                if (events) registerMetric(EventsMetric(bootstrap))
+            }
         }
     }
 }

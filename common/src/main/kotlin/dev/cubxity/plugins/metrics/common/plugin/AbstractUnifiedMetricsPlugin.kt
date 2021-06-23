@@ -78,7 +78,9 @@ abstract class AbstractUnifiedMetricsPlugin : UnifiedMetricsPlugin {
 
     open fun registerPlatformMetrics() {
         apiProvider.metricsManager.apply {
-            registerMetric(SystemMetric())
+            if (config.metrics.collectors.system) {
+                registerMetric(SystemMetric())
+            }
         }
     }
 

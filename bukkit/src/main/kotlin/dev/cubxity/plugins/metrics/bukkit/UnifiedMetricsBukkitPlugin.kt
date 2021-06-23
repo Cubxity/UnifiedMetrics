@@ -47,10 +47,12 @@ class UnifiedMetricsBukkitPlugin(
         super.registerPlatformMetrics()
 
         apiProvider.metricsManager.apply {
-            registerMetric(ServerMetric())
-            registerMetric(WorldMetric())
-            registerMetric(TickMetric())
-            registerMetric(EventsMetric(bootstrap))
+            with(config.metrics.collectors) {
+                if (server) registerMetric(ServerMetric())
+                if (world) registerMetric(WorldMetric())
+                if (tick) registerMetric(TickMetric())
+                if (events) registerMetric(EventsMetric(bootstrap))
+            }
         }
     }
 }
