@@ -25,3 +25,4 @@ jobs:
             api/build/libs/*.jar
             bukkit/build/libs/*.jar
             velocity/build/libs/*.jar
+            bukkit/build/libs/*.jar
