@@ -19,11 +19,11 @@ jobs:
         run: ./gradlew shadowJar --no-daemon
       - name: Set variables
         id: vars
-        run: echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
+        run: echo ::set-output name=version::${GITHUB_REF#refs/*\/dev/}
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "${{ steps.vars.outputs.short_ref }}"
+          automatic_release_tag: "v${{ steps.vars.outputs.version }}-SNAPSHOT"
           prerelease: true
           title: "Development Build"
           files: |
