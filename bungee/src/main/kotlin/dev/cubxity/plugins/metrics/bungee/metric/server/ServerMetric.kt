@@ -16,10 +16,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.platform
+package dev.cubxity.plugins.metrics.bungee.metric.server
 
-sealed class PlatformType(val name: String) {
-    object Bukkit : PlatformType("Bukkit")
-    object Velocity : PlatformType("Velocity")
-    object BungeeCord : PlatformType("BungeeCord")
+import dev.cubxity.plugins.metrics.api.metric.Metric
+import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+import dev.cubxity.plugins.metrics.bungee.bootstrap.UnifiedMetricsBungeeBootstrap
+
+class ServerMetric(bootstrap: UnifiedMetricsBungeeBootstrap) : Metric {
+    override val collectors: List<MetricCollector> = listOf(ServerCollector(bootstrap))
 }

@@ -16,10 +16,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.platform
+package dev.cubxity.plugins.metrics.bungee.metric.server
 
-sealed class PlatformType(val name: String) {
-    object Bukkit : PlatformType("Bukkit")
-    object Velocity : PlatformType("Velocity")
-    object BungeeCord : PlatformType("BungeeCord")
+import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+import dev.cubxity.plugins.metrics.api.metric.data.GaugeSample
+import dev.cubxity.plugins.metrics.api.metric.data.MetricSample
+import dev.cubxity.plugins.metrics.bungee.bootstrap.UnifiedMetricsBungeeBootstrap
+
+class ServerCollector(private val bootstrap: UnifiedMetricsBungeeBootstrap) : MetricCollector {
+    override fun collect(): List<MetricSample> {
+        val proxy = bootstrap.proxy
+        return listOf(
+            GaugeSample("minecraft_plugins", proxy.pluginManager.plugins.size),
+            GaugeSample("minecraft_players_count", proxy.onlineCount),
+            GaugeSample("minecraft_players_max", proxy.config.playerLimit)
+        )
+    }
 }
