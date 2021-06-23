@@ -16,10 +16,30 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.platform
+plugins {
+    id("com.github.johnrengelman.shadow")
+}
 
-sealed class PlatformType(val name: String) {
-    object Bukkit : PlatformType("Bukkit")
-    object Velocity : PlatformType("Velocity")
-    object BungeeCord : PlatformType("BungeeCord")
+repositories {
+    maven("https://oss.sonatype.org/content/repositories/snapshots/")
+}
+
+dependencies {
+    api(project(":unifiedmetrics-core"))
+
+    compileOnly("net.md-5", "bungeecord-api", "1.17-R0.1-SNAPSHOT")
+}
+
+tasks {
+    shadowJar {
+        archiveClassifier.set("")
+    }
+    processResources {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
+        from("src/main/resources") {
+            expand("version" to version)
+            include("plugin.yml")
+        }
+    }
 }
