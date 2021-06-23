@@ -65,8 +65,6 @@ abstract class AbstractUnifiedMetricsPlugin : UnifiedMetricsPlugin {
 
         UnifiedMetricsProvider.unregister()
         _apiProvider = null
-
-        bootstrap.scheduler.shutdown()
     }
 
     abstract fun registerPlatformService(api: UnifiedMetrics)

@@ -28,10 +28,12 @@ import dev.cubxity.plugins.metrics.api.metric.MetricsDriver
 import dev.cubxity.plugins.metrics.api.metric.collect
 import dev.cubxity.plugins.metrics.api.metric.data.MetricSample
 import dev.cubxity.plugins.metrics.influx.config.InfluxSpec
-import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.*
 import com.influxdb.client.write.Point as InfluxPoint
 
 class InfluxMetricsDriver(private val api: UnifiedMetrics, private val config: Config) : MetricsDriver {
+    private val coroutineScope = CoroutineScope(Dispatchers.Default) + SupervisorJob()
+
     private var influxDBClient: InfluxDBClient? = null
     private var writeApi: WriteApi? = null
 
@@ -53,6 +55,7 @@ class InfluxMetricsDriver(private val api: UnifiedMetrics, private val config: C
     }
 
     override fun close() {
+        coroutineScope.cancel()
         writeApi?.close()
         influxDBClient?.close()
         influxDBClient = null
@@ -61,15 +64,19 @@ class InfluxMetricsDriver(private val api: UnifiedMetrics, private val config: C
     private fun scheduleTasks() {
         val interval = config[InfluxSpec.interval]
 
-        val scheduler = api.scheduler
-
-        scheduler.asyncRepeating({
-            try {
-                writeSamples(api.metricsManager.collect())
-            } catch (error: Throwable) {
-                api.logger.severe("An error occurred whilst writing samples to InfluxDB", error)
+        coroutineScope.launch {
+            while (true) {
+                try {
+                    val samples = withContext(api.dispatcher) {
+                        api.metricsManager.collect()
+                    }
+                    writeSamples(samples)
+                } catch (error: Throwable) {
+                    api.logger.severe("An error occurred whilst writing samples to InfluxDB", error)
+                }
+                delay(interval * 1000)
             }
-        }, interval, TimeUnit.SECONDS)
+        }
     }
 
     private fun writeSamples(samples: List<MetricSample>) {

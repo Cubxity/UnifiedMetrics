@@ -21,7 +21,7 @@ package dev.cubxity.plugins.metrics.api
 import dev.cubxity.plugins.metrics.api.logging.Logger
 import dev.cubxity.plugins.metrics.api.metric.MetricsManager
 import dev.cubxity.plugins.metrics.api.platform.Platform
-import dev.cubxity.plugins.metrics.api.scheduler.SchedulerAdapter
+import kotlinx.coroutines.CoroutineDispatcher
 
 /**
  * The UnifiedMetrics API
@@ -48,9 +48,9 @@ interface UnifiedMetrics {
     val logger: Logger
 
     /**
-     * The platform's scheduler.
+     * The platform's dispatcher.
      */
-    val scheduler: SchedulerAdapter
+    val dispatcher: CoroutineDispatcher
 
     /**
      * The metrics api.

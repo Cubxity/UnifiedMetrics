@@ -22,20 +22,26 @@ import dev.cubxity.plugins.metrics.api.UnifiedMetrics
 import dev.cubxity.plugins.metrics.api.metric.collect
 import dev.cubxity.plugins.metrics.api.metric.data.MetricType
 import io.prometheus.client.Collector
+import kotlinx.coroutines.runBlocking
 
 class UnifiedMetricsCollector(private val api: UnifiedMetrics) : Collector() {
-    override fun collect(): List<MetricFamilySamples> {
-        return api.metricsManager.collect().map {
-            val keys = it.tags.keys.toList()
-            val values = it.tags.values.toList()
-            val sample = MetricFamilySamples.Sample(it.name, keys, values, it.value)
-            val type = when (it.type) {
-                MetricType.Counter -> Type.COUNTER
-                MetricType.Gauge -> Type.GAUGE
-                else -> Type.UNKNOWN
-            }
+    override fun collect(): List<MetricFamilySamples> = runBlocking(api.dispatcher) {
+        try {
+            api.metricsManager.collect().map {
+                val keys = it.tags.keys.toList()
+                val values = it.tags.values.toList()
+                val sample = MetricFamilySamples.Sample(it.name, keys, values, it.value)
+                val type = when (it.type) {
+                    MetricType.Counter -> Type.COUNTER
+                    MetricType.Gauge -> Type.GAUGE
+                    else -> Type.UNKNOWN
+                }
 
-            MetricFamilySamples(it.name, type, "", listOf(sample))
+                MetricFamilySamples(it.name, type, "", listOf(sample))
+            }
+        } catch (exception: Exception) {
+            api.logger.severe("An error occurred whilst collecting metrics", exception)
         }
+        emptyList()
     }
 }

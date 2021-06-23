@@ -20,7 +20,7 @@ package dev.cubxity.plugins.metrics.common
 
 import dev.cubxity.plugins.metrics.api.logging.Logger
 import dev.cubxity.plugins.metrics.api.platform.PlatformType
-import dev.cubxity.plugins.metrics.api.scheduler.SchedulerAdapter
+import kotlinx.coroutines.CoroutineDispatcher
 import java.nio.file.Path
 
 interface UnifiedMetricsBootstrap {
@@ -55,7 +55,7 @@ interface UnifiedMetricsBootstrap {
     val logger: Logger
 
     /**
-     * The platform's scheduler
+     * The platform's dispatcher
      */
-    val scheduler: SchedulerAdapter
+    val dispatcher: CoroutineDispatcher
 }

@@ -22,9 +22,9 @@ import dev.cubxity.plugins.metrics.api.UnifiedMetrics
 import dev.cubxity.plugins.metrics.api.logging.Logger
 import dev.cubxity.plugins.metrics.api.metric.MetricsManager
 import dev.cubxity.plugins.metrics.api.platform.Platform
-import dev.cubxity.plugins.metrics.api.scheduler.SchedulerAdapter
 import dev.cubxity.plugins.metrics.common.config.ServerSpec
 import dev.cubxity.plugins.metrics.common.plugin.UnifiedMetricsPlugin
+import kotlinx.coroutines.CoroutineDispatcher
 
 open class UnifiedMetricsApiProvider(val plugin: UnifiedMetricsPlugin) : UnifiedMetrics {
     override val platform: Platform = PlatformImpl(plugin)
@@ -35,8 +35,8 @@ open class UnifiedMetricsApiProvider(val plugin: UnifiedMetricsPlugin) : Unified
     override val logger: Logger
         get() = plugin.bootstrap.logger
 
-    override val scheduler: SchedulerAdapter
-        get() = plugin.bootstrap.scheduler
+    override val dispatcher: CoroutineDispatcher
+        get() = plugin.bootstrap.dispatcher
 
     override val metricsManager: MetricsManager =
         MetricsManagerImpl(plugin)

@@ -16,15 +16,14 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.scheduler
+package dev.cubxity.plugins.metrics.common.plugin.dispatcher
 
-import java.util.concurrent.Executor
-import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Runnable
+import kotlin.coroutines.CoroutineContext
 
-interface SchedulerAdapter {
-    val sync: Executor
-
-    fun asyncRepeating(task: Runnable, interval: Long, unit: TimeUnit): SchedulerTask
-
-    fun shutdown()
+object CurrentThreadDispatcher : CoroutineDispatcher() {
+    override fun dispatch(context: CoroutineContext, block: Runnable) {
+        block.run()
+    }
 }

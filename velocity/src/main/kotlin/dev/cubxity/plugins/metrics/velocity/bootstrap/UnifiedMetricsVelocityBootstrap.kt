@@ -28,9 +28,10 @@ import com.velocitypowered.api.plugin.annotation.DataDirectory
 import com.velocitypowered.api.proxy.ProxyServer
 import dev.cubxity.plugins.metrics.api.platform.PlatformType
 import dev.cubxity.plugins.metrics.common.UnifiedMetricsBootstrap
+import dev.cubxity.plugins.metrics.common.plugin.dispatcher.CurrentThreadDispatcher
 import dev.cubxity.plugins.metrics.velocity.UnifiedMetricsVelocityPlugin
-import dev.cubxity.plugins.metrics.velocity.VelocitySchedulerAdapter
 import dev.cubxity.plugins.metrics.velocity.logger.Slf4jLogger
+import kotlinx.coroutines.CoroutineDispatcher
 import java.nio.file.Path
 
 private const val pluginVersion = "@version@"
@@ -64,7 +65,7 @@ class UnifiedMetricsVelocityBootstrap @Inject constructor(
 
     override val logger = Slf4jLogger(pluginLogger)
 
-    override val scheduler = VelocitySchedulerAdapter(this)
+    override val dispatcher: CoroutineDispatcher = CurrentThreadDispatcher
 
     @Subscribe(order = PostOrder.FIRST)
     fun onEnable(event: ProxyInitializeEvent) {
