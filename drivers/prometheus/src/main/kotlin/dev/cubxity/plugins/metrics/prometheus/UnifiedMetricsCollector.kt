@@ -41,7 +41,7 @@ class UnifiedMetricsCollector(private val api: UnifiedMetrics) : Collector() {
             }
         } catch (exception: Exception) {
             api.logger.severe("An error occurred whilst collecting metrics", exception)
+            emptyList()
         }
-        emptyList()
     }
 }
