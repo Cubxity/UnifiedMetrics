@@ -29,19 +29,21 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
 import org.bukkit.event.player.AsyncPlayerChatEvent
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.event.server.ServerListPingEvent
 
 @Suppress("UNUSED_PARAMETER")
 class EventsMetric(private val bootstrap: UnifiedMetricsBukkitBootstrap) : Metric, Listener {
+    private val loginCounter = Counter("minecraft_events_login_total")
     private val joinCounter = Counter("minecraft_events_join_total")
     private val quitCounter = Counter("minecraft_events_quit_total")
     private val chatCounter = Counter("minecraft_events_chat_total")
     private val pingCounter = Counter("minecraft_events_ping_total")
 
     override val collectors: List<MetricCollector> =
-        listOf(joinCounter, quitCounter, chatCounter, pingCounter)
+        listOf(loginCounter, joinCounter, quitCounter, chatCounter, pingCounter)
 
     override fun initialize() {
         Bukkit.getPluginManager().registerEvents(this, bootstrap)
@@ -49,6 +51,11 @@ class EventsMetric(private val bootstrap: UnifiedMetricsBukkitBootstrap) : Metri
 
     override fun dispose() {
         HandlerList.unregisterAll(this)
+    }
+
+    @EventHandler
+    fun onLogin(event: AsyncPlayerPreLoginEvent) {
+        loginCounter.inc()
     }
 
     @EventHandler

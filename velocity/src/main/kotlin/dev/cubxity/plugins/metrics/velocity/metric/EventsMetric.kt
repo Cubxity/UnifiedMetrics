@@ -20,8 +20,9 @@ package dev.cubxity.plugins.metrics.velocity.metric
 
 import com.velocitypowered.api.event.Subscribe
 import com.velocitypowered.api.event.connection.DisconnectEvent
-import com.velocitypowered.api.event.connection.LoginEvent
+import com.velocitypowered.api.event.connection.PreLoginEvent
 import com.velocitypowered.api.event.player.PlayerChatEvent
+import com.velocitypowered.api.event.player.PlayerChooseInitialServerEvent
 import com.velocitypowered.api.event.proxy.ProxyPingEvent
 import dev.cubxity.plugins.metrics.api.metric.Metric
 import dev.cubxity.plugins.metrics.api.metric.collector.Counter
@@ -30,13 +31,14 @@ import dev.cubxity.plugins.metrics.velocity.bootstrap.UnifiedMetricsVelocityBoot
 
 @Suppress("UNUSED_PARAMETER")
 class EventsMetric(private val bootstrap: UnifiedMetricsVelocityBootstrap) : Metric {
+    private val loginCounter = Counter("minecraft_events_login_total")
     private val joinCounter = Counter("minecraft_events_join_total")
     private val quitCounter = Counter("minecraft_events_quit_total")
     private val chatCounter = Counter("minecraft_events_chat_total")
     private val pingCounter = Counter("minecraft_events_ping_total")
 
     override val collectors: List<MetricCollector> =
-        listOf(joinCounter, quitCounter, chatCounter, pingCounter)
+        listOf(loginCounter, joinCounter, quitCounter, chatCounter, pingCounter)
 
     override fun initialize() {
         bootstrap.server.eventManager.register(bootstrap, this)
@@ -46,8 +48,14 @@ class EventsMetric(private val bootstrap: UnifiedMetricsVelocityBootstrap) : Met
         bootstrap.server.eventManager.unregisterListener(bootstrap, this)
     }
 
+
     @Subscribe
-    fun onConnect(event: LoginEvent) {
+    fun onLogin(event: PreLoginEvent) {
+        joinCounter.inc()
+    }
+
+    @Subscribe
+    fun onConnect(event: PlayerChooseInitialServerEvent) {
         joinCounter.inc()
     }
 
