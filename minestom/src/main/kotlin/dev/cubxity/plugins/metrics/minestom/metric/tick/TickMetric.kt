@@ -16,14 +16,22 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.platform
+package dev.cubxity.plugins.metrics.minestom.metric.tick
 
-sealed class PlatformType(val name: String) {
-    // Server implementations
-    object Bukkit : PlatformType("Bukkit")
-    object Minestom : PlatformType("Minestom")
+import dev.cubxity.plugins.metrics.api.metric.Metric
+import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+import net.minestom.server.MinecraftServer
 
-    // Proxies
-    object Velocity : PlatformType("Velocity")
-    object BungeeCord : PlatformType("BungeeCord")
+class TickMetric : Metric {
+    private val tickCollector = TickCollector()
+
+    override val collectors: List<MetricCollector> = listOf(tickCollector)
+
+    override fun initialize() {
+        MinecraftServer.getUpdateManager().addTickMonitor(tickCollector)
+    }
+
+    override fun dispose() {
+        MinecraftServer.getUpdateManager().removeTickMonitor(tickCollector)
+    }
 }

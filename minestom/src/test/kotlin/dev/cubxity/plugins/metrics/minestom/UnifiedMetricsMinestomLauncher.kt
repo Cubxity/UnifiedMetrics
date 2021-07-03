@@ -16,14 +16,14 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.platform
+package dev.cubxity.plugins.metrics.minestom
 
-sealed class PlatformType(val name: String) {
-    // Server implementations
-    object Bukkit : PlatformType("Bukkit")
-    object Minestom : PlatformType("Minestom")
+import net.minestom.server.Bootstrap
 
-    // Proxies
-    object Velocity : PlatformType("Velocity")
-    object BungeeCord : PlatformType("BungeeCord")
+/**
+ * Launch with the following JVM arguments:
+ * -Dminestom.extension.indevfolder.classes=../build/classes/kotlin/main/ -Dminestom.extension.indevfolder.resources=../build/resources/main/
+ */
+fun main(args: Array<String>) {
+    Bootstrap.bootstrap("dev.cubxity.plugins.metrics.minestom.UnifiedMetricsMinestomServer", args)
 }

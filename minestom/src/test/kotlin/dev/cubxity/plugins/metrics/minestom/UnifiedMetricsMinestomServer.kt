@@ -16,14 +16,26 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.platform
+@file:JvmName("UnifiedMetricsMinestomServer")
 
-sealed class PlatformType(val name: String) {
-    // Server implementations
-    object Bukkit : PlatformType("Bukkit")
-    object Minestom : PlatformType("Minestom")
+package dev.cubxity.plugins.metrics.minestom
 
-    // Proxies
-    object Velocity : PlatformType("Velocity")
-    object BungeeCord : PlatformType("BungeeCord")
+import net.minestom.server.MinecraftServer
+import net.minestom.server.event.EventListener
+import net.minestom.server.event.player.PlayerLoginEvent
+import net.minestom.server.world.DimensionType
+
+fun main() {
+    val server = MinecraftServer.init()
+
+    val instanceManager = MinecraftServer.getInstanceManager()
+    val instance = instanceManager.createInstanceContainer(DimensionType.OVERWORLD)
+    instanceManager.registerInstance(instance)
+
+    val listener = EventListener.of(PlayerLoginEvent::class.java) {
+        it.setSpawningInstance(instance)
+    }
+    MinecraftServer.getGlobalEventHandler().addListener(listener)
+
+    server.start("127.0.0.1", 25565)
 }

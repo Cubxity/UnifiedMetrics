@@ -16,14 +16,32 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.platform
+plugins {
+    id("com.github.johnrengelman.shadow")
+}
 
-sealed class PlatformType(val name: String) {
-    // Server implementations
-    object Bukkit : PlatformType("Bukkit")
-    object Minestom : PlatformType("Minestom")
+repositories {
+    maven("https://repo.spongepowered.org/maven")
+    maven("https://jitpack.io")
+}
 
-    // Proxies
-    object Velocity : PlatformType("Velocity")
-    object BungeeCord : PlatformType("BungeeCord")
+dependencies {
+    api(project(":unifiedmetrics-core"))
+
+    compileOnly("com.github.Minestom:Minestom:-SNAPSHOT")
+    testImplementation("com.github.Minestom:Minestom:-SNAPSHOT")
+}
+
+tasks {
+    shadowJar {
+        archiveClassifier.set("")
+    }
+    processResources {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
+        from("src/main/resources") {
+            expand("version" to version)
+            include("extension.json")
+        }
+    }
 }
