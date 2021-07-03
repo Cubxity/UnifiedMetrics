@@ -16,6 +16,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+@file:Suppress("DEPRECATION") // Using Paper's event will cause incompatibility with non-paper bukkit/spigot servers
+
 package dev.cubxity.plugins.metrics.bukkit.metric
 
 import dev.cubxity.plugins.metrics.api.metric.Metric
