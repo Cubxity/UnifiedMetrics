@@ -23,18 +23,21 @@ import dev.cubxity.plugins.metrics.api.metric.collector.Counter
 import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
 import net.minestom.server.MinecraftServer
 import net.minestom.server.event.EventListener
+import net.minestom.server.event.player.AsyncPlayerPreLoginEvent
 import net.minestom.server.event.player.PlayerChatEvent
 import net.minestom.server.event.player.PlayerDisconnectEvent
 import net.minestom.server.event.player.PlayerLoginEvent
 import net.minestom.server.event.server.ServerListPingEvent
 
 class EventsMetric : Metric {
+    private val loginCounter = Counter("minecraft_events_login_total")
     private val joinCounter = Counter("minecraft_events_join_total")
     private val quitCounter = Counter("minecraft_events_quit_total")
     private val chatCounter = Counter("minecraft_events_chat_total")
     private val pingCounter = Counter("minecraft_events_ping_total")
 
-    private val loginListener = EventListener.of(PlayerLoginEvent::class.java) { joinCounter.inc() }
+    private val loginListener = EventListener.of(AsyncPlayerPreLoginEvent::class.java) { loginCounter.inc() }
+    private val joinListener = EventListener.of(PlayerLoginEvent::class.java) { joinCounter.inc() }
     private val disconnectListener = EventListener.of(PlayerDisconnectEvent::class.java) { quitCounter.inc() }
     private val chatListener = EventListener.of(PlayerChatEvent::class.java) { chatCounter.inc() }
     private val pingListener = EventListener.of(ServerListPingEvent::class.java) { pingCounter.inc() }
@@ -45,6 +48,7 @@ class EventsMetric : Metric {
     override fun initialize() {
         with(MinecraftServer.getGlobalEventHandler()) {
             addListener(loginListener)
+            addListener(joinListener)
             addListener(disconnectListener)
             addListener(chatListener)
             addListener(pingListener)
@@ -54,6 +58,7 @@ class EventsMetric : Metric {
     override fun dispose() {
         with(MinecraftServer.getGlobalEventHandler()) {
             removeListener(loginListener)
+            removeListener(joinListener)
             removeListener(disconnectListener)
             removeListener(chatListener)
             removeListener(pingListener)
