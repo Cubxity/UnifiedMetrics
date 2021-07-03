@@ -13,6 +13,7 @@ This project is licensed under [GNU AGPLv3](LICENSE)
 **Server:**
 - 1.8+ Spigot servers
 - Velocity
+- BungeeCord
 
 **Metrics:**
 - Prometheus
@@ -22,9 +23,9 @@ This project is licensed under [GNU AGPLv3](LICENSE)
 - Server metrics collection (TPS, MSPT, Players, Plugins)
 - World metrics collection (Entities, Chunks)
 - Events metrics collection (Player flow, chat, pings)
-- JVM metrics collection (Memory, CPU Load, Threads, Uptime)
+- JVM metrics collection (Memory, CPU Load, Threads, GC, Uptime)
 - Extensible API (Custom metrics, samples, metrics driver) 
-- More features upcoming (Logging to ElasticSearch, etc)
+- More features upcoming...
 
 ## Getting started
 Read the [wiki](https://github.com/Cubxity/UnifiedMetrics/wiki) for instructions.
