@@ -22,22 +22,20 @@ import dev.cubxity.plugins.metrics.api.metric.Metric
 import dev.cubxity.plugins.metrics.api.metric.collector.Counter
 import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
 import dev.cubxity.plugins.metrics.bungee.bootstrap.UnifiedMetricsBungeeBootstrap
-import net.md_5.bungee.api.event.ChatEvent
-import net.md_5.bungee.api.event.PlayerDisconnectEvent
-import net.md_5.bungee.api.event.PostLoginEvent
-import net.md_5.bungee.api.event.ProxyPingEvent
+import net.md_5.bungee.api.event.*
 import net.md_5.bungee.api.plugin.Listener
 import net.md_5.bungee.event.EventHandler
 
 @Suppress("UNUSED_PARAMETER")
 class EventsMetric(private val bootstrap: UnifiedMetricsBungeeBootstrap) : Metric, Listener {
+    private val loginCounter = Counter("minecraft_events_login_total")
     private val joinCounter = Counter("minecraft_events_join_total")
     private val quitCounter = Counter("minecraft_events_quit_total")
     private val chatCounter = Counter("minecraft_events_chat_total")
     private val pingCounter = Counter("minecraft_events_ping_total")
 
     override val collectors: List<MetricCollector> =
-        listOf(joinCounter, quitCounter, chatCounter, pingCounter)
+        listOf(loginCounter, joinCounter, quitCounter, chatCounter, pingCounter)
 
     override fun initialize() {
         bootstrap.proxy.pluginManager.registerListener(bootstrap, this)
@@ -45,6 +43,11 @@ class EventsMetric(private val bootstrap: UnifiedMetricsBungeeBootstrap) : Metri
 
     override fun dispose() {
         bootstrap.proxy.pluginManager.unregisterListener(this)
+    }
+
+    @EventHandler
+    fun onLogin(event: PreLoginEvent) {
+        loginCounter.inc()
     }
 
     @EventHandler
