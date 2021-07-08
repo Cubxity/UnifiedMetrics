@@ -29,8 +29,8 @@ repositories {
 dependencies {
     api(project(":unifiedmetrics-core"))
 
-    compileOnly("com.velocitypowered:velocity-api:1.1.8")
-    kapt("com.velocitypowered:velocity-api:1.1.8")
+    compileOnly("com.velocitypowered:velocity-api:3.0.0")
+    kapt("com.velocitypowered:velocity-api:3.0.0")
 }
 
 tasks {
