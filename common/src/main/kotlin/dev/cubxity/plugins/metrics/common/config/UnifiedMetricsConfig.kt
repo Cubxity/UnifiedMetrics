@@ -28,7 +28,7 @@ data class UnifiedMetricsConfig(
 
 @Serializable
 data class UnifiedMetricsServerConfig(
-    val name: String = "global"
+    val name: String = env("SERVER_NAME", "global")
 )
 
 @Serializable
@@ -46,3 +46,6 @@ data class UnifiedMetricsCollectorsConfig(
     val tick: Boolean = true,
     val events: Boolean = true
 )
+
+private fun env(name: String, default: String): String =
+    System.getenv("UNIFIEDMETRICS_$name") ?: default
