@@ -19,9 +19,9 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.5.10" apply false
-    kotlin("kapt") version "1.5.10" apply false
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.5.0" apply false
+    kotlin("jvm") version "1.5.20" apply false
+    kotlin("kapt") version "1.5.20" apply false
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.5.20" apply false
     id("com.github.johnrengelman.shadow") version "7.0.0" apply false
     id("net.kyori.blossom") version "1.3.0" apply false
 }
