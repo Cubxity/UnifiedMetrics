@@ -12,6 +12,7 @@ This project is licensed under [GNU AGPLv3](LICENSE)
 ## Compatbility
 **Server:**
 - 1.8+ Spigot servers
+- Minestom (Beta)
 - Velocity
 - BungeeCord
 
@@ -28,7 +29,7 @@ This project is licensed under [GNU AGPLv3](LICENSE)
 - More features upcoming...
 
 ## Getting started
-Read the [wiki](https://github.com/Cubxity/UnifiedMetrics/wiki) for instructions.
+Read the [wiki](https://github.com/Cubxity/UnifiedMetrics/wiki) for instructions. **(NOTE: Instructions are not yet updated for 0.3.x and InfluxDB 2.0)**
 
 ## Data visualization and analysis
 We recommend using [Grafana](https://grafana.com/) as it provides highly customizable diagrams.
