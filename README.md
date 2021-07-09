@@ -71,6 +71,13 @@ val api = UnifiedMetricsProvider.get()
       width="200"
     />
   </a>
+  <a href="https://octanemc.net">
+    <img
+      src="https://octanemc.net/assets/images/logo-large.png"
+      alt="OctaneMC"
+      width="200"
+    />
+  </a>
 </p>
 
 > **Pssst!** You can add your server here by submitting a *Pull Request*!
