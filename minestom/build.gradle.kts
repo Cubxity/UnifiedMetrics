@@ -35,6 +35,14 @@ dependencies {
 tasks {
     shadowJar {
         archiveClassifier.set("")
+
+        dependencies {
+            include(dependency(":unifiedmetrics-api"))
+            include(dependency(":unifiedmetrics-common"))
+            include(dependency(":unifiedmetrics-influx-driver"))
+            include(dependency(":unifiedmetrics-prometheus-driver"))
+            include(dependency(":unifiedmetrics-core"))
+        }
     }
     processResources {
         duplicatesStrategy = DuplicatesStrategy.INCLUDE
