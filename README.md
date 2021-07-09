@@ -30,7 +30,9 @@ This project is licensed under [GNU AGPLv3](LICENSE)
 - More features upcoming...
 
 ## Getting started
-Read the [wiki](https://github.com/Cubxity/UnifiedMetrics/wiki) for instructions. **(NOTE: Instructions are not yet updated for 0.3.x and InfluxDB 2.0)**
+Read the [wiki](https://github.com/Cubxity/UnifiedMetrics/wiki) for instructions.
+
+> **NOTE:** The wiki is updated for the upcoming 0.3.x versions.
 
 ## Data visualization and analysis
 We recommend using [Grafana](https://grafana.com/) as it provides highly customizable diagrams.
