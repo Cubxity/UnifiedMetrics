@@ -24,5 +24,6 @@ jobs:
           files: |
             api/build/libs/*.jar
             bukkit/build/libs/*.jar
+            minestom/build/libs/*.jar
             velocity/build/libs/*.jar
-            bukkit/build/libs/*.jar
+            bungee/build/libs/*.jar
