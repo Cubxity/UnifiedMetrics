@@ -1,12 +1,12 @@
 ![UnifiedMetrics](.github/assets/banner.png)
 
-[![License](https://img.shields.io/github/license/Cubxity/UnifiedMetrics?style=flat-square)](LICENSE)
+[![License](https://img.shields.io/github/license/Cubxity/UnifiedMetrics?style=flat-square)](COPYING.LESSER)
 [![Issues](https://img.shields.io/github/issues/Cubxity/UnifiedMetrics?style=flat-square)](https://github.com/Cubxity/UnifiedMetrics/issues)
 [![Workflow Status](https://img.shields.io/github/workflow/status/Cubxity/UnifiedMetrics/gradle-preview-ci/master?style=flat-square)](https://github.com/Cubxity/UnifiedMetrics/actions)
 [![Discord](https://img.shields.io/badge/join-discord-blue?style=flat-square)](https://discord.gg/kDDhqJmPpA)
 
 UnifiedMetrics is a fully-featured free and open-source metrics collection plugin for Minecraft servers. This project is
-licensed under [GNU AGPLv3](LICENSE)
+licensed under [GNU LGPLv3](COPYING.LESSER).
 
 ![Grafana Dashboard](.github/assets/grafana.png)
 
