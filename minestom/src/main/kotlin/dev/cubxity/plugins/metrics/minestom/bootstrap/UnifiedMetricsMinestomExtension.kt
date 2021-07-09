@@ -16,14 +16,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.platform
+package dev.cubxity.plugins.metrics.minestom.bootstrap
 
-sealed class PlatformType(val name: String) {
-    // Server implementations
-    object Bukkit : PlatformType("Bukkit")
-    object Minestom : PlatformType("Minestom")
+import net.minestom.server.extensions.Extension
 
-    // Proxies
-    object Velocity : PlatformType("Velocity")
-    object BungeeCord : PlatformType("BungeeCord")
+class UnifiedMetricsMinestomExtension : Extension() {
+    private var bootstrap: UnifiedMetricsMinestomBootstrap? = null
+
+    override fun initialize() {
+        bootstrap = UnifiedMetricsMinestomBootstrap(this)
+        bootstrap?.initialize()
+    }
+
+    override fun terminate() {
+        bootstrap?.terminate()
+        bootstrap = null
+    }
 }

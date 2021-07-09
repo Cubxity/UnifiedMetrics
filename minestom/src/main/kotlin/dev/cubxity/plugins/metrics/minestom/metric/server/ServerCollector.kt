@@ -16,14 +16,22 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.platform
+package dev.cubxity.plugins.metrics.minestom.metric.server
 
-sealed class PlatformType(val name: String) {
-    // Server implementations
-    object Bukkit : PlatformType("Bukkit")
-    object Minestom : PlatformType("Minestom")
+import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+import dev.cubxity.plugins.metrics.api.metric.data.GaugeSample
+import dev.cubxity.plugins.metrics.api.metric.data.MetricSample
+import net.minestom.server.MinecraftServer
 
-    // Proxies
-    object Velocity : PlatformType("Velocity")
-    object BungeeCord : PlatformType("BungeeCord")
+class ServerCollector : MetricCollector {
+    override fun collect(): List<MetricSample> {
+        val extensionCount = MinecraftServer.getExtensionManager().extensions.size
+        val playerCount = MinecraftServer.getConnectionManager().onlinePlayers.size
+
+        return listOf(
+            GaugeSample("minecraft_plugins", extensionCount),
+            GaugeSample("minecraft_players_count", playerCount),
+            GaugeSample("minecraft_players_max", playerCount + 1) // Minestom does not have a "max players" count
+        )
+    }
 }
