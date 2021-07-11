@@ -70,6 +70,6 @@ class EventsMetric(private val bootstrap: UnifiedMetricsVelocityBootstrap) : Met
 
     @Subscribe
     fun onPing(event: ProxyPingEvent) {
-        pingCounter.dec()
+        pingCounter.inc()
     }
 }
