@@ -28,7 +28,7 @@ class WorldCollector : MetricCollector {
         val samples = ArrayList<Metric>(instances.size * 3)
 
         for (instance in instances) {
-            val tags = mapOf("name" to instance.uniqueId.toString())
+            val tags = mapOf("world" to instance.uniqueId.toString())
             samples.add(GaugeMetric("minecraft_world_entities_count", tags, instance.entities.size))
             samples.add(GaugeMetric("minecraft_world_players_count", tags, instance.players.size))
             samples.add(GaugeMetric("minecraft_world_loaded_chunks", tags, instance.chunks.size))

@@ -29,7 +29,7 @@ class WorldCollector(private val bootstrap: UnifiedMetricsBukkitBootstrap) : Met
         val samples = ArrayList<Metric>(worlds.size * 3)
 
         worlds.fastForEach { world ->
-            val tags = mapOf("name" to world.name)
+            val tags = mapOf("world" to world.name)
             samples.add(GaugeMetric("minecraft_world_entities_count", tags, world.entities.size))
             samples.add(GaugeMetric("minecraft_world_players_count", tags, world.players.size))
             samples.add(GaugeMetric("minecraft_world_loaded_chunks", tags, world.loadedChunks.size))
