@@ -18,20 +18,20 @@
 package dev.cubxity.plugins.metrics.minestom.metric.world
 
 import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
-import dev.cubxity.plugins.metrics.api.metric.data.GaugeSample
-import dev.cubxity.plugins.metrics.api.metric.data.MetricSample
+import dev.cubxity.plugins.metrics.api.metric.data.GaugeMetric
+import dev.cubxity.plugins.metrics.api.metric.data.Metric
 import net.minestom.server.MinecraftServer
 
 class WorldCollector : MetricCollector {
-    override fun collect(): List<MetricSample> {
+    override fun collect(): List<Metric> {
         val instances = MinecraftServer.getInstanceManager().instances
-        val samples = ArrayList<MetricSample>(instances.size * 3)
+        val samples = ArrayList<Metric>(instances.size * 3)
 
         for (instance in instances) {
             val tags = mapOf("name" to instance.uniqueId.toString())
-            samples.add(GaugeSample("minecraft_world_entities_count", instance.entities.size, tags))
-            samples.add(GaugeSample("minecraft_world_players_count", instance.players.size, tags))
-            samples.add(GaugeSample("minecraft_world_loaded_chunks", instance.chunks.size, tags))
+            samples.add(GaugeMetric("minecraft_world_entities_count", tags, instance.entities.size))
+            samples.add(GaugeMetric("minecraft_world_players_count", tags, instance.players.size))
+            samples.add(GaugeMetric("minecraft_world_loaded_chunks", tags, instance.chunks.size))
         }
 
         return samples

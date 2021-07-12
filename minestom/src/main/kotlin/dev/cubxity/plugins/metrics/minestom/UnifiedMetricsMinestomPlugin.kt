@@ -20,10 +20,10 @@ package dev.cubxity.plugins.metrics.minestom
 import dev.cubxity.plugins.metrics.api.UnifiedMetrics
 import dev.cubxity.plugins.metrics.core.plugin.CoreUnifiedMetricsPlugin
 import dev.cubxity.plugins.metrics.minestom.bootstrap.UnifiedMetricsMinestomBootstrap
-import dev.cubxity.plugins.metrics.minestom.metric.events.EventsMetric
-import dev.cubxity.plugins.metrics.minestom.metric.server.ServerMetric
-import dev.cubxity.plugins.metrics.minestom.metric.tick.TickMetric
-import dev.cubxity.plugins.metrics.minestom.metric.world.WorldMetric
+import dev.cubxity.plugins.metrics.minestom.metric.events.EventsCollection
+import dev.cubxity.plugins.metrics.minestom.metric.server.ServerCollection
+import dev.cubxity.plugins.metrics.minestom.metric.tick.TickCollection
+import dev.cubxity.plugins.metrics.minestom.metric.world.WorldCollection
 
 class UnifiedMetricsMinestomPlugin(
     override val bootstrap: UnifiedMetricsMinestomBootstrap
@@ -37,10 +37,10 @@ class UnifiedMetricsMinestomPlugin(
 
         apiProvider.metricsManager.apply {
             with(config.metrics.collectors) {
-                if (server) registerMetric(ServerMetric())
-                if (world) registerMetric(WorldMetric())
-                if (tick) registerMetric(TickMetric())
-                if (events) registerMetric(EventsMetric())
+                if (server) registerCollection(ServerCollection())
+                if (world) registerCollection(WorldCollection())
+                if (tick) registerCollection(TickCollection())
+                if (events) registerCollection(EventsCollection())
             }
         }
     }

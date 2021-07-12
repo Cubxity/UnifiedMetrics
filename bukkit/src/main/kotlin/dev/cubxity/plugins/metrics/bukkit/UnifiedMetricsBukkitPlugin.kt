@@ -19,12 +19,11 @@ package dev.cubxity.plugins.metrics.bukkit
 
 import dev.cubxity.plugins.metrics.api.UnifiedMetrics
 import dev.cubxity.plugins.metrics.bukkit.bootstrap.UnifiedMetricsBukkitBootstrap
-import dev.cubxity.plugins.metrics.bukkit.metric.EventsMetric
-import dev.cubxity.plugins.metrics.bukkit.metric.server.ServerMetric
-import dev.cubxity.plugins.metrics.bukkit.metric.tick.TickMetric
-import dev.cubxity.plugins.metrics.bukkit.metric.world.WorldMetric
+import dev.cubxity.plugins.metrics.bukkit.metric.events.EventsCollection
+import dev.cubxity.plugins.metrics.bukkit.metric.server.ServerCollection
+import dev.cubxity.plugins.metrics.bukkit.metric.tick.TickCollection
+import dev.cubxity.plugins.metrics.bukkit.metric.world.WorldCollection
 import dev.cubxity.plugins.metrics.core.plugin.CoreUnifiedMetricsPlugin
-import org.bukkit.Bukkit
 import org.bukkit.plugin.ServicePriority
 import java.util.concurrent.Executors
 
@@ -39,7 +38,7 @@ class UnifiedMetricsBukkitPlugin(
     }
 
     override fun registerPlatformService(api: UnifiedMetrics) {
-        Bukkit.getServicesManager().register(UnifiedMetrics::class.java, api, bootstrap, ServicePriority.Normal)
+        bootstrap.server.servicesManager.register(UnifiedMetrics::class.java, api, bootstrap, ServicePriority.Normal)
     }
 
     override fun registerPlatformMetrics() {
@@ -47,10 +46,10 @@ class UnifiedMetricsBukkitPlugin(
 
         apiProvider.metricsManager.apply {
             with(config.metrics.collectors) {
-                if (server) registerMetric(ServerMetric())
-                if (world) registerMetric(WorldMetric())
-                if (tick) registerMetric(TickMetric())
-                if (events) registerMetric(EventsMetric(bootstrap))
+                if (server) registerCollection(ServerCollection(bootstrap))
+                if (world) registerCollection(WorldCollection(bootstrap))
+                if (tick) registerCollection(TickCollection(bootstrap))
+                if (events) registerCollection(EventsCollection(bootstrap))
             }
         }
     }

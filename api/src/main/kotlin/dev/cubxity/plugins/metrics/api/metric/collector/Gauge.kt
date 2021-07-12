@@ -17,39 +17,51 @@
 
 package dev.cubxity.plugins.metrics.api.metric.collector
 
-import dev.cubxity.plugins.metrics.api.metric.data.GaugeSample
-import dev.cubxity.plugins.metrics.api.metric.data.MetricSample
-import java.util.concurrent.atomic.AtomicInteger
+import dev.cubxity.plugins.metrics.api.metric.data.GaugeMetric
+import dev.cubxity.plugins.metrics.api.metric.data.Metric
+import dev.cubxity.plugins.metrics.api.metric.data.Tags
+import java.util.concurrent.atomic.AtomicLong
 
 /**
  * @param name name of the sample.
  */
-class Gauge(val name: String) : MetricCollector {
-    private val tags: MutableMap<String, String> = HashMap()
-    private val count = AtomicInteger()
+class Gauge(
+    val name: String,
+    val tags: Tags = emptyMap(),
+) : MetricCollector {
+    private val count = AtomicLong()
 
-    override fun collect(): List<MetricSample> {
-        val sample = GaugeSample(name, count.get().toDouble(), tags)
-        return listOf(sample)
+    override fun collect(): List<Metric> {
+        return listOf(
+            GaugeMetric(name, tags, count.get().toDouble())
+        )
     }
 
-    fun set(value: Int) {
+    fun set(value: Long) {
         count.set(value)
     }
 
-    fun inc() {
+    operator fun inc() = apply {
         count.incrementAndGet()
     }
 
-    fun dec() {
+    operator fun dec() = apply {
         count.decrementAndGet()
     }
 
-    operator fun plusAssign(delta: Int) {
+    operator fun plusAssign(delta: Long) {
         count.addAndGet(delta)
     }
 
-    operator fun minusAssign(delta: Int) {
+    operator fun plusAssign(delta: Number) {
+        count.addAndGet(delta.toLong())
+    }
+
+    operator fun minusAssign(delta: Long) {
         count.addAndGet(-delta)
+    }
+
+    operator fun minusAssign(delta: Number) {
+        count.addAndGet(-delta.toLong())
     }
 }

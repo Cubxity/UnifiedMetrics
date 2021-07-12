@@ -19,24 +19,64 @@ package dev.cubxity.plugins.metrics.prometheus
 
 import dev.cubxity.plugins.metrics.api.UnifiedMetrics
 import dev.cubxity.plugins.metrics.api.metric.collect
-import dev.cubxity.plugins.metrics.api.metric.data.MetricType
+import dev.cubxity.plugins.metrics.api.metric.data.CounterMetric
+import dev.cubxity.plugins.metrics.api.metric.data.GaugeMetric
+import dev.cubxity.plugins.metrics.api.metric.data.HistogramMetric
+import dev.cubxity.plugins.metrics.api.util.fastForEach
+import dev.cubxity.plugins.metrics.api.util.toGoString
 import io.prometheus.client.Collector
 import kotlinx.coroutines.runBlocking
 
 class UnifiedMetricsCollector(private val api: UnifiedMetrics) : Collector() {
-    override fun collect(): List<MetricFamilySamples> = runBlocking(api.dispatcher) {
-        try {
-            api.metricsManager.collect().map {
-                val keys = it.tags.keys.toList()
-                val values = it.tags.values.toList()
-                val sample = MetricFamilySamples.Sample(it.name, keys, values, it.value)
-                val type = when (it.type) {
-                    MetricType.Counter -> Type.COUNTER
-                    MetricType.Gauge -> Type.GAUGE
-                    else -> Type.UNKNOWN
-                }
+    override fun collect(): List<MetricFamilySamples> {
+        return try {
+            val metrics = runBlocking(api.dispatcher) {
+                api.metricsManager.collect()
+            }
 
-                MetricFamilySamples(it.name, type, "", listOf(sample))
+            metrics.map { metric ->
+                val keys = metric.tags.keys.toList()
+                val values = metric.tags.values.toList()
+
+                when (metric) {
+                    is CounterMetric -> {
+                        val samples = listOf(MetricFamilySamples.Sample(metric.name, keys, values, metric.value))
+                        MetricFamilySamples(metric.name, Type.COUNTER, "", samples)
+                    }
+                    is GaugeMetric -> {
+                        val samples = listOf(MetricFamilySamples.Sample(metric.name, keys, values, metric.value))
+                        MetricFamilySamples(metric.name, Type.GAUGE, "", samples)
+                    }
+                    is HistogramMetric -> {
+                        val samples = ArrayList<MetricFamilySamples.Sample>(2 + metric.bucket.size)
+
+                        val keysWithLe = keys.toMutableList()
+                        keysWithLe += "le"
+
+                        val bucketName = "${metric.name}_bucket"
+
+                        metric.bucket.fastForEach { bucket ->
+                            val valuesWithLe = values.toMutableList()
+                            valuesWithLe += bucket.upperBound.toGoString()
+
+                            samples += MetricFamilySamples.Sample(
+                                bucketName,
+                                keysWithLe,
+                                valuesWithLe,
+                                bucket.cumulativeCount
+                            )
+                        }
+
+                        samples.add(
+                            MetricFamilySamples.Sample("${metric.name}_count", keys, values, metric.sampleCount)
+                        )
+                        samples.add(
+                            MetricFamilySamples.Sample("${metric.name}_sum", keys, values, metric.sampleSum)
+                        )
+
+                        MetricFamilySamples(metric.name, Type.HISTOGRAM, "", samples)
+                    }
+                }
             }
         } catch (exception: Exception) {
             api.logger.severe("An error occurred whilst collecting metrics", exception)

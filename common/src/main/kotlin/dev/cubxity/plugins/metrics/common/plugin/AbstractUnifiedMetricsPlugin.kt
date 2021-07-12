@@ -18,16 +18,22 @@
 package dev.cubxity.plugins.metrics.common.plugin
 
 import com.charleskorn.kaml.Yaml
+import com.charleskorn.kaml.YamlConfiguration
 import dev.cubxity.plugins.metrics.api.UnifiedMetrics
 import dev.cubxity.plugins.metrics.api.UnifiedMetricsProvider
 import dev.cubxity.plugins.metrics.common.api.UnifiedMetricsApiProvider
 import dev.cubxity.plugins.metrics.common.config.UnifiedMetricsConfig
-import dev.cubxity.plugins.metrics.common.metric.system.SystemMetric
+import dev.cubxity.plugins.metrics.common.metric.system.gc.GCCollection
+import dev.cubxity.plugins.metrics.common.metric.system.memory.MemoryCollection
+import dev.cubxity.plugins.metrics.common.metric.system.process.ProcessCollection
+import dev.cubxity.plugins.metrics.common.metric.system.thread.ThreadCollection
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import java.nio.file.Files
 
 abstract class AbstractUnifiedMetricsPlugin : UnifiedMetricsPlugin {
+    private val yaml = Yaml(configuration = YamlConfiguration(strictMode = false))
+
     private var _config: UnifiedMetricsConfig? = null
     private var _apiProvider: UnifiedMetricsApiProvider? = null
 
@@ -77,8 +83,11 @@ abstract class AbstractUnifiedMetricsPlugin : UnifiedMetricsPlugin {
 
     open fun registerPlatformMetrics() {
         apiProvider.metricsManager.apply {
-            if (config.metrics.collectors.system) {
-                registerMetric(SystemMetric())
+            with(config.metrics.collectors) {
+                if (systemGc) registerCollection(GCCollection())
+                if (systemMemory) registerCollection(MemoryCollection())
+                if (systemProcess) registerCollection(ProcessCollection())
+                if (systemThread) registerCollection(ThreadCollection())
             }
         }
     }
@@ -87,13 +96,13 @@ abstract class AbstractUnifiedMetricsPlugin : UnifiedMetricsPlugin {
         val file = bootstrap.configDirectory.toFile().resolve("config.yml")
 
         return when {
-            file.exists() -> Yaml.default.decodeFromString(file.readText())
+            file.exists() -> yaml.decodeFromString(file.readText())
             else -> UnifiedMetricsConfig()
         }
     }
 
     private fun saveConfig() {
         val file = bootstrap.configDirectory.toFile().resolve("config.yml")
-        file.writeText(Yaml.default.encodeToString(config))
+        file.writeText(yaml.encodeToString(config))
     }
 }

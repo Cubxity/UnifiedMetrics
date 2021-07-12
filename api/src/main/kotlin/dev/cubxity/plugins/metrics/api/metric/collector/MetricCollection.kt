@@ -15,14 +15,24 @@
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.metric.data
+package dev.cubxity.plugins.metrics.api.metric.collector
 
-/**
- * Prometheus-compatible metric types. The Prometheus server does not yet make use of the type information.
- */
-sealed class MetricType {
-    object Unknown : MetricType()
-    object Counter : MetricType()
-    object Gauge : MetricType()
-    object Histogram : MetricType()
+import dev.cubxity.plugins.metrics.api.metric.data.Metric
+
+interface MetricCollection {
+    /**
+     * List of collectors associated with this metric.
+     */
+    val collectors: List<MetricCollector>
+
+    fun initialize() {
+        // Do nothing
+    }
+
+    fun dispose() {
+        // Do nothing
+    }
 }
+
+fun MetricCollection.collect(): List<Metric> =
+    collectors.flatMap { it.collect() }

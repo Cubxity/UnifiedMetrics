@@ -39,7 +39,10 @@ data class UnifiedMetricsMetricsConfig(
 
 @Serializable
 data class UnifiedMetricsCollectorsConfig(
-    val system: Boolean = true,
+    val systemGc: Boolean = true,
+    val systemMemory: Boolean = true,
+    val systemProcess: Boolean = true,
+    val systemThread: Boolean = true,
     val server: Boolean = true,
     val world: Boolean = true,
     val tick: Boolean = true,

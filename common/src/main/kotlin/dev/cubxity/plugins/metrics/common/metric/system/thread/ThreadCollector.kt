@@ -15,20 +15,21 @@
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.bungee.metric.server
+package dev.cubxity.plugins.metrics.common.metric.system.thread
 
 import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+import dev.cubxity.plugins.metrics.api.metric.data.CounterMetric
 import dev.cubxity.plugins.metrics.api.metric.data.GaugeMetric
 import dev.cubxity.plugins.metrics.api.metric.data.Metric
-import dev.cubxity.plugins.metrics.bungee.bootstrap.UnifiedMetricsBungeeBootstrap
+import java.lang.management.ManagementFactory
 
-class ServerCollector(private val bootstrap: UnifiedMetricsBungeeBootstrap) : MetricCollector {
-    override fun collect(): List<Metric> {
-        val proxy = bootstrap.proxy
-        return listOf(
-            GaugeMetric("minecraft_plugins", value = proxy.pluginManager.plugins.size),
-            GaugeMetric("minecraft_players_count", value = proxy.onlineCount),
-            GaugeMetric("minecraft_players_max", value = proxy.config.playerLimit)
-        )
-    }
+class ThreadCollector : MetricCollector {
+    private val bean = ManagementFactory.getThreadMXBean()
+
+    override fun collect(): List<Metric> = listOf(
+        GaugeMetric("jvm_threads_current_count", value = bean.threadCount),
+        GaugeMetric("jvm_threads_daemon_count", value = bean.daemonThreadCount),
+        CounterMetric("jvm_threads_started_total", value = bean.totalStartedThreadCount),
+        GaugeMetric("jvm_threads_peak", value = bean.peakThreadCount),
+    )
 }

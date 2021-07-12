@@ -15,14 +15,11 @@
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.metric.data
+package dev.cubxity.plugins.metrics.api.util
 
-/**
- * Prometheus-compatible metric types. The Prometheus server does not yet make use of the type information.
- */
-sealed class MetricType {
-    object Unknown : MetricType()
-    object Counter : MetricType()
-    object Gauge : MetricType()
-    object Histogram : MetricType()
+inline fun <T> List<T>.fastForEach(block: (T) -> Unit) {
+    val size = size
+    for (i in size downTo 1) {
+        block(get(size - i))
+    }
 }

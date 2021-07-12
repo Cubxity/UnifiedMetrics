@@ -17,7 +17,7 @@
 
 package dev.cubxity.plugins.metrics.api.metric.collector
 
-import dev.cubxity.plugins.metrics.api.metric.data.MetricSample
+import dev.cubxity.plugins.metrics.api.metric.data.Metric
 
 const val NANOSECONDS_PER_SECOND: Double = 1E9
 const val MILLISECONDS_PER_SECOND: Double = 1E3
@@ -26,7 +26,7 @@ interface MetricCollector {
     /**
      * Collects the metric and returns a list of samples.
      *
-     * @return [List] of [MetricSample]
+     * @return [List] of [Metric]
      */
-    fun collect(): List<MetricSample>
+    fun collect(): List<Metric>
 }

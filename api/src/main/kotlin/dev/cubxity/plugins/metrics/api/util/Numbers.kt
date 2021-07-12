@@ -15,14 +15,10 @@
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.metric.data
+package dev.cubxity.plugins.metrics.api.util
 
-/**
- * Prometheus-compatible metric types. The Prometheus server does not yet make use of the type information.
- */
-sealed class MetricType {
-    object Unknown : MetricType()
-    object Counter : MetricType()
-    object Gauge : MetricType()
-    object Histogram : MetricType()
+fun Double.toGoString(): String = when (this) {
+    Double.POSITIVE_INFINITY -> "+Inf"
+    Double.NEGATIVE_INFINITY -> "-Inf"
+    else -> toString()
 }

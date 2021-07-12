@@ -18,19 +18,20 @@
 package dev.cubxity.plugins.metrics.minestom.metric.server
 
 import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
-import dev.cubxity.plugins.metrics.api.metric.data.GaugeSample
-import dev.cubxity.plugins.metrics.api.metric.data.MetricSample
+import dev.cubxity.plugins.metrics.api.metric.data.GaugeMetric
+import dev.cubxity.plugins.metrics.api.metric.data.Metric
 import net.minestom.server.MinecraftServer
 
 class ServerCollector : MetricCollector {
-    override fun collect(): List<MetricSample> {
+    override fun collect(): List<Metric> {
         val extensionCount = MinecraftServer.getExtensionManager().extensions.size
         val playerCount = MinecraftServer.getConnectionManager().onlinePlayers.size
 
         return listOf(
-            GaugeSample("minecraft_plugins", extensionCount),
-            GaugeSample("minecraft_players_count", playerCount),
-            GaugeSample("minecraft_players_max", playerCount + 1) // Minestom does not have a "max players" count
+            GaugeMetric("minecraft_plugins", value = extensionCount),
+            GaugeMetric("minecraft_players_count", value = playerCount),
+            // Minestom does not have a "max players" count
+            GaugeMetric("minecraft_players_max", value = playerCount + 1)
         )
     }
 }

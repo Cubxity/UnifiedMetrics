@@ -20,8 +20,8 @@ package dev.cubxity.plugins.metrics.velocity
 import dev.cubxity.plugins.metrics.api.UnifiedMetrics
 import dev.cubxity.plugins.metrics.core.plugin.CoreUnifiedMetricsPlugin
 import dev.cubxity.plugins.metrics.velocity.bootstrap.UnifiedMetricsVelocityBootstrap
-import dev.cubxity.plugins.metrics.velocity.metric.EventsMetric
-import dev.cubxity.plugins.metrics.velocity.metric.server.ServerMetric
+import dev.cubxity.plugins.metrics.velocity.metric.events.EventsCollection
+import dev.cubxity.plugins.metrics.velocity.metric.server.ServerCollection
 
 class UnifiedMetricsVelocityPlugin(
     override val bootstrap: UnifiedMetricsVelocityBootstrap
@@ -35,8 +35,8 @@ class UnifiedMetricsVelocityPlugin(
 
         apiProvider.metricsManager.apply {
             with(config.metrics.collectors) {
-                if (server) registerMetric(ServerMetric(bootstrap))
-                if (events) registerMetric(EventsMetric(bootstrap))
+                if (server) registerCollection(ServerCollection(bootstrap))
+                if (events) registerCollection(EventsCollection(bootstrap))
             }
         }
     }

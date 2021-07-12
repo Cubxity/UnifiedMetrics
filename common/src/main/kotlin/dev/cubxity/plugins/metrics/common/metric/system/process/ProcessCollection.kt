@@ -15,14 +15,11 @@
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.metric.data
+package dev.cubxity.plugins.metrics.common.metric.system.process
 
-/**
- * Prometheus-compatible metric types. The Prometheus server does not yet make use of the type information.
- */
-sealed class MetricType {
-    object Unknown : MetricType()
-    object Counter : MetricType()
-    object Gauge : MetricType()
-    object Histogram : MetricType()
+import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollection
+import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+
+class ProcessCollection : MetricCollection {
+    override val collectors: List<MetricCollector> = listOf(ProcessCollector())
 }

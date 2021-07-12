@@ -18,17 +18,17 @@
 package dev.cubxity.plugins.metrics.velocity.metric.server
 
 import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
-import dev.cubxity.plugins.metrics.api.metric.data.GaugeSample
-import dev.cubxity.plugins.metrics.api.metric.data.MetricSample
+import dev.cubxity.plugins.metrics.api.metric.data.GaugeMetric
+import dev.cubxity.plugins.metrics.api.metric.data.Metric
 import dev.cubxity.plugins.metrics.velocity.bootstrap.UnifiedMetricsVelocityBootstrap
 
 class ServerCollector(private val bootstrap: UnifiedMetricsVelocityBootstrap) : MetricCollector {
-    override fun collect(): List<MetricSample> {
+    override fun collect(): List<Metric> {
         val server = bootstrap.server
         return listOf(
-            GaugeSample("minecraft_plugins", server.pluginManager.plugins.size),
-            GaugeSample("minecraft_players_count", server.playerCount),
-            GaugeSample("minecraft_players_max", server.configuration.showMaxPlayers)
+            GaugeMetric("minecraft_plugins", value = server.pluginManager.plugins.size),
+            GaugeMetric("minecraft_players_count", value = server.playerCount),
+            GaugeMetric("minecraft_players_max", value = server.configuration.showMaxPlayers)
         )
     }
 }

@@ -18,24 +18,28 @@
 package dev.cubxity.plugins.metrics.common.api
 
 import com.charleskorn.kaml.Yaml
-import dev.cubxity.plugins.metrics.api.metric.Metric
+import com.charleskorn.kaml.YamlConfiguration
 import dev.cubxity.plugins.metrics.api.metric.MetricsDriver
 import dev.cubxity.plugins.metrics.api.metric.MetricsDriverFactory
 import dev.cubxity.plugins.metrics.api.metric.MetricsManager
+import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollection
+import dev.cubxity.plugins.metrics.api.util.fastForEach
 import dev.cubxity.plugins.metrics.common.plugin.UnifiedMetricsPlugin
 import java.nio.file.Files
 import kotlin.system.measureTimeMillis
 
 class MetricsManagerImpl(private val plugin: UnifiedMetricsPlugin) : MetricsManager {
+    private val yaml = Yaml(configuration = YamlConfiguration(strictMode = false))
     private val driverDirectory = plugin.bootstrap.configDirectory.resolve("driver")
+
     private val metricDrivers: MutableMap<String, MetricsDriverFactory<Any>> = HashMap()
-    private val _metrics: MutableList<Metric> = ArrayList()
+    private val _collections: MutableList<MetricCollection> = ArrayList()
 
     private var shouldInitialize: Boolean = false
     private var driver: MetricsDriver? = null
 
-    override val metrics: List<Metric>
-        get() = _metrics
+    override val collections: List<MetricCollection>
+        get() = _collections
 
     override fun initialize() {
         shouldInitialize = true
@@ -52,19 +56,19 @@ class MetricsManagerImpl(private val plugin: UnifiedMetricsPlugin) : MetricsMana
         }
     }
 
-    override fun registerMetric(metric: Metric) {
+    override fun registerCollection(collection: MetricCollection) {
         try {
-            metric.initialize()
-            _metrics.add(metric)
+            collection.initialize()
+            _collections.add(collection)
         } catch (error: Throwable) {
             plugin.bootstrap.logger.warn("An error occurred whilst registering metric", error)
         }
     }
 
-    override fun unregisterMetric(metric: Metric) {
+    override fun unregisterCollection(collection: MetricCollection) {
         try {
-            _metrics.remove(metric)
-            metric.dispose()
+            _collections.remove(collection)
+            collection.dispose()
         } catch (error: Throwable) {
             plugin.bootstrap.logger.warn("An error occurred whilst unregistering metric", error)
         }
@@ -84,7 +88,10 @@ class MetricsManagerImpl(private val plugin: UnifiedMetricsPlugin) : MetricsMana
     override fun dispose() {
         shouldInitialize = false
 
-        metrics.toList().forEach { unregisterMetric(it) }
+        collections.toList().fastForEach { collection ->
+            unregisterCollection(collection)
+        }
+
         driver?.close()
         driver = null
     }
@@ -97,12 +104,12 @@ class MetricsManagerImpl(private val plugin: UnifiedMetricsPlugin) : MetricsMana
 
                 val serializer = factory.configSerializer
                 val config = when {
-                    file.exists() -> Yaml.default.decodeFromString(serializer, file.readText())
+                    file.exists() -> yaml.decodeFromString(serializer, file.readText())
                     else -> factory.defaultConfig
                 }
 
                 try {
-                    file.writeText(Yaml.default.encodeToString(serializer, config))
+                    file.writeText(yaml.encodeToString(serializer, config))
                 } catch (exception: Exception) {
                     plugin.apiProvider.logger.severe("An error occurred whilst saving driver config file ", exception)
                 }

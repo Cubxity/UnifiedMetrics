@@ -19,8 +19,8 @@ package dev.cubxity.plugins.metrics.bungee
 
 import dev.cubxity.plugins.metrics.api.UnifiedMetrics
 import dev.cubxity.plugins.metrics.bungee.bootstrap.UnifiedMetricsBungeeBootstrap
-import dev.cubxity.plugins.metrics.bungee.metric.EventsMetric
-import dev.cubxity.plugins.metrics.bungee.metric.server.ServerMetric
+import dev.cubxity.plugins.metrics.bungee.metric.events.EventsCollection
+import dev.cubxity.plugins.metrics.bungee.metric.server.ServerCollection
 import dev.cubxity.plugins.metrics.core.plugin.CoreUnifiedMetricsPlugin
 
 class UnifiedMetricsBungeePlugin(
@@ -35,8 +35,8 @@ class UnifiedMetricsBungeePlugin(
 
         apiProvider.metricsManager.apply {
             with(config.metrics.collectors) {
-                if (server) registerMetric(ServerMetric(bootstrap))
-                if (events) registerMetric(EventsMetric(bootstrap))
+                if (server) registerCollection(ServerCollection(bootstrap))
+                if (events) registerCollection(EventsCollection(bootstrap))
             }
         }
     }

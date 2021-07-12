@@ -15,20 +15,29 @@
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.bukkit.metric.server
+package dev.cubxity.plugins.metrics.bukkit.metric.tick
 
-import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
-import dev.cubxity.plugins.metrics.api.metric.data.GaugeMetric
-import dev.cubxity.plugins.metrics.api.metric.data.Metric
+import com.destroystokyo.paper.event.server.ServerTickEndEvent
+import dev.cubxity.plugins.metrics.api.metric.collector.MILLISECONDS_PER_SECOND
 import dev.cubxity.plugins.metrics.bukkit.bootstrap.UnifiedMetricsBukkitBootstrap
+import org.bukkit.event.EventHandler
+import org.bukkit.event.HandlerList
+import org.bukkit.event.Listener
 
-class ServerCollector(private val bootstrap: UnifiedMetricsBukkitBootstrap) : MetricCollector {
-    override fun collect(): List<Metric> {
-        val server = bootstrap.server
-        return listOf(
-            GaugeMetric("minecraft_plugins", value = server.pluginManager.plugins.size),
-            GaugeMetric("minecraft_players_count", value = server.onlinePlayers.size),
-            GaugeMetric("minecraft_players_max", value = server.maxPlayers)
-        )
+class PaperTickReporter(
+    private val metric: TickCollection,
+    private val bootstrap: UnifiedMetricsBukkitBootstrap
+) : TickReporter, Listener {
+    override fun initialize() {
+        bootstrap.server.pluginManager.registerEvents(this, bootstrap)
+    }
+
+    override fun dispose() {
+        HandlerList.unregisterAll(this)
+    }
+
+    @EventHandler
+    fun onTick(event: ServerTickEndEvent) {
+        metric.onTick(event.tickDuration / MILLISECONDS_PER_SECOND)
     }
 }

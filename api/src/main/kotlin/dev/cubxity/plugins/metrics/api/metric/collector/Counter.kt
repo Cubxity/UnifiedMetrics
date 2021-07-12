@@ -17,35 +17,37 @@
 
 package dev.cubxity.plugins.metrics.api.metric.collector
 
-import dev.cubxity.plugins.metrics.api.metric.data.CounterSample
-import dev.cubxity.plugins.metrics.api.metric.data.MetricSample
-import java.util.concurrent.atomic.AtomicInteger
+import dev.cubxity.plugins.metrics.api.metric.data.CounterMetric
+import dev.cubxity.plugins.metrics.api.metric.data.Metric
+import dev.cubxity.plugins.metrics.api.metric.data.Tags
+import dev.cubxity.plugins.metrics.api.metric.store.LongAdderStore
+import dev.cubxity.plugins.metrics.api.metric.store.LongStoreFactory
 
 /**
  * @param name name of the sample. Should end with '_total'
  */
-class Counter(val name: String) : MetricCollector {
-    private val tags: MutableMap<String, String> = HashMap()
-    private val count = AtomicInteger()
+class Counter(
+    val name: String,
+    val tags: Tags = emptyMap(),
+    valueStoreFactory: LongStoreFactory = LongAdderStore
+) : MetricCollector {
+    private val count = valueStoreFactory.create()
 
-    override fun collect(): List<MetricSample> {
-        val sample = CounterSample(name, count.get().toDouble(), tags)
-        return listOf(sample)
+    override fun collect(): List<Metric> {
+        return listOf(
+            CounterMetric(name, tags, count.get().toDouble())
+        )
     }
 
-    fun inc() {
-        count.incrementAndGet()
+    operator fun inc(): Counter = apply {
+        count.add(1)
     }
 
-    fun dec() {
-        count.decrementAndGet()
+    operator fun plusAssign(delta: Long) {
+        count.add(delta)
     }
 
-    operator fun plusAssign(delta: Int) {
-        count.addAndGet(delta)
-    }
-
-    operator fun minusAssign(delta: Int) {
-        count.addAndGet(-delta)
+    operator fun plusAssign(delta: Number) {
+        count.add(delta.toLong())
     }
 }

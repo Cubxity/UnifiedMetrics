@@ -15,14 +15,12 @@
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.metric.data
+package dev.cubxity.plugins.metrics.bukkit.metric.server
 
-/**
- * Prometheus-compatible metric types. The Prometheus server does not yet make use of the type information.
- */
-sealed class MetricType {
-    object Unknown : MetricType()
-    object Counter : MetricType()
-    object Gauge : MetricType()
-    object Histogram : MetricType()
+import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollection
+import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+import dev.cubxity.plugins.metrics.bukkit.bootstrap.UnifiedMetricsBukkitBootstrap
+
+class ServerCollection(bootstrap: UnifiedMetricsBukkitBootstrap) : MetricCollection {
+    override val collectors: List<MetricCollector> = listOf(ServerCollector(bootstrap))
 }
