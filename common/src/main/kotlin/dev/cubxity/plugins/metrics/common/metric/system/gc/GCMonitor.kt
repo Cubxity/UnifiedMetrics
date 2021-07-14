@@ -47,8 +47,6 @@ class GCMonitor(
             diff -= usage.used
         }
 
-        println(diff)
-
         freedHistogram += diff
     }
 }
