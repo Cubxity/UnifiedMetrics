@@ -17,12 +17,12 @@
 
 package dev.cubxity.plugins.metrics.bukkit.metric.server
 
-import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+import dev.cubxity.plugins.metrics.api.metric.collector.Collector
 import dev.cubxity.plugins.metrics.api.metric.data.GaugeMetric
 import dev.cubxity.plugins.metrics.api.metric.data.Metric
 import dev.cubxity.plugins.metrics.bukkit.bootstrap.UnifiedMetricsBukkitBootstrap
 
-class ServerCollector(private val bootstrap: UnifiedMetricsBukkitBootstrap) : MetricCollector {
+class ServerCollector(private val bootstrap: UnifiedMetricsBukkitBootstrap) : Collector {
     override fun collect(): List<Metric> {
         val server = bootstrap.server
         return listOf(

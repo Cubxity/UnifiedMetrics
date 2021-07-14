@@ -18,12 +18,18 @@
 package dev.cubxity.plugins.metrics.api.metric.collector
 
 import dev.cubxity.plugins.metrics.api.metric.data.Metric
+import dev.cubxity.plugins.metrics.api.util.fastFlatMap
 
-interface MetricCollection {
+interface CollectorCollection {
     /**
      * List of collectors associated with this metric.
      */
-    val collectors: List<MetricCollector>
+    val collectors: List<Collector>
+
+    /**
+     * Whether the collection should be collected asynchronously.
+     */
+    val isAsync: Boolean get() = false
 
     fun initialize() {
         // Do nothing
@@ -34,5 +40,5 @@ interface MetricCollection {
     }
 }
 
-fun MetricCollection.collect(): List<Metric> =
-    collectors.flatMap { it.collect() }
+fun CollectorCollection.collect(): List<Metric> =
+    collectors.fastFlatMap { it.collect() }

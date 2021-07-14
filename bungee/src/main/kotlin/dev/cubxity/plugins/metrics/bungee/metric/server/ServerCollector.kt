@@ -17,12 +17,12 @@
 
 package dev.cubxity.plugins.metrics.bungee.metric.server
 
-import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+import dev.cubxity.plugins.metrics.api.metric.collector.Collector
 import dev.cubxity.plugins.metrics.api.metric.data.GaugeMetric
 import dev.cubxity.plugins.metrics.api.metric.data.Metric
 import dev.cubxity.plugins.metrics.bungee.bootstrap.UnifiedMetricsBungeeBootstrap
 
-class ServerCollector(private val bootstrap: UnifiedMetricsBungeeBootstrap) : MetricCollector {
+class ServerCollector(private val bootstrap: UnifiedMetricsBungeeBootstrap) : Collector {
     override fun collect(): List<Metric> {
         val proxy = bootstrap.proxy
         return listOf(

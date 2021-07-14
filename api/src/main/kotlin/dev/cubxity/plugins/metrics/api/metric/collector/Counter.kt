@@ -18,36 +18,36 @@
 package dev.cubxity.plugins.metrics.api.metric.collector
 
 import dev.cubxity.plugins.metrics.api.metric.data.CounterMetric
+import dev.cubxity.plugins.metrics.api.metric.data.Labels
 import dev.cubxity.plugins.metrics.api.metric.data.Metric
-import dev.cubxity.plugins.metrics.api.metric.data.Tags
-import dev.cubxity.plugins.metrics.api.metric.store.LongAdderStore
-import dev.cubxity.plugins.metrics.api.metric.store.LongStoreFactory
+import dev.cubxity.plugins.metrics.api.metric.store.DoubleAdderStore
+import dev.cubxity.plugins.metrics.api.metric.store.DoubleStoreFactory
 
 /**
  * @param name name of the sample. Should end with '_total'
  */
 class Counter(
-    val name: String,
-    val tags: Tags = emptyMap(),
-    valueStoreFactory: LongStoreFactory = LongAdderStore
-) : MetricCollector {
+    private val name: String,
+    private val labels: Labels = emptyMap(),
+    valueStoreFactory: DoubleStoreFactory = DoubleAdderStore
+) : Collector {
     private val count = valueStoreFactory.create()
 
     override fun collect(): List<Metric> {
         return listOf(
-            CounterMetric(name, tags, count.get().toDouble())
+            CounterMetric(name, labels, count.get())
         )
     }
 
     operator fun inc(): Counter = apply {
-        count.add(1)
+        count.add(1.0)
     }
 
-    operator fun plusAssign(delta: Long) {
+    operator fun plusAssign(delta: Double) {
         count.add(delta)
     }
 
     operator fun plusAssign(delta: Number) {
-        count.add(delta.toLong())
+        count.add(delta.toDouble())
     }
 }

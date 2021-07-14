@@ -17,9 +17,9 @@
 
 package dev.cubxity.plugins.metrics.common.metric.system.process
 
-import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollection
-import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+import dev.cubxity.plugins.metrics.api.metric.collector.CollectorCollection
+import dev.cubxity.plugins.metrics.api.metric.collector.Collector
 
-class ProcessCollection : MetricCollection {
-    override val collectors: List<MetricCollector> = listOf(ProcessCollector())
+class ProcessCollection : CollectorCollection {
+    override val collectors: List<Collector> = listOf(ProcessCollector())
 }

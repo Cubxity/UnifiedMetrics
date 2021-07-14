@@ -17,12 +17,12 @@
 
 package dev.cubxity.plugins.metrics.minestom.metric.server
 
-import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+import dev.cubxity.plugins.metrics.api.metric.collector.Collector
 import dev.cubxity.plugins.metrics.api.metric.data.GaugeMetric
 import dev.cubxity.plugins.metrics.api.metric.data.Metric
 import net.minestom.server.MinecraftServer
 
-class ServerCollector : MetricCollector {
+class ServerCollector : Collector {
     override fun collect(): List<Metric> {
         val extensionCount = MinecraftServer.getExtensionManager().extensions.size
         val playerCount = MinecraftServer.getConnectionManager().onlinePlayers.size

@@ -18,15 +18,15 @@
 package dev.cubxity.plugins.metrics.common.metric.system.process
 
 import com.sun.management.OperatingSystemMXBean
+import dev.cubxity.plugins.metrics.api.metric.collector.Collector
 import dev.cubxity.plugins.metrics.api.metric.collector.MILLISECONDS_PER_SECOND
-import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
 import dev.cubxity.plugins.metrics.api.metric.collector.NANOSECONDS_PER_SECOND
 import dev.cubxity.plugins.metrics.api.metric.data.CounterMetric
 import dev.cubxity.plugins.metrics.api.metric.data.GaugeMetric
 import dev.cubxity.plugins.metrics.api.metric.data.Metric
 import java.lang.management.ManagementFactory
 
-class ProcessCollector : MetricCollector {
+class ProcessCollector : Collector {
     private val osBean = ManagementFactory.getOperatingSystemMXBean()
     private val runtimeBean = ManagementFactory.getRuntimeMXBean()
 

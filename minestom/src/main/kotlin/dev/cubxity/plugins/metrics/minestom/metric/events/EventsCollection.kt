@@ -18,8 +18,8 @@
 package dev.cubxity.plugins.metrics.minestom.metric.events
 
 import dev.cubxity.plugins.metrics.api.metric.collector.Counter
-import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollection
-import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+import dev.cubxity.plugins.metrics.api.metric.collector.CollectorCollection
+import dev.cubxity.plugins.metrics.api.metric.collector.Collector
 import net.minestom.server.MinecraftServer
 import net.minestom.server.event.EventListener
 import net.minestom.server.event.player.AsyncPlayerPreLoginEvent
@@ -28,7 +28,7 @@ import net.minestom.server.event.player.PlayerDisconnectEvent
 import net.minestom.server.event.player.PlayerLoginEvent
 import net.minestom.server.event.server.ServerListPingEvent
 
-class EventsCollection : MetricCollection {
+class EventsCollection : CollectorCollection {
     private val loginCounter = Counter("minecraft_events_login_total")
     private val joinCounter = Counter("minecraft_events_join_total")
     private val quitCounter = Counter("minecraft_events_quit_total")
@@ -41,7 +41,7 @@ class EventsCollection : MetricCollection {
     private val chatListener = EventListener.of(PlayerChatEvent::class.java) { chatCounter.inc() }
     private val pingListener = EventListener.of(ServerListPingEvent::class.java) { pingCounter.inc() }
 
-    override val collectors: List<MetricCollector> =
+    override val collectors: List<Collector> =
         listOf(joinCounter, quitCounter, chatCounter, pingCounter)
 
     override fun initialize() {

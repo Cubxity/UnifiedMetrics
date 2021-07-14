@@ -15,18 +15,18 @@
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.metric.collector
+package dev.cubxity.plugins.metrics.bukkit.util
 
-import dev.cubxity.plugins.metrics.api.metric.data.Metric
+fun classExists(className: String): Boolean = try {
+    Class.forName(className)
+    true
+} catch (e: ClassNotFoundException) {
+    false
+}
 
-const val NANOSECONDS_PER_SECOND: Double = 1E9
-const val MILLISECONDS_PER_SECOND: Double = 1E3
-
-interface MetricCollector {
-    /**
-     * Collects the metric and returns a list of samples.
-     *
-     * @return [List] of [Metric]
-     */
-    fun collect(): List<Metric>
+fun declaredMethodExists(className: String, methodName: String, vararg parameterTypes: Class<*>): Boolean = try {
+    Class.forName(className).getDeclaredMethod(methodName, *parameterTypes)
+    true
+} catch (e: ReflectiveOperationException) {
+    false
 }

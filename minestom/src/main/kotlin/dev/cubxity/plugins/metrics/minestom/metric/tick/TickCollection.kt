@@ -19,15 +19,15 @@ package dev.cubxity.plugins.metrics.minestom.metric.tick
 
 import dev.cubxity.plugins.metrics.api.metric.collector.Histogram
 import dev.cubxity.plugins.metrics.api.metric.collector.MILLISECONDS_PER_SECOND
-import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollection
-import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+import dev.cubxity.plugins.metrics.api.metric.collector.CollectorCollection
+import dev.cubxity.plugins.metrics.api.metric.collector.Collector
 import dev.cubxity.plugins.metrics.api.metric.store.VolatileDoubleStore
 import dev.cubxity.plugins.metrics.api.metric.store.VolatileLongStore
 import net.minestom.server.MinecraftServer
 import net.minestom.server.monitoring.TickMonitor
 import java.util.function.Consumer
 
-class TickCollection : Consumer<TickMonitor>, MetricCollection {
+class TickCollection : Consumer<TickMonitor>, CollectorCollection {
     // The callback is called from a single thread
     private val tickDuration = Histogram(
         "minecraft_tick_duration_seconds",
@@ -35,7 +35,7 @@ class TickCollection : Consumer<TickMonitor>, MetricCollection {
         countStoreFactory = VolatileLongStore
     )
 
-    override val collectors: List<MetricCollector> = listOf(tickDuration)
+    override val collectors: List<Collector> = listOf(tickDuration)
 
     override fun initialize() {
         MinecraftServer.getUpdateManager().addTickMonitor(this)

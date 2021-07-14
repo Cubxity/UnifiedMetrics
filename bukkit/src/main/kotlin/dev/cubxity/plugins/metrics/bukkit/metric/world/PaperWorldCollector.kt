@@ -17,22 +17,22 @@
 
 package dev.cubxity.plugins.metrics.bukkit.metric.world
 
-import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+import dev.cubxity.plugins.metrics.api.metric.collector.Collector
 import dev.cubxity.plugins.metrics.api.metric.data.GaugeMetric
 import dev.cubxity.plugins.metrics.api.metric.data.Metric
 import dev.cubxity.plugins.metrics.api.util.fastForEach
 import dev.cubxity.plugins.metrics.bukkit.bootstrap.UnifiedMetricsBukkitBootstrap
 
-class WorldCollector(private val bootstrap: UnifiedMetricsBukkitBootstrap) : MetricCollector {
+class PaperWorldCollector(private val bootstrap: UnifiedMetricsBukkitBootstrap) : Collector {
     override fun collect(): List<Metric> {
         val worlds = bootstrap.server.worlds
         val samples = ArrayList<Metric>(worlds.size * 3)
 
         worlds.fastForEach { world ->
             val tags = mapOf("world" to world.name)
-            samples.add(GaugeMetric("minecraft_world_entities_count", tags, world.entities.size))
-            samples.add(GaugeMetric("minecraft_world_players_count", tags, world.players.size))
-            samples.add(GaugeMetric("minecraft_world_loaded_chunks", tags, world.loadedChunks.size))
+            samples.add(GaugeMetric("minecraft_world_entities_count", tags, world.entityCount))
+            samples.add(GaugeMetric("minecraft_world_players_count", tags, world.playerCount))
+            samples.add(GaugeMetric("minecraft_world_loaded_chunks", tags, world.chunkCount))
         }
 
         return samples

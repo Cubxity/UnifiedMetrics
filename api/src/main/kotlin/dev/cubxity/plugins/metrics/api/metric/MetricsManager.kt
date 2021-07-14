@@ -17,23 +17,24 @@
 
 package dev.cubxity.plugins.metrics.api.metric
 
-import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollection
-import dev.cubxity.plugins.metrics.api.metric.collector.collect
+import dev.cubxity.plugins.metrics.api.metric.collector.CollectorCollection
 import dev.cubxity.plugins.metrics.api.metric.data.Metric
 
 interface MetricsManager {
-    val collections: List<MetricCollection>
+    val collections: List<CollectorCollection>
 
     fun initialize()
 
-    fun registerCollection(collection: MetricCollection)
+    fun registerCollection(collection: CollectorCollection)
 
-    fun unregisterCollection(collection: MetricCollection)
+    fun unregisterCollection(collection: CollectorCollection)
 
     fun registerDriver(name: String, factory: MetricsDriverFactory<out Any>)
 
+    /**
+     * This should be called asynchronously
+     */
+    suspend fun collect(): List<Metric>
+
     fun dispose()
 }
-
-fun MetricsManager.collect(): List<Metric> =
-    collections.flatMap { it.collect() }

@@ -17,14 +17,15 @@
 
 package dev.cubxity.plugins.metrics.bukkit.metric.tick
 
+import dev.cubxity.plugins.metrics.api.metric.collector.Collector
+import dev.cubxity.plugins.metrics.api.metric.collector.CollectorCollection
 import dev.cubxity.plugins.metrics.api.metric.collector.Histogram
-import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollection
-import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
 import dev.cubxity.plugins.metrics.api.metric.store.VolatileDoubleStore
 import dev.cubxity.plugins.metrics.api.metric.store.VolatileLongStore
 import dev.cubxity.plugins.metrics.bukkit.bootstrap.UnifiedMetricsBukkitBootstrap
+import dev.cubxity.plugins.metrics.bukkit.util.classExists
 
-class TickCollection(bootstrap: UnifiedMetricsBukkitBootstrap) : MetricCollection {
+class TickCollection(bootstrap: UnifiedMetricsBukkitBootstrap) : CollectorCollection {
     private val reporter = if (classExists("com.destroystokyo.paper.event.server.ServerTickStartEvent")) {
         PaperTickReporter(this, bootstrap)
     } else {
@@ -38,7 +39,7 @@ class TickCollection(bootstrap: UnifiedMetricsBukkitBootstrap) : MetricCollectio
         countStoreFactory = VolatileLongStore
     )
 
-    override val collectors: List<MetricCollector> = listOf(tickDuration)
+    override val collectors: List<Collector> = listOf(tickDuration)
 
     override fun initialize() {
         reporter.initialize()
@@ -53,12 +54,5 @@ class TickCollection(bootstrap: UnifiedMetricsBukkitBootstrap) : MetricCollectio
      */
     fun onTick(duration: Double) {
         tickDuration += duration
-    }
-
-    private fun classExists(className: String): Boolean = try {
-        Class.forName(className)
-        true
-    } catch (e: ClassNotFoundException) {
-        false
     }
 }

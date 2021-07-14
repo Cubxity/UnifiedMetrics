@@ -24,7 +24,6 @@ import com.influxdb.client.WriteApi
 import com.influxdb.client.write.Point
 import dev.cubxity.plugins.metrics.api.UnifiedMetrics
 import dev.cubxity.plugins.metrics.api.metric.MetricsDriver
-import dev.cubxity.plugins.metrics.api.metric.collect
 import dev.cubxity.plugins.metrics.api.metric.data.CounterMetric
 import dev.cubxity.plugins.metrics.api.metric.data.GaugeMetric
 import dev.cubxity.plugins.metrics.api.metric.data.HistogramMetric
@@ -74,9 +73,7 @@ class InfluxMetricsDriver(private val api: UnifiedMetrics, private val config: I
         coroutineScope.launch {
             while (true) {
                 try {
-                    val metrics = withContext(api.dispatcher) {
-                        api.metricsManager.collect()
-                    }
+                    val metrics = api.metricsManager.collect()
                     writeMetrics(metrics)
                 } catch (error: Throwable) {
                     api.logger.severe("An error occurred whilst writing samples to InfluxDB", error)
@@ -88,9 +85,9 @@ class InfluxMetricsDriver(private val api: UnifiedMetrics, private val config: I
 
     private fun writeMetrics(metrics: List<Metric>) {
         val writeApi = writeApi ?: return
-        for (metric in metrics) {
+        metrics.fastForEach { metric ->
             val point = Point(metric.name)
-            point.addTags(metric.tags)
+            point.addTags(metric.labels)
             point.addTag("server", api.serverName)
 
             when (metric) {

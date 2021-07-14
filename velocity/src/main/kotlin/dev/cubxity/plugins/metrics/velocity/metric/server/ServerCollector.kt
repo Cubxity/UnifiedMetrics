@@ -17,12 +17,12 @@
 
 package dev.cubxity.plugins.metrics.velocity.metric.server
 
-import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+import dev.cubxity.plugins.metrics.api.metric.collector.Collector
 import dev.cubxity.plugins.metrics.api.metric.data.GaugeMetric
 import dev.cubxity.plugins.metrics.api.metric.data.Metric
 import dev.cubxity.plugins.metrics.velocity.bootstrap.UnifiedMetricsVelocityBootstrap
 
-class ServerCollector(private val bootstrap: UnifiedMetricsVelocityBootstrap) : MetricCollector {
+class ServerCollector(private val bootstrap: UnifiedMetricsVelocityBootstrap) : Collector {
     override fun collect(): List<Metric> {
         val server = bootstrap.server
         return listOf(

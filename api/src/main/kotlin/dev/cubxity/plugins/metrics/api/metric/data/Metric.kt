@@ -19,51 +19,51 @@
 
 package dev.cubxity.plugins.metrics.api.metric.data
 
-typealias Tags = Map<String, String>
+typealias Labels = Map<String, String>
 
 sealed class Metric(
     val name: String,
-    val tags: Tags = emptyMap()
+    val labels: Labels = emptyMap()
 )
 
 class GaugeMetric(
     name: String,
-    tags: Tags = emptyMap(),
+    labels: Labels = emptyMap(),
     val value: Double
-) : Metric(name, tags) {
+) : Metric(name, labels) {
     constructor(
         name: String,
-        tags: Tags = emptyMap(),
+        labels: Labels = emptyMap(),
         value: Number
-    ) : this(name, tags, value.toDouble())
+    ) : this(name, labels, value.toDouble())
 }
 
 class CounterMetric(
     name: String,
-    tags: Tags = emptyMap(),
+    labels: Labels = emptyMap(),
     val value: Double
-) : Metric(name, tags) {
+) : Metric(name, labels) {
     constructor(
         name: String,
-        tags: Tags = emptyMap(),
+        labels: Labels = emptyMap(),
         value: Number
-    ) : this(name, tags, value.toDouble())
+    ) : this(name, labels, value.toDouble())
 }
 
 class HistogramMetric(
     name: String,
-    tags: Tags = emptyMap(),
+    labels: Labels = emptyMap(),
     val sampleCount: Double,
     val sampleSum: Double,
     val bucket: Array<Bucket>
-) : Metric(name, tags) {
+) : Metric(name, labels) {
     constructor(
         name: String,
-        tags: Tags = emptyMap(),
+        labels: Labels = emptyMap(),
         sampleCount: Number,
         sampleSum: Number,
         bucket: Array<Bucket>
-    ) : this(name, tags, sampleCount.toDouble(), sampleSum.toDouble(), bucket)
+    ) : this(name, labels, sampleCount.toDouble(), sampleSum.toDouble(), bucket)
 }
 
 data class Bucket(val upperBound: Double, val cumulativeCount: Double)

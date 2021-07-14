@@ -18,16 +18,23 @@
 package dev.cubxity.plugins.metrics.bukkit.metric.world
 
 import dev.cubxity.plugins.metrics.api.metric.collector.Collector
-import dev.cubxity.plugins.metrics.api.metric.collector.CollectorCollection
+import dev.cubxity.plugins.metrics.api.metric.data.GaugeMetric
+import dev.cubxity.plugins.metrics.api.metric.data.Metric
+import dev.cubxity.plugins.metrics.api.util.fastForEach
 import dev.cubxity.plugins.metrics.bukkit.bootstrap.UnifiedMetricsBukkitBootstrap
-import dev.cubxity.plugins.metrics.bukkit.util.declaredMethodExists
 
-class WorldCollection(bootstrap: UnifiedMetricsBukkitBootstrap) : CollectorCollection {
-    private val collector = if (declaredMethodExists("org.bukkit.World", "getEntityCount")) {
-        PaperWorldCollector(bootstrap)
-    } else {
-        BukkitWorldCollector(bootstrap)
+class BukkitWorldCollector(private val bootstrap: UnifiedMetricsBukkitBootstrap) : Collector {
+    override fun collect(): List<Metric> {
+        val worlds = bootstrap.server.worlds
+        val samples = ArrayList<Metric>(worlds.size * 3)
+
+        worlds.fastForEach { world ->
+            val tags = mapOf("world" to world.name)
+            samples.add(GaugeMetric("minecraft_world_entities_count", tags, world.entities.size))
+            samples.add(GaugeMetric("minecraft_world_players_count", tags, world.players.size))
+            samples.add(GaugeMetric("minecraft_world_loaded_chunks", tags, world.loadedChunks.size))
+        }
+
+        return samples
     }
-
-    override val collectors: List<Collector> = listOf(collector)
 }

@@ -15,11 +15,18 @@
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.common.metric.system.memory
+package dev.cubxity.plugins.metrics.api.metric.collector
 
-import dev.cubxity.plugins.metrics.api.metric.collector.Collector
-import dev.cubxity.plugins.metrics.api.metric.collector.CollectorCollection
+import dev.cubxity.plugins.metrics.api.metric.data.Metric
 
-class MemoryCollection : CollectorCollection {
-    override val collectors: List<Collector> = listOf(MemoryCollector())
+const val NANOSECONDS_PER_SECOND: Double = 1E9
+const val MILLISECONDS_PER_SECOND: Double = 1E3
+
+interface Collector {
+    /**
+     * Collects the metric and returns a list of samples.
+     *
+     * @return [List] of [Metric]
+     */
+    fun collect(): List<Metric>
 }

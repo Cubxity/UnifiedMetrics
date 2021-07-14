@@ -24,19 +24,19 @@ import com.velocitypowered.api.event.player.PlayerChatEvent
 import com.velocitypowered.api.event.player.PlayerChooseInitialServerEvent
 import com.velocitypowered.api.event.proxy.ProxyPingEvent
 import dev.cubxity.plugins.metrics.api.metric.collector.Counter
-import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollection
-import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+import dev.cubxity.plugins.metrics.api.metric.collector.CollectorCollection
+import dev.cubxity.plugins.metrics.api.metric.collector.Collector
 import dev.cubxity.plugins.metrics.velocity.bootstrap.UnifiedMetricsVelocityBootstrap
 
 @Suppress("UNUSED_PARAMETER")
-class EventsCollection(private val bootstrap: UnifiedMetricsVelocityBootstrap) : MetricCollection {
+class EventsCollection(private val bootstrap: UnifiedMetricsVelocityBootstrap) : CollectorCollection {
     private val loginCounter = Counter("minecraft_events_login_total")
     private val joinCounter = Counter("minecraft_events_join_total")
     private val quitCounter = Counter("minecraft_events_quit_total")
     private val chatCounter = Counter("minecraft_events_chat_total")
     private val pingCounter = Counter("minecraft_events_ping_total")
 
-    override val collectors: List<MetricCollector> =
+    override val collectors: List<Collector> =
         listOf(loginCounter, joinCounter, quitCounter, chatCounter, pingCounter)
 
     override fun initialize() {

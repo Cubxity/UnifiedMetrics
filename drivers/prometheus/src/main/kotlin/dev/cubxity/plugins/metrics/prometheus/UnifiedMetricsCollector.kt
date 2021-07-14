@@ -18,7 +18,6 @@
 package dev.cubxity.plugins.metrics.prometheus
 
 import dev.cubxity.plugins.metrics.api.UnifiedMetrics
-import dev.cubxity.plugins.metrics.api.metric.collect
 import dev.cubxity.plugins.metrics.api.metric.data.CounterMetric
 import dev.cubxity.plugins.metrics.api.metric.data.GaugeMetric
 import dev.cubxity.plugins.metrics.api.metric.data.HistogramMetric
@@ -30,13 +29,13 @@ import kotlinx.coroutines.runBlocking
 class UnifiedMetricsCollector(private val api: UnifiedMetrics) : Collector() {
     override fun collect(): List<MetricFamilySamples> {
         return try {
-            val metrics = runBlocking(api.dispatcher) {
+            val metrics = runBlocking {
                 api.metricsManager.collect()
             }
 
             metrics.map { metric ->
-                val keys = metric.tags.keys.toList()
-                val values = metric.tags.values.toList()
+                val keys = metric.labels.keys.toList()
+                val values = metric.labels.values.toList()
 
                 when (metric) {
                     is CounterMetric -> {

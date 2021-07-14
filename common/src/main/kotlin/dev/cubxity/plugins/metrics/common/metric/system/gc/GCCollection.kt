@@ -17,9 +17,46 @@
 
 package dev.cubxity.plugins.metrics.common.metric.system.gc
 
-import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollection
-import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+import dev.cubxity.plugins.metrics.api.metric.collector.CollectorCollection
+import dev.cubxity.plugins.metrics.api.metric.collector.Histogram
+import dev.cubxity.plugins.metrics.api.util.fastForEach
+import java.lang.management.GarbageCollectorMXBean
+import java.lang.management.ManagementFactory
+import java.util.*
+import javax.management.NotificationEmitter
 
-class GCCollection : MetricCollection {
-    override val collectors: List<MetricCollector> = listOf(GCCollector())
+class GCCollection : CollectorCollection {
+    private val monitors = WeakHashMap<GarbageCollectorMXBean, GCMonitor>()
+
+    override val collectors = ArrayList<Histogram>()
+
+    override fun initialize() {
+        ManagementFactory.getGarbageCollectorMXBeans().fastForEach { bean ->
+            if (bean is NotificationEmitter) {
+                val labels = mapOf("gc" to bean.name)
+                val durationHistogram = Histogram("jvm_gc_duration_seconds", labels)
+                val freedHistogram = Histogram("jvm_gc_freed_bytes", labels)
+
+                collectors += durationHistogram
+                collectors += freedHistogram
+
+                val monitor = GCMonitor(durationHistogram, freedHistogram)
+                monitors[bean] = monitor
+
+                bean.addNotificationListener(monitor, null, null)
+            }
+        }
+    }
+
+    override fun dispose() {
+        ManagementFactory.getGarbageCollectorMXBeans().fastForEach { bean ->
+            if (bean is NotificationEmitter) {
+                val monitor = monitors.remove(bean)
+                if (monitor !== null) {
+                    bean.removeNotificationListener(monitor)
+                }
+            }
+        }
+        collectors.clear()
+    }
 }

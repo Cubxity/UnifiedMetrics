@@ -17,13 +17,13 @@
 
 package dev.cubxity.plugins.metrics.common.metric.system.gc
 
+import dev.cubxity.plugins.metrics.api.metric.collector.Collector
 import dev.cubxity.plugins.metrics.api.metric.collector.MILLISECONDS_PER_SECOND
-import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
 import dev.cubxity.plugins.metrics.api.metric.data.CounterMetric
 import dev.cubxity.plugins.metrics.api.metric.data.Metric
 import java.lang.management.ManagementFactory
 
-class GCCollector : MetricCollector {
+class GCCollector : Collector {
     private val beans = ManagementFactory.getGarbageCollectorMXBeans()
 
     override fun collect(): List<Metric> = beans.map {

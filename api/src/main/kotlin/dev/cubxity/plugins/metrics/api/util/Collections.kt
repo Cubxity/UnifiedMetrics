@@ -23,3 +23,11 @@ inline fun <T> List<T>.fastForEach(block: (T) -> Unit) {
         block(get(size - i))
     }
 }
+
+inline fun <T, R> List<T>.fastFlatMap(block: (T) -> Collection<R>): List<R> {
+    val list = ArrayList<R>()
+    fastForEach {
+        list.addAll(block(it))
+    }
+    return list
+}

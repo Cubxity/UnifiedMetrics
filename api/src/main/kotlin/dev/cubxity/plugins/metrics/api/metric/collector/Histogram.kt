@@ -19,25 +19,26 @@ package dev.cubxity.plugins.metrics.api.metric.collector
 
 import dev.cubxity.plugins.metrics.api.metric.data.Bucket
 import dev.cubxity.plugins.metrics.api.metric.data.HistogramMetric
+import dev.cubxity.plugins.metrics.api.metric.data.Labels
 import dev.cubxity.plugins.metrics.api.metric.data.Metric
-import dev.cubxity.plugins.metrics.api.metric.data.Tags
 import dev.cubxity.plugins.metrics.api.metric.store.DoubleAdderStore
 import dev.cubxity.plugins.metrics.api.metric.store.DoubleStoreFactory
 import dev.cubxity.plugins.metrics.api.metric.store.LongAdderStore
 import dev.cubxity.plugins.metrics.api.metric.store.LongStoreFactory
 
-private val defaultBuckets = doubleArrayOf(.001, .005, .01, .025, .05, .075, .1, .25, .5, .75, 1.0, 2.5, 5.0, 7.5, 10.0)
+private val defaultBuckets =
+    doubleArrayOf(.001, .005, .01, .025, .05, .075, .1, .25, .5, .75, 1.0, 2.5, 5.0, 7.5, 10.0, 60.0)
 
 /**
  * @param name name of the sample.
  */
 class Histogram(
-    val name: String,
-    val tags: Tags = emptyMap(),
+    private val name: String,
+    private val labels: Labels = emptyMap(),
     upperBounds: DoubleArray = defaultBuckets,
     sumStoreFactory: DoubleStoreFactory = DoubleAdderStore,
     countStoreFactory: LongStoreFactory = LongAdderStore
-) : MetricCollector {
+) : Collector {
     private val upperBounds = upperBounds + Double.POSITIVE_INFINITY
 
     private val sum = sumStoreFactory.create()
@@ -59,7 +60,7 @@ class Histogram(
 
         @Suppress("UNCHECKED_CAST")
         return listOf(
-            HistogramMetric(name, tags, count.toDouble(), sum.get(), bucket as Array<Bucket>)
+            HistogramMetric(name, labels, count.toDouble(), sum.get(), bucket as Array<Bucket>)
         )
     }
 

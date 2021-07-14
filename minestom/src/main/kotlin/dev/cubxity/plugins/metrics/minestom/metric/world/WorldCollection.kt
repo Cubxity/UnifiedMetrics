@@ -17,9 +17,9 @@
 
 package dev.cubxity.plugins.metrics.minestom.metric.world
 
-import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollection
-import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+import dev.cubxity.plugins.metrics.api.metric.collector.CollectorCollection
+import dev.cubxity.plugins.metrics.api.metric.collector.Collector
 
-class WorldCollection : MetricCollection {
-    override val collectors: List<MetricCollector> = listOf(WorldCollector())
+class WorldCollection : CollectorCollection {
+    override val collectors: List<Collector> = listOf(WorldCollector())
 }

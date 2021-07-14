@@ -17,13 +17,13 @@
 
 package dev.cubxity.plugins.metrics.common.metric.system.thread
 
-import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+import dev.cubxity.plugins.metrics.api.metric.collector.Collector
 import dev.cubxity.plugins.metrics.api.metric.data.CounterMetric
 import dev.cubxity.plugins.metrics.api.metric.data.GaugeMetric
 import dev.cubxity.plugins.metrics.api.metric.data.Metric
 import java.lang.management.ManagementFactory
 
-class ThreadCollector : MetricCollector {
+class ThreadCollector : Collector {
     private val bean = ManagementFactory.getThreadMXBean()
 
     override fun collect(): List<Metric> = listOf(

@@ -17,12 +17,12 @@
 
 package dev.cubxity.plugins.metrics.common.metric.system.memory
 
-import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+import dev.cubxity.plugins.metrics.api.metric.collector.Collector
 import dev.cubxity.plugins.metrics.api.metric.data.GaugeMetric
 import dev.cubxity.plugins.metrics.api.metric.data.Metric
 import java.lang.management.ManagementFactory
 
-class MemoryCollector : MetricCollector {
+class MemoryCollector : Collector {
     private val bean = ManagementFactory.getMemoryMXBean()
 
     override fun collect(): List<Metric> {

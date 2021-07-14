@@ -17,12 +17,12 @@
 
 package dev.cubxity.plugins.metrics.minestom.metric.world
 
-import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+import dev.cubxity.plugins.metrics.api.metric.collector.Collector
 import dev.cubxity.plugins.metrics.api.metric.data.GaugeMetric
 import dev.cubxity.plugins.metrics.api.metric.data.Metric
 import net.minestom.server.MinecraftServer
 
-class WorldCollector : MetricCollector {
+class WorldCollector : Collector {
     override fun collect(): List<Metric> {
         val instances = MinecraftServer.getInstanceManager().instances
         val samples = ArrayList<Metric>(instances.size * 3)

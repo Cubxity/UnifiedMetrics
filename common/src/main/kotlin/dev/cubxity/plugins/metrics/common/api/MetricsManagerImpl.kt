@@ -22,9 +22,12 @@ import com.charleskorn.kaml.YamlConfiguration
 import dev.cubxity.plugins.metrics.api.metric.MetricsDriver
 import dev.cubxity.plugins.metrics.api.metric.MetricsDriverFactory
 import dev.cubxity.plugins.metrics.api.metric.MetricsManager
-import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollection
+import dev.cubxity.plugins.metrics.api.metric.collector.CollectorCollection
+import dev.cubxity.plugins.metrics.api.metric.collector.collect
+import dev.cubxity.plugins.metrics.api.metric.data.Metric
 import dev.cubxity.plugins.metrics.api.util.fastForEach
 import dev.cubxity.plugins.metrics.common.plugin.UnifiedMetricsPlugin
+import kotlinx.coroutines.withContext
 import java.nio.file.Files
 import kotlin.system.measureTimeMillis
 
@@ -33,12 +36,12 @@ class MetricsManagerImpl(private val plugin: UnifiedMetricsPlugin) : MetricsMana
     private val driverDirectory = plugin.bootstrap.configDirectory.resolve("driver")
 
     private val metricDrivers: MutableMap<String, MetricsDriverFactory<Any>> = HashMap()
-    private val _collections: MutableList<MetricCollection> = ArrayList()
+    private val _collections: MutableList<CollectorCollection> = ArrayList()
 
     private var shouldInitialize: Boolean = false
     private var driver: MetricsDriver? = null
 
-    override val collections: List<MetricCollection>
+    override val collections: List<CollectorCollection>
         get() = _collections
 
     override fun initialize() {
@@ -56,7 +59,7 @@ class MetricsManagerImpl(private val plugin: UnifiedMetricsPlugin) : MetricsMana
         }
     }
 
-    override fun registerCollection(collection: MetricCollection) {
+    override fun registerCollection(collection: CollectorCollection) {
         try {
             collection.initialize()
             _collections.add(collection)
@@ -65,7 +68,7 @@ class MetricsManagerImpl(private val plugin: UnifiedMetricsPlugin) : MetricsMana
         }
     }
 
-    override fun unregisterCollection(collection: MetricCollection) {
+    override fun unregisterCollection(collection: CollectorCollection) {
         try {
             _collections.remove(collection)
             collection.dispose()
@@ -83,6 +86,23 @@ class MetricsManagerImpl(private val plugin: UnifiedMetricsPlugin) : MetricsMana
                 initializeDriver(name, factory)
             }
         }
+    }
+
+    override suspend fun collect(): List<Metric> {
+        val list = ArrayList<Metric>()
+        withContext(plugin.apiProvider.dispatcher) {
+            collections.fastForEach { collection ->
+                if (!collection.isAsync) {
+                    list.addAll(collection.collect())
+                }
+            }
+        }
+        collections.fastForEach { collection ->
+            if (collection.isAsync) {
+                list.addAll(collection.collect())
+            }
+        }
+        return list
     }
 
     override fun dispose() {

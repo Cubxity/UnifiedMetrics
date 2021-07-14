@@ -17,9 +17,9 @@
 
 package dev.cubxity.plugins.metrics.common.metric.system.thread
 
-import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollection
-import dev.cubxity.plugins.metrics.api.metric.collector.MetricCollector
+import dev.cubxity.plugins.metrics.api.metric.collector.CollectorCollection
+import dev.cubxity.plugins.metrics.api.metric.collector.Collector
 
-class ThreadCollection : MetricCollection {
-    override val collectors: List<MetricCollector> = listOf(ThreadCollector())
+class ThreadCollection : CollectorCollection {
+    override val collectors: List<Collector> = listOf(ThreadCollector())
 }
