@@ -30,4 +30,4 @@
 
 .gradle
 build
-run
+**/run*/

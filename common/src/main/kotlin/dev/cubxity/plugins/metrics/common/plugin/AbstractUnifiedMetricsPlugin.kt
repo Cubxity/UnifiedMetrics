@@ -1,40 +1,43 @@
 /*
- *     UnifiedMetrics is a fully-featured metrics collection plugin for Minecraft servers.
- *     Copyright (C) 2021  Cubxity
+ *     This file is part of UnifiedMetrics.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published
- *     by the Free Software Foundation, either version 3 of the License, or
+ *     UnifiedMetrics is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Lesser General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
  *     (at your option) any later version.
  *
- *     This program is distributed in the hope that it will be useful,
+ *     UnifiedMetrics is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     GNU Lesser General Public License for more details.
  *
- *     You should have received a copy of the GNU Affero General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *     You should have received a copy of the GNU Lesser General Public License
+ *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 package dev.cubxity.plugins.metrics.common.plugin
 
-import com.uchuhimo.konf.Config
-import com.uchuhimo.konf.Feature
-import com.uchuhimo.konf.source.toml
-import com.uchuhimo.konf.source.toml.toToml
+import com.charleskorn.kaml.Yaml
+import com.charleskorn.kaml.YamlConfiguration
 import dev.cubxity.plugins.metrics.api.UnifiedMetrics
 import dev.cubxity.plugins.metrics.api.UnifiedMetricsProvider
 import dev.cubxity.plugins.metrics.common.api.UnifiedMetricsApiProvider
-import dev.cubxity.plugins.metrics.common.config.MetricsSpec
-import dev.cubxity.plugins.metrics.common.config.ServerSpec
-import dev.cubxity.plugins.metrics.common.metric.system.SystemMetric
+import dev.cubxity.plugins.metrics.common.config.UnifiedMetricsConfig
+import dev.cubxity.plugins.metrics.common.metric.system.gc.GCCollection
+import dev.cubxity.plugins.metrics.common.metric.system.memory.MemoryCollection
+import dev.cubxity.plugins.metrics.common.metric.system.process.ProcessCollection
+import dev.cubxity.plugins.metrics.common.metric.system.thread.ThreadCollection
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
 import java.nio.file.Files
 
 abstract class AbstractUnifiedMetricsPlugin : UnifiedMetricsPlugin {
-    private var _config: Config? = null
+    private val yaml = Yaml(configuration = YamlConfiguration(strictMode = false))
+
+    private var _config: UnifiedMetricsConfig? = null
     private var _apiProvider: UnifiedMetricsApiProvider? = null
 
-    override val config: Config
+    override val config: UnifiedMetricsConfig
         get() = _config ?: error("The UnifiedMetrics plugin is not loaded.")
 
     override val apiProvider: UnifiedMetricsApiProvider
@@ -45,13 +48,18 @@ abstract class AbstractUnifiedMetricsPlugin : UnifiedMetricsPlugin {
         Files.createDirectories(bootstrap.configDirectory)
 
         _config = loadConfig()
-        saveConfig()
+
+        try {
+            saveConfig()
+        } catch (exception: Exception) {
+            apiProvider.logger.severe("An error occurred whilst saving plugin config file", exception)
+        }
 
         _apiProvider = UnifiedMetricsApiProvider(this)
         UnifiedMetricsProvider.register(apiProvider)
         registerPlatformService(apiProvider)
 
-        if (config[MetricsSpec.enabled]) {
+        if (config.metrics.enabled) {
             registerMetricsDrivers()
             registerPlatformMetrics()
             apiProvider.metricsManager.initialize()
@@ -59,14 +67,12 @@ abstract class AbstractUnifiedMetricsPlugin : UnifiedMetricsPlugin {
     }
 
     open fun disable() {
-        if (config[MetricsSpec.enabled]) {
+        if (config.metrics.enabled) {
             apiProvider.metricsManager.dispose()
         }
 
         UnifiedMetricsProvider.unregister()
         _apiProvider = null
-
-        bootstrap.scheduler.shutdown()
     }
 
     abstract fun registerPlatformService(api: UnifiedMetrics)
@@ -77,22 +83,26 @@ abstract class AbstractUnifiedMetricsPlugin : UnifiedMetricsPlugin {
 
     open fun registerPlatformMetrics() {
         apiProvider.metricsManager.apply {
-            registerMetric(SystemMetric())
+            with(config.metrics.collectors) {
+                if (systemGc) registerCollection(GCCollection())
+                if (systemMemory) registerCollection(MemoryCollection())
+                if (systemProcess) registerCollection(ProcessCollection())
+                if (systemThread) registerCollection(ThreadCollection())
+            }
         }
     }
 
-    private fun loadConfig(): Config {
-        val config = Config {
-            addSpec(ServerSpec)
-            addSpec(MetricsSpec)
+    private fun loadConfig(): UnifiedMetricsConfig {
+        val file = bootstrap.configDirectory.toFile().resolve("config.yml")
+
+        return when {
+            file.exists() -> yaml.decodeFromString(file.readText())
+            else -> UnifiedMetricsConfig()
         }
-        val file = bootstrap.configDirectory.toFile().resolve("config.toml")
-        return config.enable(Feature.OPTIONAL_SOURCE_BY_DEFAULT)
-            .from.toml.file(file)
     }
 
     private fun saveConfig() {
-        val file = bootstrap.configDirectory.toFile().resolve("config.toml")
-        config.toToml.toFile(file)
+        val file = bootstrap.configDirectory.toFile().resolve("config.yml")
+        file.writeText(yaml.encodeToString(config))
     }
 }
