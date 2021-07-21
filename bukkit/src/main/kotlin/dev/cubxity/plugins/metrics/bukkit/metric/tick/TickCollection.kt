@@ -41,6 +41,9 @@ class TickCollection(bootstrap: UnifiedMetricsBukkitBootstrap) : CollectorCollec
 
     override val collectors: List<Collector> = listOf(tickDuration)
 
+    override val isAsync: Boolean
+        get() = true
+
     override fun initialize() {
         reporter.initialize()
     }

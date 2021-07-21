@@ -17,9 +17,12 @@
 
 package dev.cubxity.plugins.metrics.common.metric.system.thread
 
-import dev.cubxity.plugins.metrics.api.metric.collector.CollectorCollection
 import dev.cubxity.plugins.metrics.api.metric.collector.Collector
+import dev.cubxity.plugins.metrics.api.metric.collector.CollectorCollection
 
 class ThreadCollection : CollectorCollection {
     override val collectors: List<Collector> = listOf(ThreadCollector())
+
+    override val isAsync: Boolean
+        get() = true
 }

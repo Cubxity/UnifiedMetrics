@@ -30,6 +30,9 @@ class GCCollection : CollectorCollection {
 
     override val collectors = ArrayList<Histogram>()
 
+    override val isAsync: Boolean
+        get() = true
+
     override fun initialize() {
         ManagementFactory.getGarbageCollectorMXBeans().fastForEach { bean ->
             if (bean is NotificationEmitter) {

@@ -17,9 +17,9 @@
 
 package dev.cubxity.plugins.metrics.minestom.metric.events
 
-import dev.cubxity.plugins.metrics.api.metric.collector.Counter
-import dev.cubxity.plugins.metrics.api.metric.collector.CollectorCollection
 import dev.cubxity.plugins.metrics.api.metric.collector.Collector
+import dev.cubxity.plugins.metrics.api.metric.collector.CollectorCollection
+import dev.cubxity.plugins.metrics.api.metric.collector.Counter
 import net.minestom.server.MinecraftServer
 import net.minestom.server.event.EventListener
 import net.minestom.server.event.player.AsyncPlayerPreLoginEvent
@@ -29,6 +29,7 @@ import net.minestom.server.event.player.PlayerLoginEvent
 import net.minestom.server.event.server.ServerListPingEvent
 
 class EventsCollection : CollectorCollection {
+    // TODO: are these events async?
     private val loginCounter = Counter("minecraft_events_login_total")
     private val joinCounter = Counter("minecraft_events_join_total")
     private val quitCounter = Counter("minecraft_events_quit_total")

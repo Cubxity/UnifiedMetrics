@@ -22,4 +22,7 @@ import dev.cubxity.plugins.metrics.api.metric.collector.CollectorCollection
 
 class MemoryCollection : CollectorCollection {
     override val collectors: List<Collector> = listOf(MemoryCollector())
+
+    override val isAsync: Boolean
+        get() = true
 }

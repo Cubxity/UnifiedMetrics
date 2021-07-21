@@ -22,6 +22,7 @@ package dev.cubxity.plugins.metrics.bukkit.metric.events
 import dev.cubxity.plugins.metrics.api.metric.collector.Collector
 import dev.cubxity.plugins.metrics.api.metric.collector.CollectorCollection
 import dev.cubxity.plugins.metrics.api.metric.collector.Counter
+import dev.cubxity.plugins.metrics.api.metric.store.VolatileDoubleStore
 import dev.cubxity.plugins.metrics.bukkit.bootstrap.UnifiedMetricsBukkitBootstrap
 import org.bukkit.event.EventHandler
 import org.bukkit.event.HandlerList
@@ -35,13 +36,16 @@ import org.bukkit.event.server.ServerListPingEvent
 @Suppress("UNUSED_PARAMETER")
 class EventsCollection(private val bootstrap: UnifiedMetricsBukkitBootstrap) : CollectorCollection, Listener {
     private val loginCounter = Counter("minecraft_events_login_total")
-    private val joinCounter = Counter("minecraft_events_join_total")
-    private val quitCounter = Counter("minecraft_events_quit_total")
+    private val joinCounter = Counter("minecraft_events_join_total", valueStoreFactory = VolatileDoubleStore)
+    private val quitCounter = Counter("minecraft_events_quit_total", valueStoreFactory = VolatileDoubleStore)
     private val chatCounter = Counter("minecraft_events_chat_total")
-    private val pingCounter = Counter("minecraft_events_ping_total")
+    private val pingCounter = Counter("minecraft_events_ping_total") // TODO: is this async?
 
     override val collectors: List<Collector> =
         listOf(loginCounter, joinCounter, quitCounter, chatCounter, pingCounter)
+
+    override val isAsync: Boolean
+        get() = true
 
     override fun initialize() {
         bootstrap.server.pluginManager.registerEvents(this, bootstrap)

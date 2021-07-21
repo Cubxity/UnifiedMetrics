@@ -17,9 +17,12 @@
 
 package dev.cubxity.plugins.metrics.common.metric.system.process
 
-import dev.cubxity.plugins.metrics.api.metric.collector.CollectorCollection
 import dev.cubxity.plugins.metrics.api.metric.collector.Collector
+import dev.cubxity.plugins.metrics.api.metric.collector.CollectorCollection
 
 class ProcessCollection : CollectorCollection {
     override val collectors: List<Collector> = listOf(ProcessCollector())
+
+    override val isAsync: Boolean
+        get() = true
 }
