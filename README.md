@@ -46,6 +46,8 @@ out-of-box support for Prometheus and InfluxDB.
 
 See the [wiki](https://github.com/Cubxity/UnifiedMetrics/wiki/Grafana) for detailed instructions.
 
+> **Note:** InfluxDB Grafana dashboard may be inaccurate due to complications with Flux queries.
+
 ### UnifiedMetrics 0.2.x (stable)
 
 - [InfluxDB (InfluxQL)](https://grafana.com/grafana/dashboards/13860)
