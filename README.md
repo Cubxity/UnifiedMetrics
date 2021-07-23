@@ -44,10 +44,17 @@ Read the [wiki](https://github.com/Cubxity/UnifiedMetrics/wiki) for instructions
 We recommend using [Grafana](https://grafana.com/) as it provides highly customizable diagrams. Grafana provides
 out-of-box support for Prometheus and InfluxDB.
 
-- Add Prometheus/InfluxDB datasource to Grafana
-- Import our [Prometheus dashboard](https://grafana.com/grafana/dashboards/14017)
-  or [InfluxDB dashboard](https://grafana.com/grafana/dashboards/13860)
-- Configure the dashboard and set up alerts *(optional)*
+See the [wiki](https://github.com/Cubxity/UnifiedMetrics/wiki/Grafana) for detailed instructions.
+
+### UnifiedMetrics 0.2.x (stable)
+
+- [InfluxDB (InfluxQL)](https://grafana.com/grafana/dashboards/13860)
+- [Prometheus](https://grafana.com/grafana/dashboards/14017)
+
+### UnifiedMetrics 0.3.x (development)
+
+- [InfluxDB (Flux)](https://grafana.com/grafana/dashboards/14755)
+- [Prometheus](https://grafana.com/grafana/dashboards/14756)
 
 ## API
 
