@@ -1,36 +1,46 @@
 /*
- *     UnifiedMetrics is a fully-featured metrics collection plugin for Minecraft servers.
- *     Copyright (C) 2021  Cubxity
+ *     This file is part of UnifiedMetrics.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published
- *     by the Free Software Foundation, either version 3 of the License, or
+ *     UnifiedMetrics is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Lesser General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
  *     (at your option) any later version.
  *
- *     This program is distributed in the hope that it will be useful,
+ *     UnifiedMetrics is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     GNU Lesser General Public License for more details.
  *
- *     You should have received a copy of the GNU Affero General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *     You should have received a copy of the GNU Lesser General Public License
+ *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import org.apache.tools.ant.filters.ReplaceTokens
+plugins {
+    id("com.github.johnrengelman.shadow")
+}
 
 repositories {
-    maven("https://papermc.io/repo/repository/maven-public")
+    maven("https://papermc.io/repo/repository/maven-public/")
 }
 
 dependencies {
     api(project(":unifiedmetrics-core"))
-    compileOnly("com.destroystokyo.paper", "paper-api", "1.16.5-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper", "paper-api", "1.17.1-R0.1-SNAPSHOT")
 }
 
 tasks {
+    compileKotlin {
+        kotlinOptions.jvmTarget = "16"
+    }
+    shadowJar {
+        archiveClassifier.set("")
+    }
     processResources {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
         from("src/main/resources") {
-            filter(ReplaceTokens::class, "tokens" to mapOf("version" to version))
+            expand("version" to version)
+            include("plugin.yml")
         }
     }
 }

@@ -1,52 +1,53 @@
 /*
- *     UnifiedMetrics is a fully-featured metrics collection plugin for Minecraft servers.
- *     Copyright (C) 2021  Cubxity
+ *     This file is part of UnifiedMetrics.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published
- *     by the Free Software Foundation, either version 3 of the License, or
+ *     UnifiedMetrics is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Lesser General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
  *     (at your option) any later version.
  *
- *     This program is distributed in the hope that it will be useful,
+ *     UnifiedMetrics is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     GNU Lesser General Public License for more details.
  *
- *     You should have received a copy of the GNU Affero General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *     You should have received a copy of the GNU Lesser General Public License
+ *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 package dev.cubxity.plugins.metrics.api.metric.collector
 
-import dev.cubxity.plugins.metrics.api.metric.data.CounterSample
-import dev.cubxity.plugins.metrics.api.metric.data.MetricSample
-import java.util.concurrent.atomic.AtomicInteger
+import dev.cubxity.plugins.metrics.api.metric.data.CounterMetric
+import dev.cubxity.plugins.metrics.api.metric.data.Labels
+import dev.cubxity.plugins.metrics.api.metric.data.Metric
+import dev.cubxity.plugins.metrics.api.metric.store.DoubleAdderStore
+import dev.cubxity.plugins.metrics.api.metric.store.DoubleStoreFactory
 
 /**
  * @param name name of the sample. Should end with '_total'
  */
-class Counter(val name: String) : MetricCollector {
-    private val tags: MutableMap<String, String> = HashMap()
-    private val count = AtomicInteger()
+class Counter(
+    private val name: String,
+    private val labels: Labels = emptyMap(),
+    valueStoreFactory: DoubleStoreFactory = DoubleAdderStore
+) : Collector {
+    private val count = valueStoreFactory.create()
 
-    override fun collect(): List<MetricSample> {
-        val sample = CounterSample(name, count.get().toDouble(), tags)
-        return listOf(sample)
+    override fun collect(): List<Metric> {
+        return listOf(
+            CounterMetric(name, labels, count.get())
+        )
     }
 
-    fun inc() {
-        count.incrementAndGet()
+    operator fun inc(): Counter = apply {
+        count.add(1.0)
     }
 
-    fun dec() {
-        count.decrementAndGet()
+    operator fun plusAssign(delta: Double) {
+        count.add(delta)
     }
 
-    operator fun plusAssign(delta: Int) {
-        count.addAndGet(delta)
-    }
-
-    operator fun minusAssign(delta: Int) {
-        count.addAndGet(-delta)
+    operator fun plusAssign(delta: Number) {
+        count.add(delta.toDouble())
     }
 }

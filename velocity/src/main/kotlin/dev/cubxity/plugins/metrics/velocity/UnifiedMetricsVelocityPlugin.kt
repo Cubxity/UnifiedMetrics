@@ -1,19 +1,18 @@
 /*
- *     UnifiedMetrics is a fully-featured metrics collection plugin for Minecraft servers.
- *     Copyright (C) 2021  Cubxity
+ *     This file is part of UnifiedMetrics.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published
- *     by the Free Software Foundation, either version 3 of the License, or
+ *     UnifiedMetrics is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Lesser General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
  *     (at your option) any later version.
  *
- *     This program is distributed in the hope that it will be useful,
+ *     UnifiedMetrics is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     GNU Lesser General Public License for more details.
  *
- *     You should have received a copy of the GNU Affero General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *     You should have received a copy of the GNU Lesser General Public License
+ *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 package dev.cubxity.plugins.metrics.velocity
@@ -21,8 +20,8 @@ package dev.cubxity.plugins.metrics.velocity
 import dev.cubxity.plugins.metrics.api.UnifiedMetrics
 import dev.cubxity.plugins.metrics.core.plugin.CoreUnifiedMetricsPlugin
 import dev.cubxity.plugins.metrics.velocity.bootstrap.UnifiedMetricsVelocityBootstrap
-import dev.cubxity.plugins.metrics.velocity.metric.EventsMetric
-import dev.cubxity.plugins.metrics.velocity.metric.server.ServerMetric
+import dev.cubxity.plugins.metrics.velocity.metric.events.EventsCollection
+import dev.cubxity.plugins.metrics.velocity.metric.server.ServerCollection
 
 class UnifiedMetricsVelocityPlugin(
     override val bootstrap: UnifiedMetricsVelocityBootstrap
@@ -35,8 +34,10 @@ class UnifiedMetricsVelocityPlugin(
         super.registerPlatformMetrics()
 
         apiProvider.metricsManager.apply {
-            registerMetric(ServerMetric(bootstrap))
-            registerMetric(EventsMetric(bootstrap))
+            with(config.metrics.collectors) {
+                if (server) registerCollection(ServerCollection(bootstrap))
+                if (events) registerCollection(EventsCollection(bootstrap))
+            }
         }
     }
 }
