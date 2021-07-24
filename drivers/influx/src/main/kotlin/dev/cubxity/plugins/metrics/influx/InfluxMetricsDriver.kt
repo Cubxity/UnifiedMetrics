@@ -32,6 +32,8 @@ import dev.cubxity.plugins.metrics.api.util.fastForEach
 import dev.cubxity.plugins.metrics.api.util.toGoString
 import dev.cubxity.plugins.metrics.influx.config.InfluxConfig
 import kotlinx.coroutines.*
+import kotlin.math.max
+import kotlin.system.measureTimeMillis
 
 class InfluxMetricsDriver(private val api: UnifiedMetrics, private val config: InfluxConfig) : MetricsDriver {
     private val coroutineScope = CoroutineScope(Dispatchers.Default) + SupervisorJob()
@@ -68,17 +70,19 @@ class InfluxMetricsDriver(private val api: UnifiedMetrics, private val config: I
     }
 
     private fun scheduleTasks() {
-        val interval = config.output.interval
+        val interval = config.output.interval * 1000
 
         coroutineScope.launch {
             while (true) {
-                try {
-                    val metrics = api.metricsManager.collect()
-                    writeMetrics(metrics)
-                } catch (error: Throwable) {
-                    api.logger.severe("An error occurred whilst writing samples to InfluxDB", error)
+                val time = measureTimeMillis {
+                    try {
+                        val metrics = api.metricsManager.collect()
+                        writeMetrics(metrics)
+                    } catch (error: Throwable) {
+                        api.logger.severe("An error occurred whilst writing samples to InfluxDB", error)
+                    }
                 }
-                delay(interval * 1000)
+                delay(max(0, interval - time))
             }
         }
     }
