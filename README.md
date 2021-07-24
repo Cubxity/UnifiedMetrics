@@ -37,8 +37,6 @@ licensed under [GNU LGPLv3](COPYING.LESSER).
 
 Read the [wiki](https://github.com/Cubxity/UnifiedMetrics/wiki) for instructions.
 
-> **NOTE:** The wiki is updated for the upcoming 0.3.x versions.
-
 ## Data visualization and analysis
 
 We recommend using [Grafana](https://grafana.com/) as it provides highly customizable diagrams. Grafana provides
@@ -48,15 +46,15 @@ See the [wiki](https://github.com/Cubxity/UnifiedMetrics/wiki/Grafana) for detai
 
 > **Note:** InfluxDB Grafana dashboard may be inaccurate due to complications with Flux queries.
 
-### UnifiedMetrics 0.2.x (stable)
-
-- [InfluxDB (InfluxQL)](https://grafana.com/grafana/dashboards/13860)
-- [Prometheus](https://grafana.com/grafana/dashboards/14017)
-
-### UnifiedMetrics 0.3.x (development)
+### UnifiedMetrics 0.3.x (stable)
 
 - [InfluxDB (Flux)](https://grafana.com/grafana/dashboards/14755)
 - [Prometheus](https://grafana.com/grafana/dashboards/14756)
+
+### UnifiedMetrics 0.2.x (legacy)
+
+- [InfluxDB (InfluxQL)](https://grafana.com/grafana/dashboards/13860)
+- [Prometheus](https://grafana.com/grafana/dashboards/14017)
 
 ## API
 
