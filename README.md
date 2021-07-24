@@ -56,6 +56,34 @@ See the [wiki](https://github.com/Cubxity/UnifiedMetrics/wiki/Grafana) for detai
 - [InfluxDB (InfluxQL)](https://grafana.com/grafana/dashboards/13860)
 - [Prometheus](https://grafana.com/grafana/dashboards/14017)
 
+## Building from source
+
+**Requirements:**
+
+- JDK 16+
+- Git (Optional)
+
+To build UnifiedMetrics, you need to obtain the source code first. You can download the source from GitHub or use the
+Git CLI.
+
+```bash
+$ git clone https://github.com/Cubxity/UnifiedMetrics && cd UnifiedMetrics
+```
+
+Open a terminal in the cloned directory and run the following command. The following command will build all subprojects.
+
+```bash
+$ ./gradlew shadowJar
+```
+
+To build a specific subproject, you can prefix it with the subproject path. For example:
+
+```bash
+$ ./gradlew :bukkit:shadowJar
+```
+
+The output artifacts can be found in `subproject/build/libs`.
+
 ## API
 
 Add `:unifiedmetrics-api` as a dependency (compileOnly/provided).
