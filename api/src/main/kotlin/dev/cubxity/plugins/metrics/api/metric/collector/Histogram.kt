@@ -26,8 +26,26 @@ import dev.cubxity.plugins.metrics.api.metric.store.DoubleStoreFactory
 import dev.cubxity.plugins.metrics.api.metric.store.LongAdderStore
 import dev.cubxity.plugins.metrics.api.metric.store.LongStoreFactory
 
-private val defaultBuckets =
-    doubleArrayOf(.001, .005, .01, .025, .05, .075, .1, .25, .5, .75, 1.0, 2.5, 5.0, 7.5, 10.0, 60.0)
+private val defaultBuckets = doubleArrayOf(
+    .001, // 1 ms
+    .005, // 5 ms
+    .01, // 10 ms
+    .02, // 20 ms
+    .03, // 30 ms
+    .04, // 40 ms
+    .05, // 50 ms
+    .075, // 75 ms
+    .1, // 100 ms
+    .25, // 250 ms
+    .5, // 500 ms
+    .75, // 750 ms
+    1.0, // 1 s
+    2.5, // 2.5 s
+    5.0, // 5 s
+    7.5, // 7.5 s
+    10.0, // 10 s
+    60.0 // 1 m
+)
 
 /**
  * @param name name of the sample.
