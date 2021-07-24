@@ -10,7 +10,7 @@ licensed under [GNU LGPLv3](COPYING.LESSER).
 
 ![Grafana Dashboard](.github/assets/grafana.png)
 
-## Compatbility
+## Compatibility
 
 **Server:**
 
