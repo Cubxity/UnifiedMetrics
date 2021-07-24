@@ -26,5 +26,6 @@ data class PrometheusConfig(
 
 @Serializable
 data class PrometheusHttpConfig(
+    val host: String = "0.0.0.0",
     val port: Int = 9100
 )

@@ -22,6 +22,7 @@ import dev.cubxity.plugins.metrics.api.metric.MetricsDriver
 import dev.cubxity.plugins.metrics.prometheus.config.PrometheusConfig
 import io.prometheus.client.CollectorRegistry
 import io.prometheus.client.exporter.HTTPServer
+import java.net.InetAddress
 import java.net.InetSocketAddress
 
 class PrometheusMetricsDriver(api: UnifiedMetrics, private val config: PrometheusConfig) : MetricsDriver {
@@ -33,7 +34,7 @@ class PrometheusMetricsDriver(api: UnifiedMetrics, private val config: Prometheu
     }
 
     override fun initialize() {
-        server = HTTPServer(InetSocketAddress(config.http.port), registry)
+        server = HTTPServer(InetSocketAddress(InetAddress.getByName(config.http.host), config.http.port), registry)
     }
 
     override fun close() {
