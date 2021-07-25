@@ -21,6 +21,7 @@ sealed class PlatformType(val name: String) {
     // Server implementations
     object Bukkit : PlatformType("Bukkit")
     object Minestom : PlatformType("Minestom")
+    object Fabric : PlatformType("Fabric")
 
     // Proxies
     object Velocity : PlatformType("Velocity")

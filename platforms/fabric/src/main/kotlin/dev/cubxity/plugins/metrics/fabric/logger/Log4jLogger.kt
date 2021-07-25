@@ -15,19 +15,29 @@
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.metric.collector
+package dev.cubxity.plugins.metrics.fabric.logger
 
-import dev.cubxity.plugins.metrics.api.metric.data.Metric
+import dev.cubxity.plugins.metrics.api.logging.Logger
+import org.apache.logging.log4j.Level
 
-const val NANOSECONDS_PER_MILLISECOND: Double = 1E6
-const val NANOSECONDS_PER_SECOND: Double = 1E9
-const val MILLISECONDS_PER_SECOND: Double = 1E3
+class Log4jLogger(private val logger: org.apache.logging.log4j.Logger): Logger {
+    override fun info(message: String) {
+        logger.log(Level.INFO, message)
+    }
 
-interface Collector {
-    /**
-     * Collects the metric and returns a list of samples.
-     *
-     * @return [List] of [Metric]
-     */
-    fun collect(): List<Metric>
+    override fun warn(message: String) {
+        logger.log(Level.WARN, message)
+    }
+
+    override fun warn(message: String, error: Throwable) {
+        logger.log(Level.WARN, message, error)
+    }
+
+    override fun severe(message: String) {
+        logger.log(Level.ERROR, message)
+    }
+
+    override fun severe(message: String, error: Throwable) {
+        logger.log(Level.ERROR, message, error)
+    }
 }
