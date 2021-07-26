@@ -27,6 +27,7 @@ import dev.cubxity.plugins.metrics.api.metric.collector.collect
 import dev.cubxity.plugins.metrics.api.metric.data.Metric
 import dev.cubxity.plugins.metrics.api.util.fastForEach
 import dev.cubxity.plugins.metrics.common.plugin.UnifiedMetricsPlugin
+import dev.cubxity.plugins.metrics.common.plugin.dispatcher.CurrentThreadDispatcher
 import kotlinx.coroutines.withContext
 import java.nio.file.Files
 import kotlin.system.measureTimeMillis
@@ -90,16 +91,24 @@ class MetricsManagerImpl(private val plugin: UnifiedMetricsPlugin) : MetricsMana
 
     override suspend fun collect(): List<Metric> {
         val list = ArrayList<Metric>()
-        withContext(plugin.apiProvider.dispatcher) {
+        val dispatcher = plugin.apiProvider.dispatcher
+
+        if (dispatcher is CurrentThreadDispatcher) {
             collections.fastForEach { collection ->
-                if (!collection.isAsync) {
-                    list.addAll(collection.collect())
+                list.addAll(collection.collect())
+            }
+        } else {
+            withContext(dispatcher) {
+                collections.fastForEach { collection ->
+                    if (!collection.isAsync) {
+                        list.addAll(collection.collect())
+                    }
                 }
             }
-        }
-        collections.fastForEach { collection ->
-            if (collection.isAsync) {
-                list.addAll(collection.collect())
+            collections.fastForEach { collection ->
+                if (collection.isAsync) {
+                    list.addAll(collection.collect())
+                }
             }
         }
         return list
