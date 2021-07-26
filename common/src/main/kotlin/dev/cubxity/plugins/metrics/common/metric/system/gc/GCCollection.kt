@@ -25,6 +25,18 @@ import java.lang.management.ManagementFactory
 import java.util.*
 import javax.management.NotificationEmitter
 
+private val byteBuckets = doubleArrayOf(
+    25_000_000.0, // 25 MB
+    50_000_000.0, // 50 MB
+    100_000_000.0, // 100 MB
+    250_000_000.0, // 250 MB
+    500_000_000.0, // 500 MB
+    1_000_000_000.0, // 1 GB
+    2_000_000_000.0, // 2 GB
+    3_000_000_000.0, // 3 GB
+    5_000_000_000.0, // 5 GB
+)
+
 class GCCollection : CollectorCollection {
     private val monitors = WeakHashMap<GarbageCollectorMXBean, GCMonitor>()
 
@@ -38,7 +50,7 @@ class GCCollection : CollectorCollection {
             if (bean is NotificationEmitter) {
                 val labels = mapOf("gc" to bean.name)
                 val durationHistogram = Histogram("jvm_gc_duration_seconds", labels)
-                val freedHistogram = Histogram("jvm_gc_freed_bytes", labels)
+                val freedHistogram = Histogram("jvm_gc_freed_bytes", labels, byteBuckets)
 
                 collectors += durationHistogram
                 collectors += freedHistogram
