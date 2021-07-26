@@ -9,6 +9,11 @@ UnifiedMetrics is a fully-featured free and open-source metrics collection plugi
 licensed under [GNU LGPLv3](COPYING.LESSER).
 
 ![Grafana Dashboard](.github/assets/grafana.png)
+<div style="text-align: center">
+    <a href="https://snapshot.raintank.io/dashboard/snapshot/IwyI3cjE6f7bHyOViXiFrRApA6KT2Idy">
+        Click here for preview!
+    </a>
+</div>
 
 ## Compatibility
 
