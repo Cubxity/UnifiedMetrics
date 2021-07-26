@@ -60,7 +60,7 @@ See the [wiki](https://github.com/Cubxity/UnifiedMetrics/wiki/Grafana) for detai
 
 **Requirements:**
 
-- JDK 16+
+- JDK 11+
 - Git (Optional)
 
 To build UnifiedMetrics, you need to obtain the source code first. You can download the source from GitHub or use the

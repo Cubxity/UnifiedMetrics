@@ -25,13 +25,10 @@ repositories {
 
 dependencies {
     api(project(":unifiedmetrics-core"))
-    compileOnly("io.papermc.paper", "paper-api", "1.17.1-R0.1-SNAPSHOT")
+    compileOnly("com.destroystokyo.paper", "paper-api", "1.16.5-R0.1-SNAPSHOT")
 }
 
 tasks {
-    compileKotlin {
-        kotlinOptions.jvmTarget = "16"
-    }
     shadowJar {
         archiveClassifier.set("")
     }
