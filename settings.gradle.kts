@@ -18,26 +18,31 @@
 rootProject.name = "UnifiedMetrics"
 
 val modulePrefix = ":unifiedmetrics-"
+val platformPrefix = "platform-"
+val driverPrefix = "driver-"
 
 include(modulePrefix + "api")
 include(modulePrefix + "common")
 include(modulePrefix + "core")
-include(modulePrefix + "bukkit")
-include(modulePrefix + "velocity")
-include(modulePrefix + "bungee")
-include(modulePrefix + "minestom")
 
-include(modulePrefix + "influx-driver")
-include(modulePrefix + "prometheus-driver")
+include(modulePrefix + platformPrefix + "bukkit")
+include(modulePrefix + platformPrefix + "minestom")
+include(modulePrefix + platformPrefix + "velocity")
+include(modulePrefix + platformPrefix + "bungee")
+
+include(modulePrefix + driverPrefix + "influx")
+include(modulePrefix + driverPrefix + "prometheus")
 
 project(modulePrefix + "api").projectDir = File(rootDir, "api")
 project(modulePrefix + "common").projectDir = File(rootDir, "common")
 project(modulePrefix + "core").projectDir = File(rootDir, "core")
-project(modulePrefix + "bukkit").projectDir = File(rootDir, "bukkit")
-project(modulePrefix + "velocity").projectDir = File(rootDir, "velocity")
-project(modulePrefix + "bungee").projectDir = File(rootDir, "bungee")
-project(modulePrefix + "minestom").projectDir = File(rootDir, "minestom")
+
+val platformsDir = File(rootDir, "platforms")
+project(modulePrefix + platformPrefix + "bukkit").projectDir = File(platformsDir, "bukkit")
+project(modulePrefix + platformPrefix + "minestom").projectDir = File(platformsDir, "minestom")
+project(modulePrefix + platformPrefix + "velocity").projectDir = File(platformsDir, "velocity")
+project(modulePrefix + platformPrefix + "bungee").projectDir = File(platformsDir, "bungee")
 
 val driversDir = File(rootDir, "drivers")
-project(modulePrefix + "influx-driver").projectDir = File(driversDir, "influx")
-project(modulePrefix + "prometheus-driver").projectDir = File(driversDir, "prometheus")
+project(modulePrefix + driverPrefix + "influx").projectDir = File(driversDir, "influx")
+project(modulePrefix + driverPrefix + "prometheus").projectDir = File(driversDir, "prometheus")

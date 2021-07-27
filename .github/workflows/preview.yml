@@ -28,7 +28,4 @@ jobs:
           title: "Development Build"
           files: |
             api/build/libs/*.jar
-            bukkit/build/libs/*.jar
-            minestom/build/libs/*.jar
-            velocity/build/libs/*.jar
-            bungee/build/libs/*.jar
+            platforms/*/build/libs/*.jar

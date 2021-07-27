@@ -84,7 +84,7 @@ $ ./gradlew shadowJar
 To build a specific subproject, you can prefix it with the subproject path. For example:
 
 ```bash
-$ ./gradlew :bukkit:shadowJar
+$ `./gradlew :unifiedmetrics-platform-bukkit:shadowJar`
 ```
 
 The output artifacts can be found in `subproject/build/libs`.

@@ -38,8 +38,8 @@ tasks {
         dependencies {
             include(dependency(":unifiedmetrics-api"))
             include(dependency(":unifiedmetrics-common"))
-            include(dependency(":unifiedmetrics-influx-driver"))
-            include(dependency(":unifiedmetrics-prometheus-driver"))
+            include(dependency(":unifiedmetrics-driver-influx"))
+            include(dependency(":unifiedmetrics-driver-prometheus"))
             include(dependency(":unifiedmetrics-core"))
         }
     }
