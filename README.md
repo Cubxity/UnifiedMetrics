@@ -10,7 +10,7 @@ licensed under [GNU LGPLv3](COPYING.LESSER).
 
 ![Grafana Dashboard](.github/assets/grafana.png)
 <p align="center">
-    <a href="https://snapshot.raintank.io/dashboard/snapshot/IwyI3cjE6f7bHyOViXiFrRApA6KT2Idy">
+    <a href="https://snapshot.raintank.io/dashboard/snapshot/i0Btqtz01e4DkmW3N89y61wc5tIMJZKm">
         Click here for preview!
     </a>
 </p>
