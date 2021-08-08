@@ -37,7 +37,7 @@ interface UnifiedMetrics {
      * This is defined in the UnifiedMetrics configuration file, and is used for
      * grouping server data.
      *
-     * The default server name is "main"
+     * The default server name is "global"
      */
     val serverName: String
 
