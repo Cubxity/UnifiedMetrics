@@ -22,6 +22,7 @@ import dev.cubxity.plugins.metrics.api.metric.data.GaugeMetric
 import dev.cubxity.plugins.metrics.api.metric.data.Metric
 import dev.cubxity.plugins.metrics.api.util.fastForEach
 import dev.cubxity.plugins.metrics.bukkit.bootstrap.UnifiedMetricsBukkitBootstrap
+import dev.cubxity.plugins.metrics.common.metric.Metrics
 
 class BukkitWorldCollector(private val bootstrap: UnifiedMetricsBukkitBootstrap) : Collector {
     override fun collect(): List<Metric> {
@@ -30,9 +31,9 @@ class BukkitWorldCollector(private val bootstrap: UnifiedMetricsBukkitBootstrap)
 
         worlds.fastForEach { world ->
             val tags = mapOf("world" to world.name)
-            samples.add(GaugeMetric("minecraft_world_entities_count", tags, world.entities.size))
-            samples.add(GaugeMetric("minecraft_world_players_count", tags, world.players.size))
-            samples.add(GaugeMetric("minecraft_world_loaded_chunks", tags, world.loadedChunks.size))
+            samples.add(GaugeMetric(Metrics.Server.WorldEntitiesCount, tags, world.entities.size))
+            samples.add(GaugeMetric(Metrics.Server.WorldPlayersCount, tags, world.players.size))
+            samples.add(GaugeMetric(Metrics.Server.WorldLoadedChunks, tags, world.loadedChunks.size))
         }
 
         return samples

@@ -20,6 +20,7 @@ package dev.cubxity.plugins.metrics.minestom.metric.world
 import dev.cubxity.plugins.metrics.api.metric.collector.Collector
 import dev.cubxity.plugins.metrics.api.metric.data.GaugeMetric
 import dev.cubxity.plugins.metrics.api.metric.data.Metric
+import dev.cubxity.plugins.metrics.common.metric.Metrics
 import net.minestom.server.MinecraftServer
 
 class WorldCollector : Collector {
@@ -29,9 +30,9 @@ class WorldCollector : Collector {
 
         for (instance in instances) {
             val tags = mapOf("world" to instance.uniqueId.toString())
-            samples.add(GaugeMetric("minecraft_world_entities_count", tags, instance.entities.size))
-            samples.add(GaugeMetric("minecraft_world_players_count", tags, instance.players.size))
-            samples.add(GaugeMetric("minecraft_world_loaded_chunks", tags, instance.chunks.size))
+            samples.add(GaugeMetric(Metrics.Server.WorldEntitiesCount, tags, instance.entities.size))
+            samples.add(GaugeMetric(Metrics.Server.WorldPlayersCount, tags, instance.players.size))
+            samples.add(GaugeMetric(Metrics.Server.WorldLoadedChunks, tags, instance.chunks.size))
         }
 
         return samples

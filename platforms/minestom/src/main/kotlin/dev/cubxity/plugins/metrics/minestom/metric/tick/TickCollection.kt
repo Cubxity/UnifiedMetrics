@@ -17,12 +17,13 @@
 
 package dev.cubxity.plugins.metrics.minestom.metric.tick
 
+import dev.cubxity.plugins.metrics.api.metric.collector.Collector
+import dev.cubxity.plugins.metrics.api.metric.collector.CollectorCollection
 import dev.cubxity.plugins.metrics.api.metric.collector.Histogram
 import dev.cubxity.plugins.metrics.api.metric.collector.MILLISECONDS_PER_SECOND
-import dev.cubxity.plugins.metrics.api.metric.collector.CollectorCollection
-import dev.cubxity.plugins.metrics.api.metric.collector.Collector
 import dev.cubxity.plugins.metrics.api.metric.store.VolatileDoubleStore
 import dev.cubxity.plugins.metrics.api.metric.store.VolatileLongStore
+import dev.cubxity.plugins.metrics.common.metric.Metrics
 import net.minestom.server.MinecraftServer
 import net.minestom.server.monitoring.TickMonitor
 import java.util.function.Consumer
@@ -30,7 +31,7 @@ import java.util.function.Consumer
 class TickCollection : Consumer<TickMonitor>, CollectorCollection {
     // The callback is called from a single thread
     private val tickDuration = Histogram(
-        "minecraft_tick_duration_seconds",
+        Metrics.Server.TickDurationSeconds,
         sumStoreFactory = VolatileDoubleStore,
         countStoreFactory = VolatileLongStore
     )

@@ -24,6 +24,7 @@ import dev.cubxity.plugins.metrics.api.metric.store.VolatileDoubleStore
 import dev.cubxity.plugins.metrics.api.metric.store.VolatileLongStore
 import dev.cubxity.plugins.metrics.bukkit.bootstrap.UnifiedMetricsBukkitBootstrap
 import dev.cubxity.plugins.metrics.bukkit.util.classExists
+import dev.cubxity.plugins.metrics.common.metric.Metrics
 
 class TickCollection(bootstrap: UnifiedMetricsBukkitBootstrap) : CollectorCollection {
     private val reporter = if (classExists("com.destroystokyo.paper.event.server.ServerTickStartEvent")) {
@@ -34,7 +35,7 @@ class TickCollection(bootstrap: UnifiedMetricsBukkitBootstrap) : CollectorCollec
 
     // The callback is called from a single thread
     private val tickDuration = Histogram(
-        "minecraft_tick_duration_seconds",
+        Metrics.Server.TickDurationSeconds,
         sumStoreFactory = VolatileDoubleStore,
         countStoreFactory = VolatileLongStore
     )

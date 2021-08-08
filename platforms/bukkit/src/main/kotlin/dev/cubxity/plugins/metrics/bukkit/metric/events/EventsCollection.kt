@@ -24,6 +24,7 @@ import dev.cubxity.plugins.metrics.api.metric.collector.CollectorCollection
 import dev.cubxity.plugins.metrics.api.metric.collector.Counter
 import dev.cubxity.plugins.metrics.api.metric.store.VolatileDoubleStore
 import dev.cubxity.plugins.metrics.bukkit.bootstrap.UnifiedMetricsBukkitBootstrap
+import dev.cubxity.plugins.metrics.common.metric.Metrics
 import org.bukkit.event.EventHandler
 import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
@@ -35,11 +36,11 @@ import org.bukkit.event.server.ServerListPingEvent
 
 @Suppress("UNUSED_PARAMETER")
 class EventsCollection(private val bootstrap: UnifiedMetricsBukkitBootstrap) : CollectorCollection, Listener {
-    private val loginCounter = Counter("minecraft_events_login_total")
-    private val joinCounter = Counter("minecraft_events_join_total", valueStoreFactory = VolatileDoubleStore)
-    private val quitCounter = Counter("minecraft_events_quit_total", valueStoreFactory = VolatileDoubleStore)
-    private val chatCounter = Counter("minecraft_events_chat_total")
-    private val pingCounter = Counter("minecraft_events_ping_total") // TODO: is this async?
+    private val loginCounter = Counter(Metrics.Events.Login)
+    private val joinCounter = Counter(Metrics.Events.Join, valueStoreFactory = VolatileDoubleStore)
+    private val quitCounter = Counter(Metrics.Events.Quit, valueStoreFactory = VolatileDoubleStore)
+    private val chatCounter = Counter(Metrics.Events.Chat)
+    private val pingCounter = Counter(Metrics.Events.Ping) // TODO: is this async?
 
     override val collectors: List<Collector> =
         listOf(loginCounter, joinCounter, quitCounter, chatCounter, pingCounter)

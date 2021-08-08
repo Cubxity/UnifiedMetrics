@@ -21,14 +21,15 @@ import dev.cubxity.plugins.metrics.api.metric.collector.Collector
 import dev.cubxity.plugins.metrics.api.metric.data.GaugeMetric
 import dev.cubxity.plugins.metrics.api.metric.data.Metric
 import dev.cubxity.plugins.metrics.bukkit.bootstrap.UnifiedMetricsBukkitBootstrap
+import dev.cubxity.plugins.metrics.common.metric.Metrics
 
 class ServerCollector(private val bootstrap: UnifiedMetricsBukkitBootstrap) : Collector {
     override fun collect(): List<Metric> {
         val server = bootstrap.server
         return listOf(
-            GaugeMetric("minecraft_plugins", value = server.pluginManager.plugins.size),
-            GaugeMetric("minecraft_players_count", value = server.onlinePlayers.size),
-            GaugeMetric("minecraft_players_max", value = server.maxPlayers)
+            GaugeMetric(Metrics.Server.Plugins, value = server.pluginManager.plugins.size),
+            GaugeMetric(Metrics.Server.PlayersCount, value = server.onlinePlayers.size),
+            GaugeMetric(Metrics.Server.PlayersMax, value = server.maxPlayers)
         )
     }
 }
