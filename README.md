@@ -17,7 +17,7 @@ licensed under [GNU LGPLv3](COPYING.LESSER).
 
 ## Features
 
-- **Platform-agnostic & compatible with popular platforms**. Get the same metrics and features on any supported platform
+- **Platform-agnostic & compatible with popular platforms**. Get the same metrics and features on any supported platform.
 - **Monitor your server in real-time** with Prometheus/InfluxDB and provided Grafana dashboards.
 - **High performance** metric collection. Low to none performance impact on the server's performance.
 - **Free and open-source**. The code is free and open for anyone to audit and contribute to.
