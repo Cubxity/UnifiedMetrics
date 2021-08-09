@@ -15,12 +15,19 @@ licensed under [GNU LGPLv3](COPYING.LESSER).
     </a>
 </p>
 
+## Features
+
+- **Platform-agnostic & compatible with popular platforms**. Get the same metrics and features on any supported platform
+- **Monitor your server in real-time** with Prometheus/InfluxDB and provided Grafana dashboards.
+- **High performance** metric collection. Low to none performance impact on the server's performance.
+- **Free and open-source**. The code is free and open for anyone to audit and contribute to.
+
 ## Compatibility
 
 **Server:**
 
-- 1.8+ Spigot servers
-- Minestom (Beta)
+- 1.8+ Spigot servers *(includes Spigot-based forks)*
+- Minestom
 - Velocity
 - BungeeCord
 
@@ -29,14 +36,18 @@ licensed under [GNU LGPLv3](COPYING.LESSER).
 - Prometheus
 - InfluxDB
 
-## Features
+## Metrics
 
-- Server metrics collection (TPS, MSPT, Players, Plugins)
-- World metrics collection (Entities, Chunks)
-- Events metrics collection (Player flow, chat, pings)
-- JVM metrics collection (Memory, CPU Load, Threads, GC, Uptime)
-- Extensible API (Custom metrics, samples, metrics driver)
-- More features upcoming...
+| Collector     | Description                                     | Platform            | Default |
+| ------------- | ----------------------------------------------- | ------------------- | ------- |
+| systemGc      | Garbage collection duration and freed bytes     | All                 | true    |
+| systemMemory  | Memory used, committed, max and init            | All                 | true    |
+| systemProcess | CPU load, seconds, and process start time       | All                 | true    |
+| systemThread  | Current, daemon, started, and peak thread count | All                 | true    |
+| events        | Login, join, quit, chat, and ping event counter | All                 | true    |
+| server        | Plugins count and player counts                 | All                 | true    |
+| tick          | Tick duration histogram                         | Bukkit, Minestom    | true    |
+| world         | World entities, players, and chunks count       | Bukkit, Minestom    | true    |
 
 ## Getting started
 
