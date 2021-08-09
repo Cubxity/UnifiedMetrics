@@ -12,11 +12,11 @@
             }
         ],
         "artifacts": [
-            "org.jetbrains.kotlin:kotlin-stdlib:1.5.20",
-            "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0",
+            "org.jetbrains.kotlin:kotlin-stdlib:1.5.21",
+            "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1",
             "org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.2",
-            "com.charleskorn.kaml:kaml-jvm:0.34.0",
-            "com.influxdb:influxdb-client-java:1.14.0",
+            "com.charleskorn.kaml:kaml-jvm:0.35.0",
+            "com.influxdb:influxdb-client-java:3.1.0",
             "io.prometheus:simpleclient_httpserver:0.11.0"
         ]
     }
