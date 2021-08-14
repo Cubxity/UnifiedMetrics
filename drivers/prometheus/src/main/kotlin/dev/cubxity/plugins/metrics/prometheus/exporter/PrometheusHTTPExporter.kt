@@ -15,27 +15,27 @@
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.prometheus
+package dev.cubxity.plugins.metrics.prometheus.exporter
 
 import dev.cubxity.plugins.metrics.api.UnifiedMetrics
-import dev.cubxity.plugins.metrics.api.metric.MetricsDriver
-import dev.cubxity.plugins.metrics.prometheus.config.PrometheusConfig
-import dev.cubxity.plugins.metrics.prometheus.config.PrometheusMode
-import dev.cubxity.plugins.metrics.prometheus.exporter.PrometheusExporter
-import dev.cubxity.plugins.metrics.prometheus.exporter.PrometheusHTTPExporter
-import dev.cubxity.plugins.metrics.prometheus.exporter.PushGatewayExporter
+import dev.cubxity.plugins.metrics.prometheus.PrometheusMetricsDriver
+import dev.cubxity.plugins.metrics.prometheus.collector.UnifiedMetricsCollector
+import io.prometheus.client.CollectorRegistry
+import io.prometheus.client.exporter.HTTPServer
+import java.net.InetSocketAddress
 
-class PrometheusMetricsDriver(api: UnifiedMetrics, val config: PrometheusConfig) : MetricsDriver {
-    private val exporter: PrometheusExporter =  when (config.mode) {
-        PrometheusMode.Http -> PrometheusHTTPExporter(api, this)
-        PrometheusMode.PushGateway -> PushGatewayExporter(api, this)
-    }
+class PrometheusHTTPExporter(private val api: UnifiedMetrics, private val driver: PrometheusMetricsDriver) : PrometheusExporter {
+    private var server: HTTPServer? = null
 
     override fun initialize() {
-        exporter.initialize()
+        val registry = CollectorRegistry()
+        registry.register(UnifiedMetricsCollector(api))
+
+        server = HTTPServer(InetSocketAddress(driver.config.http.host, driver.config.http.port), registry)
     }
 
     override fun close() {
-        exporter.close()
+        server?.stop()
+        server = null
     }
 }

@@ -15,10 +15,10 @@
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-apply(plugin = "kotlinx-serialization")
+package dev.cubxity.plugins.metrics.prometheus.collector
 
-dependencies {
-    compileOnly(project(":unifiedmetrics-api"))
-    api("io.prometheus", "simpleclient_httpserver", "0.11.0")
-    api("io.prometheus", "simpleclient_pushgateway", "0.11.0")
+import io.prometheus.client.Collector
+
+class MetricSamplesCollection(private val collection: List<MetricFamilySamples>) : Collector() {
+    override fun collect(): List<MetricFamilySamples> = collection
 }

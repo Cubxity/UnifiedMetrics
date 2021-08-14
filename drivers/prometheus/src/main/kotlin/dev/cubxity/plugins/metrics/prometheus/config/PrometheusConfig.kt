@@ -17,15 +17,51 @@
 
 package dev.cubxity.plugins.metrics.prometheus.config
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class PrometheusConfig(
-    val http: PrometheusHttpConfig = PrometheusHttpConfig()
+    val mode: PrometheusMode = PrometheusMode.Http,
+    val http: PrometheusHttpConfig = PrometheusHttpConfig(),
+    val pushGateway: PushGatewayConfig = PushGatewayConfig()
 )
+
+@Serializable
+enum class PrometheusMode {
+    @SerialName("HTTP")
+    Http,
+
+    @SerialName("PUSHGATEWAY")
+    PushGateway
+}
 
 @Serializable
 data class PrometheusHttpConfig(
     val host: String = "0.0.0.0",
     val port: Int = 9100
 )
+
+@Serializable
+data class PushGatewayConfig(
+    val job: String = "unifiedmetrics",
+    val url: String = "http://pushgateway:9091",
+    val authentication: PushGatewayAuthenticationConfig = PushGatewayAuthenticationConfig(),
+    val interval: Long = 10
+)
+
+@Serializable
+data class PushGatewayAuthenticationConfig(
+    val scheme: PushGatewayAuthenticationScheme = PushGatewayAuthenticationScheme.Basic,
+    val username: String = "username",
+    val password: String = "password"
+)
+
+@Serializable
+enum class PushGatewayAuthenticationScheme {
+    @SerialName("NONE")
+    None,
+
+    @SerialName("BASIC")
+    Basic
+}

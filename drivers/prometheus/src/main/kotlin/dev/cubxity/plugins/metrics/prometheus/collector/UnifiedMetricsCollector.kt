@@ -15,10 +15,24 @@
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-apply(plugin = "kotlinx-serialization")
+package dev.cubxity.plugins.metrics.prometheus.collector
 
-dependencies {
-    compileOnly(project(":unifiedmetrics-api"))
-    api("io.prometheus", "simpleclient_httpserver", "0.11.0")
-    api("io.prometheus", "simpleclient_pushgateway", "0.11.0")
+import dev.cubxity.plugins.metrics.api.UnifiedMetrics
+import dev.cubxity.plugins.metrics.prometheus.exporter.toPrometheus
+import io.prometheus.client.Collector
+import kotlinx.coroutines.runBlocking
+
+class UnifiedMetricsCollector(private val api: UnifiedMetrics) : Collector() {
+    override fun collect(): List<MetricFamilySamples> {
+        return try {
+            val metrics = runBlocking {
+                api.metricsManager.collect()
+            }
+
+            metrics.toPrometheus()
+        } catch (exception: Exception) {
+            api.logger.severe("An error occurred whilst collecting metrics", exception)
+            emptyList()
+        }
+    }
 }
