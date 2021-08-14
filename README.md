@@ -17,7 +17,8 @@ licensed under [GNU LGPLv3](COPYING.LESSER).
 
 ## Features
 
-- **Platform-agnostic & compatible with popular platforms**. Get the same metrics and features on any supported platform.
+- **Platform-agnostic & compatible with popular platforms**. Get the same metrics and features on any supported
+  platform.
 - **Monitor your server in real-time** with Prometheus/InfluxDB and provided Grafana dashboards.
 - **High performance** metric collection. Low to none performance impact on the server's performance.
 - **Free and open-source**. The code is free and open for anyone to audit and contribute to.
@@ -111,6 +112,15 @@ import dev.cubxity.plugins.metrics.api.UnifiedMetricsProvider
 
 val api = UnifiedMetricsProvider.get()
 ```
+
+## Special Thanks
+
+YourKit supports open source projects with innovative and intelligent tools for monitoring and profiling Java and .NET
+applications. YourKit is the creator of [YourKit Java Profiler](https://www.yourkit.com/java/profiler/),
+[YourKit .NET Profiler](https://www.yourkit.com/.net/profiler/),
+and [YourKit YouMonitor](https://www.yourkit.com/youmonitor/).
+
+[![YourKit Logo](https://www.yourkit.com/images/yklogo.png)](https://www.yourkit.com/)
 
 ## Servers using UnifiedMetrics
 
