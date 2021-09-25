@@ -39,7 +39,7 @@ enum class PrometheusMode {
 @Serializable
 data class PrometheusHttpConfig(
     val host: String = "0.0.0.0",
-    val port: Int = 9100
+    val port: Int = 9970
 )
 
 @Serializable
