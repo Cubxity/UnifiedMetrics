@@ -57,7 +57,7 @@ class InfluxMetricsDriver(private val api: UnifiedMetrics, private val config: I
             .build()
 
         influxDBClient = InfluxDBClientFactory.create(options)
-        writeApi = influxDBClient?.writeApi
+        writeApi = influxDBClient?.makeWriteApi()
 
         scheduleTasks()
     }
