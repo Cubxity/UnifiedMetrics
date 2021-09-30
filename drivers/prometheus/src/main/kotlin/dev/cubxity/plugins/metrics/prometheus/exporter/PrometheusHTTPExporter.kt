@@ -35,7 +35,7 @@ class PrometheusHTTPExporter(private val api: UnifiedMetrics, private val driver
     }
 
     override fun close() {
-        server?.stop()
+        server?.close()
         server = null
     }
 }
