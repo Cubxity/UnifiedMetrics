@@ -112,6 +112,7 @@ val api = UnifiedMetricsProvider.get()
 ## Special Thanks
 
 UnifiedMetrics is a proud partner of DedicatedMC! Get your Raw Power Hosting today with **15% OFF** using code `UnifiedMetrics`!
+
 [![DedicatedMC Logo](.github/assets/dmc.png)](https://dedimc.promo/UnifiedMetrics)
 
 YourKit supports open source projects with innovative and intelligent tools for monitoring and profiling Java and .NET
