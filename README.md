@@ -9,11 +9,7 @@ UnifiedMetrics is a fully-featured free and open-source metrics collection plugi
 licensed under [GNU LGPLv3](COPYING.LESSER).
 
 ![Grafana Dashboard](.github/assets/grafana.png)
-<p align="center">
-    <a href="https://snapshot.raintank.io/dashboard/snapshot/i0Btqtz01e4DkmW3N89y61wc5tIMJZKm">
-        Click here for preview!
-    </a>
-</p>
+*This is a custom-made dashboard, which is not public, yet.*
 
 ## Features
 
@@ -114,6 +110,10 @@ val api = UnifiedMetricsProvider.get()
 ```
 
 ## Special Thanks
+
+UnifiedMetrics is a proud partner of DedicatedMC! Get your Raw Power Hosting today with **15% OFF** using code `UnifiedMetrics`!
+
+[![DedicatedMC Logo](.github/assets/dmc.png)](https://dedimc.promo/UnifiedMetrics)
 
 YourKit supports open source projects with innovative and intelligent tools for monitoring and profiling Java and .NET
 applications. YourKit is the creator of [YourKit Java Profiler](https://www.yourkit.com/java/profiler/),

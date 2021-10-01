@@ -39,29 +39,30 @@ enum class PrometheusMode {
 @Serializable
 data class PrometheusHttpConfig(
     val host: String = "0.0.0.0",
-    val port: Int = 9970
+    val port: Int = 9970,
+    val authentication: AuthenticationConfig = AuthenticationConfig()
 )
 
 @Serializable
 data class PushGatewayConfig(
     val job: String = "unifiedmetrics",
     val url: String = "http://pushgateway:9091",
-    val authentication: PushGatewayAuthenticationConfig = PushGatewayAuthenticationConfig(),
+    val authentication: AuthenticationConfig = AuthenticationConfig(),
     val interval: Long = 10
 )
 
 @Serializable
-data class PushGatewayAuthenticationConfig(
-    val scheme: PushGatewayAuthenticationScheme = PushGatewayAuthenticationScheme.Basic,
-    val username: String = "username",
-    val password: String = "password"
-)
-
-@Serializable
-enum class PushGatewayAuthenticationScheme {
+enum class AuthenticationScheme {
     @SerialName("NONE")
     None,
 
     @SerialName("BASIC")
     Basic
 }
+
+@Serializable
+data class AuthenticationConfig(
+    val scheme: AuthenticationScheme = AuthenticationScheme.None,
+    val username: String = "username",
+    val password: String = "password"
+)

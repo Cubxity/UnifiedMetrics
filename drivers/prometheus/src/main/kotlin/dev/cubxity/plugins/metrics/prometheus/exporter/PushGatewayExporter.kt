@@ -20,7 +20,7 @@ package dev.cubxity.plugins.metrics.prometheus.exporter
 import dev.cubxity.plugins.metrics.api.UnifiedMetrics
 import dev.cubxity.plugins.metrics.prometheus.PrometheusMetricsDriver
 import dev.cubxity.plugins.metrics.prometheus.collector.MetricSamplesCollection
-import dev.cubxity.plugins.metrics.prometheus.config.PushGatewayAuthenticationScheme
+import dev.cubxity.plugins.metrics.prometheus.config.AuthenticationScheme
 import io.prometheus.client.exporter.BasicAuthHttpConnectionFactory
 import io.prometheus.client.exporter.PushGateway
 import kotlinx.coroutines.*
@@ -42,7 +42,7 @@ class PushGatewayExporter(
 
         gateway = PushGateway(URL(config.url)).apply {
             with(config.authentication) {
-                if (scheme == PushGatewayAuthenticationScheme.Basic) {
+                if (scheme == AuthenticationScheme.Basic) {
                     setConnectionFactory(BasicAuthHttpConnectionFactory(username, password))
                 }
             }
