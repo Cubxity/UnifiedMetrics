@@ -17,25 +17,48 @@
 
 package dev.cubxity.plugins.metrics.prometheus.exporter
 
+import com.sun.net.httpserver.BasicAuthenticator
 import dev.cubxity.plugins.metrics.api.UnifiedMetrics
 import dev.cubxity.plugins.metrics.prometheus.PrometheusMetricsDriver
 import dev.cubxity.plugins.metrics.prometheus.collector.UnifiedMetricsCollector
+import dev.cubxity.plugins.metrics.prometheus.config.AuthenticationScheme
 import io.prometheus.client.CollectorRegistry
 import io.prometheus.client.exporter.HTTPServer
-import java.net.InetSocketAddress
 
-class PrometheusHTTPExporter(private val api: UnifiedMetrics, private val driver: PrometheusMetricsDriver) : PrometheusExporter {
+class PrometheusHTTPExporter(
+    private val api: UnifiedMetrics,
+    private val driver: PrometheusMetricsDriver
+) : PrometheusExporter {
     private var server: HTTPServer? = null
 
     override fun initialize() {
         val registry = CollectorRegistry()
         registry.register(UnifiedMetricsCollector(api))
 
-        server = HTTPServer(InetSocketAddress(driver.config.http.host, driver.config.http.port), registry)
+        server = HTTPServer.Builder()
+            .withHostname(driver.config.http.host)
+            .withPort(driver.config.http.port)
+            .withRegistry(registry)
+            .apply {
+                with(driver.config.http.authentication) {
+                    if (scheme == AuthenticationScheme.Basic) {
+                        withAuthenticator(Authenticator(username, password))
+                    }
+                }
+            }
+            .build()
     }
 
     override fun close() {
         server?.close()
         server = null
+    }
+
+    private class Authenticator(
+        private val username: String,
+        private val password: String
+    ) : BasicAuthenticator("unifiedmetrics") {
+        override fun checkCredentials(username: String?, password: String?): Boolean =
+            this.username == username && this.password == password
     }
 }
