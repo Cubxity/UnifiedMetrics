@@ -84,7 +84,7 @@ public class MinecraftServerMixin {
         )
     )
     private void onTickEnd(CallbackInfo ci) {
-        TickEvent.Companion.getEVENT().invoker().onTick((double)(System.nanoTime() - lastTick) / NANOSECONDS_PER_MILLISECOND);
+        TickEvent.Companion.getEvent().invoker().onTick((double)(System.nanoTime() - lastTick) / NANOSECONDS_PER_MILLISECOND);
     }
 
 }

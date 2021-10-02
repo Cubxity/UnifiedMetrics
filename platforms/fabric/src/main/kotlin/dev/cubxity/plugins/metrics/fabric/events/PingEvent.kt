@@ -25,7 +25,7 @@ fun interface PingEvent {
     fun onPing()
 
     companion object {
-        val EVENT: Event<PingEvent> = EventFactory.createArrayBacked(PingEvent::class.java) { events ->
+        val event: Event<PingEvent> = EventFactory.createArrayBacked(PingEvent::class.java) { events ->
             PingEvent {
                 events.forEach(PingEvent::onPing)
             }

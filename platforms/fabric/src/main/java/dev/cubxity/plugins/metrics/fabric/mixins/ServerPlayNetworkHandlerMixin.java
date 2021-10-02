@@ -29,7 +29,7 @@ public class ServerPlayNetworkHandlerMixin {
 
     @Inject(method = "handleMessage", at = @At("HEAD"))
     private void onHandleMessage(CallbackInfo ci) {
-        ChatEvent.Companion.getEVENT().invoker().onChat();
+        ChatEvent.Companion.getEvent().invoker().onChat();
     }
 
 }

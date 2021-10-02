@@ -47,10 +47,10 @@ class EventsCollection : CollectorCollection {
         ServerPlayConnectionEvents.DISCONNECT.register { _, _ ->
             quitCounter.inc()
         }
-        ChatEvent.EVENT.register {
+        ChatEvent.event.register {
             chatCounter.inc()
         }
-        PingEvent.EVENT.register {
+        PingEvent.event.register {
             pingCounter.inc()
         }
     }

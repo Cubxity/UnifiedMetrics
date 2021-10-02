@@ -23,11 +23,12 @@ import dev.cubxity.plugins.metrics.api.metric.collector.Histogram
 import dev.cubxity.plugins.metrics.api.metric.collector.MILLISECONDS_PER_SECOND
 import dev.cubxity.plugins.metrics.api.metric.store.VolatileDoubleStore
 import dev.cubxity.plugins.metrics.api.metric.store.VolatileLongStore
+import dev.cubxity.plugins.metrics.common.metric.Metrics
 import dev.cubxity.plugins.metrics.fabric.events.TickEvent
 
 class TickCollection : CollectorCollection {
     private val tickDuration = Histogram(
-        "minecraft_tick_duration_seconds",
+        Metrics.Server.TickDurationSeconds,
         sumStoreFactory = VolatileDoubleStore,
         countStoreFactory = VolatileLongStore
     )
@@ -36,7 +37,7 @@ class TickCollection : CollectorCollection {
 
 
     override fun initialize() {
-        TickEvent.EVENT.register { duration ->
+        TickEvent.event.register { duration ->
             onTick(duration / MILLISECONDS_PER_SECOND)
         }
     }

@@ -29,7 +29,7 @@ public class ServerQueryNetworkHandlerMixin {
 
     @Inject(method = "onRequest", at = @At("HEAD"))
     private void handleOnRequest(CallbackInfo ci) {
-        PingEvent.Companion.getEVENT().invoker().onPing();
+        PingEvent.Companion.getEvent().invoker().onPing();
     }
 
 }

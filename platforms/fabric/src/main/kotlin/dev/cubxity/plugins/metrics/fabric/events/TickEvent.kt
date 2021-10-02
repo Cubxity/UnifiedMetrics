@@ -26,7 +26,7 @@ fun interface TickEvent {
 
     companion object {
 
-        val EVENT: Event<TickEvent> = EventFactory.createArrayBacked(TickEvent::class.java) { events ->
+        val event: Event<TickEvent> = EventFactory.createArrayBacked(TickEvent::class.java) { events ->
             TickEvent { tickTime ->
                 events.forEach { it.onTick(tickTime) }
             }

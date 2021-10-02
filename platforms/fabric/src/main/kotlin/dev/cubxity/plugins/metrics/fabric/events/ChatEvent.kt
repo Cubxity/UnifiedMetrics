@@ -25,7 +25,7 @@ fun interface ChatEvent {
     fun onChat()
 
     companion object {
-        val EVENT: Event<ChatEvent> = EventFactory.createArrayBacked(ChatEvent::class.java) { events ->
+        val event: Event<ChatEvent> = EventFactory.createArrayBacked(ChatEvent::class.java) { events ->
             ChatEvent {
                 events.forEach(ChatEvent::onChat)
             }
