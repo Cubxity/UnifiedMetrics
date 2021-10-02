@@ -15,19 +15,21 @@
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.metric.collector
+package dev.cubxity.plugins.metrics.fabric.mixins;
 
-import dev.cubxity.plugins.metrics.api.metric.data.Metric
+import dev.cubxity.plugins.metrics.fabric.events.ChatEvent;
+import net.minecraft.server.network.ServerPlayNetworkHandler;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-const val NANOSECONDS_PER_MILLISECOND: Double = 1E6
-const val NANOSECONDS_PER_SECOND: Double = 1E9
-const val MILLISECONDS_PER_SECOND: Double = 1E3
+@Mixin(ServerPlayNetworkHandler.class)
+public class ServerPlayNetworkHandlerMixin {
 
-interface Collector {
-    /**
-     * Collects the metric and returns a list of samples.
-     *
-     * @return [List] of [Metric]
-     */
-    fun collect(): List<Metric>
+    @Inject(method = "handleMessage", at = @At("HEAD"))
+    private void onHandleMessage(CallbackInfo ci) {
+        ChatEvent.Companion.getEvent().invoker().onChat();
+    }
+
 }
