@@ -86,13 +86,13 @@ $ git clone https://github.com/Cubxity/UnifiedMetrics && cd UnifiedMetrics
 Open a terminal in the cloned directory and run the following command. The following command will build all subprojects.
 
 ```bash
-$ ./gradlew shadowJar
+$ ./gradlew assemble
 ```
 
 To build a specific subproject, you can prefix it with the subproject path. For example:
 
 ```bash
-$ `./gradlew :unifiedmetrics-platform-bukkit:shadowJar`
+$ `./gradlew :unifiedmetrics-platform-bukkit:assemble`
 ```
 
 The output artifacts can be found in `subproject/build/libs`.

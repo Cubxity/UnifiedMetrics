@@ -45,4 +45,9 @@ subprojects {
             freeCompilerArgs = listOf("-Xopt-in=kotlin.RequiresOptIn")
         }
     }
+    afterEvaluate {
+        tasks.findByName("shadowJar")?.also {
+            tasks.named("assemble") { dependsOn(it) }
+        }
+    }
 }

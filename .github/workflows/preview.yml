@@ -17,7 +17,7 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build with Gradle
-        run: ./gradlew shadowJar --no-daemon
+        run: ./gradlew assemble --no-daemon
       - name: Set variables
         id: vars
         run: echo ::set-output name=version::${GITHUB_REF#refs/*\/dev/}
