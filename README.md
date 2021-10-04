@@ -24,7 +24,7 @@ licensed under [GNU LGPLv3](COPYING.LESSER).
 **Server:**
 
 - 1.8+ Spigot servers *(includes Spigot-based forks)*
-- Fabric
+- 1.16+ Fabric servers
 - Minestom
 - Velocity
 - BungeeCord
