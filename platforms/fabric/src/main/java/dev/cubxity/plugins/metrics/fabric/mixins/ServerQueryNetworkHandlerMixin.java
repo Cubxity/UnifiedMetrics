@@ -15,32 +15,21 @@
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.github.johnrengelman.shadow")
-}
+package dev.cubxity.plugins.metrics.fabric.mixins;
 
-repositories {
-    maven("https://repo.spongepowered.org/maven")
-    maven("https://jitpack.io")
-}
+import dev.cubxity.plugins.metrics.fabric.events.PingEvent;
+import net.minecraft.server.network.ServerQueryNetworkHandler;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-dependencies {
-    api(project(":unifiedmetrics-core"))
+@Mixin(ServerQueryNetworkHandler.class)
+public class ServerQueryNetworkHandlerMixin {
 
-    compileOnly("com.github.Minestom:Minestom:a3ff3b25c4")
-    testImplementation("com.github.Minestom:Minestom:a3ff3b25c4")
-}
-
-tasks {
-    shadowJar {
-        archiveClassifier.set("")
+    @Inject(method = "onRequest", at = @At("HEAD"))
+    private void handleOnRequest(CallbackInfo ci) {
+        PingEvent.Companion.getEvent().invoker().onPing();
     }
-    processResources {
-        duplicatesStrategy = DuplicatesStrategy.INCLUDE
 
-        from("src/main/resources") {
-            expand("version" to version)
-            include("extension.json")
-        }
-    }
 }

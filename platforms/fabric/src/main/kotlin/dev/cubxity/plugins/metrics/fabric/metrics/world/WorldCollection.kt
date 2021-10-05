@@ -15,32 +15,12 @@
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.github.johnrengelman.shadow")
-}
+package dev.cubxity.plugins.metrics.fabric.metrics.world
 
-repositories {
-    maven("https://repo.spongepowered.org/maven")
-    maven("https://jitpack.io")
-}
+import dev.cubxity.plugins.metrics.api.metric.collector.Collector
+import dev.cubxity.plugins.metrics.api.metric.collector.CollectorCollection
+import dev.cubxity.plugins.metrics.fabric.bootstrap.UnifiedMetricsFabricBootstrap
 
-dependencies {
-    api(project(":unifiedmetrics-core"))
-
-    compileOnly("com.github.Minestom:Minestom:a3ff3b25c4")
-    testImplementation("com.github.Minestom:Minestom:a3ff3b25c4")
-}
-
-tasks {
-    shadowJar {
-        archiveClassifier.set("")
-    }
-    processResources {
-        duplicatesStrategy = DuplicatesStrategy.INCLUDE
-
-        from("src/main/resources") {
-            expand("version" to version)
-            include("extension.json")
-        }
-    }
+class WorldCollection(bootstrap: UnifiedMetricsFabricBootstrap) : CollectorCollection {
+    override val collectors: List<Collector> = listOf(WorldCollector(bootstrap))
 }

@@ -28,7 +28,7 @@ plugins {
 allprojects {
     group = "dev.cubxity.plugins"
     description = "Fully featured metrics collector agent for Minecraft servers."
-    version = "0.3.1"
+    version = "0.3.2"
 
     repositories {
         mavenCentral()
@@ -43,6 +43,11 @@ subprojects {
         kotlinOptions {
             jvmTarget = "1.8"
             freeCompilerArgs = listOf("-Xopt-in=kotlin.RequiresOptIn")
+        }
+    }
+    afterEvaluate {
+        tasks.findByName("shadowJar")?.also {
+            tasks.named("assemble") { dependsOn(it) }
         }
     }
 }

@@ -15,32 +15,29 @@
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.github.johnrengelman.shadow")
-}
+package dev.cubxity.plugins.metrics.fabric.logger
 
-repositories {
-    maven("https://repo.spongepowered.org/maven")
-    maven("https://jitpack.io")
-}
+import dev.cubxity.plugins.metrics.api.logging.Logger
+import org.apache.logging.log4j.Level
 
-dependencies {
-    api(project(":unifiedmetrics-core"))
-
-    compileOnly("com.github.Minestom:Minestom:a3ff3b25c4")
-    testImplementation("com.github.Minestom:Minestom:a3ff3b25c4")
-}
-
-tasks {
-    shadowJar {
-        archiveClassifier.set("")
+class Log4jLogger(private val logger: org.apache.logging.log4j.Logger): Logger {
+    override fun info(message: String) {
+        logger.log(Level.INFO, message)
     }
-    processResources {
-        duplicatesStrategy = DuplicatesStrategy.INCLUDE
 
-        from("src/main/resources") {
-            expand("version" to version)
-            include("extension.json")
-        }
+    override fun warn(message: String) {
+        logger.log(Level.WARN, message)
+    }
+
+    override fun warn(message: String, error: Throwable) {
+        logger.log(Level.WARN, message, error)
+    }
+
+    override fun severe(message: String) {
+        logger.log(Level.ERROR, message)
+    }
+
+    override fun severe(message: String, error: Throwable) {
+        logger.log(Level.ERROR, message, error)
     }
 }

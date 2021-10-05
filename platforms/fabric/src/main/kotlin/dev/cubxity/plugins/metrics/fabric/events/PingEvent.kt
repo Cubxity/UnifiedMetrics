@@ -15,32 +15,21 @@
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.github.johnrengelman.shadow")
-}
+package dev.cubxity.plugins.metrics.fabric.events
 
-repositories {
-    maven("https://repo.spongepowered.org/maven")
-    maven("https://jitpack.io")
-}
+import net.fabricmc.fabric.api.event.Event
+import net.fabricmc.fabric.api.event.EventFactory
 
-dependencies {
-    api(project(":unifiedmetrics-core"))
+fun interface PingEvent {
 
-    compileOnly("com.github.Minestom:Minestom:a3ff3b25c4")
-    testImplementation("com.github.Minestom:Minestom:a3ff3b25c4")
-}
+    fun onPing()
 
-tasks {
-    shadowJar {
-        archiveClassifier.set("")
-    }
-    processResources {
-        duplicatesStrategy = DuplicatesStrategy.INCLUDE
-
-        from("src/main/resources") {
-            expand("version" to version)
-            include("extension.json")
+    companion object {
+        val event: Event<PingEvent> = EventFactory.createArrayBacked(PingEvent::class.java) { events ->
+            PingEvent {
+                events.forEach(PingEvent::onPing)
+            }
         }
     }
+
 }

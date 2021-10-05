@@ -15,32 +15,23 @@
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.github.johnrengelman.shadow")
-}
+package dev.cubxity.plugins.metrics.fabric.events
 
-repositories {
-    maven("https://repo.spongepowered.org/maven")
-    maven("https://jitpack.io")
-}
+import net.fabricmc.fabric.api.event.Event
+import net.fabricmc.fabric.api.event.EventFactory
 
-dependencies {
-    api(project(":unifiedmetrics-core"))
+fun interface TickEvent {
 
-    compileOnly("com.github.Minestom:Minestom:a3ff3b25c4")
-    testImplementation("com.github.Minestom:Minestom:a3ff3b25c4")
-}
+    fun onTick(tickTime: Double)
 
-tasks {
-    shadowJar {
-        archiveClassifier.set("")
-    }
-    processResources {
-        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    companion object {
 
-        from("src/main/resources") {
-            expand("version" to version)
-            include("extension.json")
+        val event: Event<TickEvent> = EventFactory.createArrayBacked(TickEvent::class.java) { events ->
+            TickEvent { tickTime ->
+                events.forEach { it.onTick(tickTime) }
+            }
         }
+
     }
+
 }

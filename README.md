@@ -9,11 +9,7 @@ UnifiedMetrics is a fully-featured free and open-source metrics collection plugi
 licensed under [GNU LGPLv3](COPYING.LESSER).
 
 ![Grafana Dashboard](.github/assets/grafana.png)
-<p align="center">
-    <a href="https://snapshot.raintank.io/dashboard/snapshot/i0Btqtz01e4DkmW3N89y61wc5tIMJZKm">
-        Click here for preview!
-    </a>
-</p>
+*This is a custom-made dashboard, which is not public, yet.*
 
 ## Features
 
@@ -28,6 +24,7 @@ licensed under [GNU LGPLv3](COPYING.LESSER).
 **Server:**
 
 - 1.8+ Spigot servers *(includes Spigot-based forks)*
+- 1.16+ Fabric servers
 - Minestom
 - Velocity
 - BungeeCord
@@ -90,13 +87,13 @@ $ git clone https://github.com/Cubxity/UnifiedMetrics && cd UnifiedMetrics
 Open a terminal in the cloned directory and run the following command. The following command will build all subprojects.
 
 ```bash
-$ ./gradlew shadowJar
+$ ./gradlew assemble
 ```
 
 To build a specific subproject, you can prefix it with the subproject path. For example:
 
 ```bash
-$ `./gradlew :unifiedmetrics-platform-bukkit:shadowJar`
+$ `./gradlew :unifiedmetrics-platform-bukkit:assemble`
 ```
 
 The output artifacts can be found in `subproject/build/libs`.
@@ -114,6 +111,10 @@ val api = UnifiedMetricsProvider.get()
 ```
 
 ## Special Thanks
+
+UnifiedMetrics is a proud partner of DedicatedMC! Get your Raw Power Hosting today with **15% OFF** using code `UnifiedMetrics`!
+
+[![DedicatedMC Logo](.github/assets/dmc.png)](https://dedimc.promo/UnifiedMetrics)
 
 YourKit supports open source projects with innovative and intelligent tools for monitoring and profiling Java and .NET
 applications. YourKit is the creator of [YourKit Java Profiler](https://www.yourkit.com/java/profiler/),

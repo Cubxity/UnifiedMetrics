@@ -17,7 +17,7 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build with Gradle
-        run: ./gradlew shadowJar --no-daemon
+        run: ./gradlew assemble --no-daemon
       - name: Set variables
         id: vars
         run: echo ::set-output name=version::${GITHUB_REF#refs/tags/v}
@@ -28,4 +28,4 @@ jobs:
           title: "UnifiedMetrics ${{ steps.vars.outputs.version }}"
           files: |
             api/build/libs/*.jar
-            platforms/*/build/libs/*.jar
+            platforms/*/build/libs/*(.jar|!(*-dev.jar))

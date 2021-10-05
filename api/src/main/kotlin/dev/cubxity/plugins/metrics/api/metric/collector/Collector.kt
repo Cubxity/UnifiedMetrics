@@ -19,6 +19,7 @@ package dev.cubxity.plugins.metrics.api.metric.collector
 
 import dev.cubxity.plugins.metrics.api.metric.data.Metric
 
+const val NANOSECONDS_PER_MILLISECOND: Double = 1E6
 const val NANOSECONDS_PER_SECOND: Double = 1E9
 const val MILLISECONDS_PER_SECOND: Double = 1E3
 
