@@ -29,4 +29,4 @@ jobs:
           title: "Development Build (${{ steps.vars.outputs.version }})"
           files: |
             api/build/libs/*.jar
-            platforms/*/build/libs/*.jar
+            platforms/*/build/libs/*(.jar|!(*-dev.jar))
