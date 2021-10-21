@@ -32,7 +32,7 @@ class WorldCollector(private val bootstrap: UnifiedMetricsFabricBootstrap) : Col
             val tags = mapOf("world" to world.registryKey.value.toString())
             samples.add(GaugeMetric(Metrics.Server.WorldEntitiesCount, tags, world.iterateEntities().count()))
             samples.add(GaugeMetric(Metrics.Server.WorldPlayersCount, tags, world.players.size))
-            samples.add(GaugeMetric(Metrics.Server.WorldLoadedChunks, tags, world.chunkManager.totalChunksLoadedCount))
+            samples.add(GaugeMetric(Metrics.Server.WorldLoadedChunks, tags, world.chunkManager.loadedChunkCount))
         }
 
         return samples
