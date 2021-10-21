@@ -9,7 +9,7 @@ UnifiedMetrics is a fully-featured free and open-source metrics collection plugi
 licensed under [GNU LGPLv3](COPYING.LESSER).
 
 ![Grafana Dashboard](.github/assets/grafana.png)
-*This is a custom-made dashboard, which is not public, yet.*
+*Dashboard [included](https://github.com/Cubxity/UnifiedMetrics/wiki/Grafana) out-of-box!*
 
 ## Features
 
