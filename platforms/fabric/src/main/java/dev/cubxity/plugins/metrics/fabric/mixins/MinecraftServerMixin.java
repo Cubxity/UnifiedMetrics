@@ -31,6 +31,7 @@ import static dev.cubxity.plugins.metrics.api.metric.collector.CollectorKt.NANOS
 
 /**
  * Designed to emulate paper's tick event as closely as possible
+ * however some changes had to be made to work with fabric-carpet
  */
 @Mixin(MinecraftServer.class)
 public class MinecraftServerMixin {
@@ -49,20 +50,10 @@ public class MinecraftServerMixin {
     }
 
     @Inject(
-        method = "runServer",
-        slice = @Slice(
-            from = @At(
-                value = "FIELD",
-                target = "Lnet/minecraft/server/MinecraftServer;debugStart:Lnet/minecraft/server/MinecraftServer$DebugStart;"
-            )
-        ),
-        at = @At(
-            value = "FIELD",
-            target = "Lnet/minecraft/server/MinecraftServer;timeReference:J",
-            opcode = Opcodes.PUTFIELD
-        )
+        method = "tick",
+        at = @At("HEAD")
     )
-    private void onRunServerBeforeTick(CallbackInfo ci) {
+    private void onTickStart(CallbackInfo ci) {
         lastTick = System.nanoTime();
     }
 
