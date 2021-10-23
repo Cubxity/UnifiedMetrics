@@ -19,7 +19,7 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build with Gradle
-        run: ./gradlew assemble publish --no-daemon -Psigning.keyId=${{secrets.SIGNING_KEY_ID}} -Psigning.password= -Psigning.secretKeyRingFile=/tmp/keyring.gpg
+        run: ./gradlew assemble publish --no-daemon -Psigning.secretKeyRingFile=/tmp/keyring.gpg -Psigning.keyId=${{secrets.SIGNING_KEY_ID}} -Psigning.password=
         env:
           MAVEN_REPO_USER: ${{ secrets.MAVEN_REPO_USER }}
           MAVEN_REPO_PASS: ${{ secrets.MAVEN_REPO_PASS }}
