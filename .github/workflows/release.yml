@@ -18,6 +18,9 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew assemble publish --no-daemon
+        env:
+          MAVEN_REPO_USER: ${{ secrets.MAVEN_REPO_USER }}
+          MAVEN_REPO_PASS: ${{ secrets.MAVEN_REPO_PASS }}
       - name: Set variables
         id: vars
         run: echo ::set-output name=version::${GITHUB_REF#refs/tags/v}
