@@ -9,10 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Configure GPG Key
-        run: |
-          echo -n "SIGNING_KEY" | base64 --decode > /tmp/keyring.gpg
-        env:
-          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+        run: echo "${{secrets.SIGNING_KEY}}" | base64 --decode > /tmp/keyring.gpg
       - name: Set up JDK 16
         uses: actions/setup-java@v2
         with:
