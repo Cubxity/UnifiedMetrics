@@ -38,17 +38,13 @@ allprojects {
 subprojects {
     apply(plugin = "java")
     apply(plugin = "kotlin")
+    apply(plugin = "signing")
     apply(plugin = "maven-publish")
 
     tasks.withType<KotlinCompile> {
         kotlinOptions {
             jvmTarget = "1.8"
             freeCompilerArgs = listOf("-Xopt-in=kotlin.RequiresOptIn")
-        }
-    }
-    afterEvaluate {
-        tasks.findByName("shadowJar")?.also {
-            tasks.named("assemble") { dependsOn(it) }
         }
     }
     configure<PublishingExtension> {
@@ -65,6 +61,14 @@ subprojects {
                     password = System.getenv("MAVEN_REPO_PASS")
                 }
             }
+        }
+    }
+    afterEvaluate {
+        tasks.findByName("shadowJar")?.also {
+            tasks.named("assemble") { dependsOn(it) }
+        }
+        configure<SigningExtension> {
+            sign(tasks.findByName("shadowJar") ?: tasks["jar"])
         }
     }
 }
