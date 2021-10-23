@@ -52,9 +52,9 @@ subprojects {
             maven {
                 name = "central"
                 url = if (version.toString().endsWith("SNAPSHOT")) {
-                    uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-                } else {
                     uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+                } else {
+                    uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
                 }
                 credentials {
                     username = System.getenv("MAVEN_REPO_USER")
@@ -68,7 +68,7 @@ subprojects {
             tasks.named("assemble") { dependsOn(it) }
         }
         configure<SigningExtension> {
-            sign(tasks.findByName("shadowJar") ?: tasks["jar"])
+            sign(configurations["archives"])
         }
     }
 }
