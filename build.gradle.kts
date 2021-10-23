@@ -38,6 +38,7 @@ allprojects {
 subprojects {
     apply(plugin = "java")
     apply(plugin = "kotlin")
+    apply(plugin = "maven-publish")
 
     tasks.withType<KotlinCompile> {
         kotlinOptions {
@@ -48,6 +49,22 @@ subprojects {
     afterEvaluate {
         tasks.findByName("shadowJar")?.also {
             tasks.named("assemble") { dependsOn(it) }
+        }
+    }
+    configure<PublishingExtension> {
+        repositories {
+            maven {
+                name = "central"
+                url = if (version.toString().endsWith("SNAPSHOT")) {
+                    uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+                } else {
+                    uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+                }
+                credentials {
+                    username = System.getenv("MAVEN_REPO_USER")
+                    password = System.getenv("MAVEN_REPO_PASS")
+                }
+            }
         }
     }
 }
