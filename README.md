@@ -98,7 +98,7 @@ and [YourKit YouMonitor](https://www.yourkit.com/youmonitor/).
 
 **Requirements:**
 
-- JDK 8+ (16+ for Fabric)
+- JDK 8+ (11+ for Minestom, 16+ for Fabric)
 - Git (Optional)
 
 To build UnifiedMetrics, you need to obtain the source code first. You can download the source from GitHub or use the
@@ -111,13 +111,15 @@ $ git clone https://github.com/Cubxity/UnifiedMetrics && cd UnifiedMetrics
 Open a terminal in the cloned directory and run the following command. The following command will build all subprojects.
 
 ```bash
-$ ./gradlew assemble
+$ ./gradlew assemble -x signArchives
 ```
+
+> `-x signArchives` is required to skip signing, unless you have signing set up
 
 To build a specific subproject, you can prefix it with the subproject path. For example:
 
 ```bash
-$ `./gradlew :unifiedmetrics-platform-bukkit:assemble`
+$ ./gradlew :unifiedmetrics-platform-bukkit:assemble -x signArchives
 ```
 
 The output artifacts can be found in `subproject/build/libs`.
