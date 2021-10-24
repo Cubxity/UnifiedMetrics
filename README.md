@@ -98,7 +98,7 @@ and [YourKit YouMonitor](https://www.yourkit.com/youmonitor/).
 
 **Requirements:**
 
-- JDK 8+ (11+ for Minestom, 16+ for Fabric)
+- JDK 8+ (16+ for Fabric, 17+ for Minestom)
 - Git (Optional)
 
 To build UnifiedMetrics, you need to obtain the source code first. You can download the source from GitHub or use the
