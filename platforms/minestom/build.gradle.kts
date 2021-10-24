@@ -28,19 +28,20 @@ dependencies {
     api(project(":unifiedmetrics-core"))
 
     compileOnly("com.github.Minestom:Minestom:a3ff3b25c4")
-    testImplementation("com.github.Minestom:Minestom:a3ff3b25c4")
+    testImplementation("com.github.Minestom:Minestom:9152c40753")
+}
+
+java {
+    targetCompatibility = JavaVersion.VERSION_11
 }
 
 tasks {
     shadowJar {
         archiveClassifier.set("")
-
-        dependencies {
-            include(dependency(":unifiedmetrics-api"))
-            include(dependency(":unifiedmetrics-common"))
-            include(dependency(":unifiedmetrics-driver-influx"))
-            include(dependency(":unifiedmetrics-driver-prometheus"))
-            include(dependency(":unifiedmetrics-core"))
+    }
+    compileKotlin {
+        kotlinOptions {
+            jvmTarget = "11"
         }
     }
     processResources {

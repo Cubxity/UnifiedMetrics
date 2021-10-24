@@ -38,11 +38,40 @@ allprojects {
 subprojects {
     apply(plugin = "java")
     apply(plugin = "kotlin")
+    apply(plugin = "signing")
+    apply(plugin = "maven-publish")
 
     tasks.withType<KotlinCompile> {
         kotlinOptions {
             jvmTarget = "1.8"
             freeCompilerArgs = listOf("-Xopt-in=kotlin.RequiresOptIn")
+        }
+    }
+    configure<JavaPluginExtension> {
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    configure<PublishingExtension> {
+        repositories {
+            maven {
+                name = "central"
+                url = if (version.toString().endsWith("SNAPSHOT")) {
+                    uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+                } else {
+                    uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+                }
+                credentials {
+                    username = System.getenv("MAVEN_REPO_USER")
+                    password = System.getenv("MAVEN_REPO_PASS")
+                }
+            }
+        }
+    }
+    afterEvaluate {
+        tasks.findByName("shadowJar")?.also {
+            tasks.named("assemble") { dependsOn(it) }
+        }
+        configure<SigningExtension> {
+            sign(configurations["archives"])
         }
     }
 }

@@ -9,7 +9,7 @@ UnifiedMetrics is a fully-featured free and open-source metrics collection plugi
 licensed under [GNU LGPLv3](COPYING.LESSER).
 
 ![Grafana Dashboard](.github/assets/grafana.png)
-*This is a custom-made dashboard, which is not public, yet.*
+*Dashboard [included](https://github.com/Cubxity/UnifiedMetrics/wiki/Grafana) out-of-box!*
 
 ## Features
 
@@ -24,6 +24,7 @@ licensed under [GNU LGPLv3](COPYING.LESSER).
 **Server:**
 
 - 1.8+ Spigot servers *(includes Spigot-based forks)*
+- 1.16+ Fabric servers
 - Minestom
 - Velocity
 - BungeeCord
@@ -33,7 +34,14 @@ licensed under [GNU LGPLv3](COPYING.LESSER).
 - Prometheus
 - InfluxDB
 
+## Getting started
+
+Read the [wiki](https://github.com/Cubxity/UnifiedMetrics/wiki) for instructions on how to get started.
+
 ## Metrics
+
+<details> 
+  <summary>Table of metrics (click to show)</summary>
 
 | Collector     | Description                                     | Platform            | Default |
 | ------------- | ----------------------------------------------- | ------------------- | ------- |
@@ -46,72 +54,12 @@ licensed under [GNU LGPLv3](COPYING.LESSER).
 | tick          | Tick duration histogram                         | Bukkit, Minestom    | true    |
 | world         | World entities, players, and chunks count       | Bukkit, Minestom    | true    |
 
-## Getting started
-
-Read the [wiki](https://github.com/Cubxity/UnifiedMetrics/wiki) for instructions.
-
-## Data visualization and analysis
-
-We recommend using [Grafana](https://grafana.com/) as it provides highly customizable diagrams. Grafana provides
-out-of-box support for Prometheus and InfluxDB.
-
-See the [wiki](https://github.com/Cubxity/UnifiedMetrics/wiki/Grafana) for detailed instructions.
-
-> **Note:** InfluxDB Grafana dashboard may be inaccurate due to complications with Flux queries.
-
-### UnifiedMetrics 0.3.x (stable)
-
-- [InfluxDB (Flux)](https://grafana.com/grafana/dashboards/14755)
-- [Prometheus](https://grafana.com/grafana/dashboards/14756)
-
-### UnifiedMetrics 0.2.x (legacy)
-
-- [InfluxDB (InfluxQL)](https://grafana.com/grafana/dashboards/13860)
-- [Prometheus](https://grafana.com/grafana/dashboards/14017)
-
-## Building from source
-
-**Requirements:**
-
-- JDK 11+
-- Git (Optional)
-
-To build UnifiedMetrics, you need to obtain the source code first. You can download the source from GitHub or use the
-Git CLI.
-
-```bash
-$ git clone https://github.com/Cubxity/UnifiedMetrics && cd UnifiedMetrics
-```
-
-Open a terminal in the cloned directory and run the following command. The following command will build all subprojects.
-
-```bash
-$ ./gradlew shadowJar
-```
-
-To build a specific subproject, you can prefix it with the subproject path. For example:
-
-```bash
-$ `./gradlew :unifiedmetrics-platform-bukkit:shadowJar`
-```
-
-The output artifacts can be found in `subproject/build/libs`.
-
-## API
-
-Add `:unifiedmetrics-api` as a dependency (compileOnly/provided).
-
-```kotlin
-import dev.cubxity.plugins.metrics.api.UnifiedMetricsProvider
-
-/* ... */
-
-val api = UnifiedMetricsProvider.get()
-```
+</details>
 
 ## Special Thanks
 
-UnifiedMetrics is a proud partner of DedicatedMC! Get your Raw Power Hosting today with **15% OFF** using code `UnifiedMetrics`!
+UnifiedMetrics is a proud partner of DedicatedMC! Get your Raw Power Hosting today with **15% OFF** using
+code `UnifiedMetrics`!
 
 [![DedicatedMC Logo](.github/assets/dmc.png)](https://dedimc.promo/UnifiedMetrics)
 
@@ -142,3 +90,49 @@ and [YourKit YouMonitor](https://www.yourkit.com/youmonitor/).
 </p>
 
 > **Pssst!** You can add your server here by submitting a *Pull Request*!
+
+## Building from source
+
+<details> 
+  <summary>Instructions (click to show)</summary>
+
+**Requirements:**
+
+- JDK 8+ (11+ for Minestom, 16+ for Fabric)
+- Git (Optional)
+
+To build UnifiedMetrics, you need to obtain the source code first. You can download the source from GitHub or use the
+Git CLI.
+
+```bash
+$ git clone https://github.com/Cubxity/UnifiedMetrics && cd UnifiedMetrics
+```
+
+Open a terminal in the cloned directory and run the following command. The following command will build all subprojects.
+
+```bash
+$ ./gradlew assemble -x signArchives
+```
+
+> `-x signArchives` is required to skip signing, unless you have signing set up
+
+To build a specific subproject, you can prefix it with the subproject path. For example:
+
+```bash
+$ ./gradlew :unifiedmetrics-platform-bukkit:assemble -x signArchives
+```
+
+The output artifacts can be found in `subproject/build/libs`.
+</details>
+
+## API
+
+Add `:unifiedmetrics-api` as a dependency (compileOnly/provided).
+
+```kotlin
+import dev.cubxity.plugins.metrics.api.UnifiedMetricsProvider
+
+/* ... */
+
+val api = UnifiedMetricsProvider.get()
+```

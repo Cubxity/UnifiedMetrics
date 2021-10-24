@@ -15,19 +15,12 @@
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.metric.collector
+package dev.cubxity.plugins.metrics.fabric.metrics.world
 
-import dev.cubxity.plugins.metrics.api.metric.data.Metric
+import dev.cubxity.plugins.metrics.api.metric.collector.Collector
+import dev.cubxity.plugins.metrics.api.metric.collector.CollectorCollection
+import dev.cubxity.plugins.metrics.fabric.bootstrap.UnifiedMetricsFabricBootstrap
 
-const val NANOSECONDS_PER_MILLISECOND: Double = 1E6
-const val NANOSECONDS_PER_SECOND: Double = 1E9
-const val MILLISECONDS_PER_SECOND: Double = 1E3
-
-interface Collector {
-    /**
-     * Collects the metric and returns a list of samples.
-     *
-     * @return [List] of [Metric]
-     */
-    fun collect(): List<Metric>
+class WorldCollection(bootstrap: UnifiedMetricsFabricBootstrap) : CollectorCollection {
+    override val collectors: List<Collector> = listOf(WorldCollector(bootstrap))
 }
