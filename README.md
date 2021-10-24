@@ -58,7 +58,7 @@ Read the [wiki](https://github.com/Cubxity/UnifiedMetrics/wiki) for instructions
 
 ## Special Thanks
 
-UnifiedMetrics is a proud partner of DedicatedMC! Get your Raw Power Hosting today with **15% OFF** using
+UnifiedMetrics is a proud partner of [DedicatedMC](https://dedimc.promo/UnifiedMetrics)! Get your Raw Power Hosting today with **15% OFF** using
 code `UnifiedMetrics`!
 
 [![DedicatedMC Logo](.github/assets/dmc.png)](https://dedimc.promo/UnifiedMetrics)
@@ -127,6 +127,11 @@ The output artifacts can be found in `subproject/build/libs`.
 
 ## API
 
+<details> 
+  <summary>Instructions (click to show)</summary>
+
+### Gradle (Kotlin)
+
 Add `:unifiedmetrics-api` as a dependency (compileOnly/provided).
 
 ```kotlin
@@ -136,3 +141,5 @@ import dev.cubxity.plugins.metrics.api.UnifiedMetricsProvider
 
 val api = UnifiedMetricsProvider.get()
 ```
+
+</details>
