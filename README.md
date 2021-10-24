@@ -58,8 +58,8 @@ Read the [wiki](https://github.com/Cubxity/UnifiedMetrics/wiki) for instructions
 
 ## Special Thanks
 
-UnifiedMetrics is a proud partner of [DedicatedMC](https://dedimc.promo/UnifiedMetrics)! Get your Raw Power Hosting today with **15% OFF** using
-code `UnifiedMetrics`!
+UnifiedMetrics is a proud partner of [DedicatedMC](https://dedimc.promo/UnifiedMetrics)! Get your Raw Power Hosting
+today with **15% OFF** using code `UnifiedMetrics`!
 
 [![DedicatedMC Logo](.github/assets/dmc.png)](https://dedimc.promo/UnifiedMetrics)
 
@@ -130,9 +130,29 @@ The output artifacts can be found in `subproject/build/libs`.
 <details> 
   <summary>Instructions (click to show)</summary>
 
+### Examples
+
+Example plugins can be found under [examples](examples) directory.
+
 ### Gradle (Kotlin)
 
-Add `:unifiedmetrics-api` as a dependency (compileOnly/provided).
+```kotlin
+repositories {
+    mavenCentral()
+    maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+}
+```
+
+```
+dependencies {
+    // ...
+    compileOnly("dev.cubxity.plugins", "unifiedmetrics-api", "0.3.3-SNAPSHOT")
+}
+```
+
+### Usage
+
+Add `:unifiedmetrics-api` as a dependency (compileOnly/provided). Prefer using platform's service manager if possible.
 
 ```kotlin
 import dev.cubxity.plugins.metrics.api.UnifiedMetricsProvider
