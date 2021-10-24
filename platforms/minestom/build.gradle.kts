@@ -28,12 +28,21 @@ dependencies {
     api(project(":unifiedmetrics-core"))
 
     compileOnly("com.github.Minestom:Minestom:a3ff3b25c4")
-    testImplementation("com.github.Minestom:Minestom:a3ff3b25c4")
+    testImplementation("com.github.Minestom:Minestom:9152c40753")
+}
+
+java {
+    targetCompatibility = JavaVersion.VERSION_11
 }
 
 tasks {
     shadowJar {
         archiveClassifier.set("")
+    }
+    compileKotlin {
+        kotlinOptions {
+            jvmTarget = "11"
+        }
     }
     processResources {
         duplicatesStrategy = DuplicatesStrategy.INCLUDE

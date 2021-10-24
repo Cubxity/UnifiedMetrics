@@ -47,6 +47,9 @@ subprojects {
             freeCompilerArgs = listOf("-Xopt-in=kotlin.RequiresOptIn")
         }
     }
+    configure<JavaPluginExtension> {
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
     configure<PublishingExtension> {
         repositories {
             maven {
