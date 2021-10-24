@@ -21,6 +21,11 @@ dependencies {
     api("org.jetbrains.kotlinx", "kotlinx-serialization-core", "1.2.2")
 }
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
