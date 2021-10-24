@@ -8,8 +8,9 @@
 UnifiedMetrics is a fully-featured free and open-source metrics collection plugin for Minecraft servers. This project is
 licensed under [GNU LGPLv3](COPYING.LESSER).
 
-![Grafana Dashboard](.github/assets/grafana.png)
+[![Grafana Dashboard](.github/assets/grafana.png)](https://dedimc.link/unifiedmetrics)
 *Dashboard [included](https://github.com/Cubxity/UnifiedMetrics/wiki/Grafana) out-of-box!*
+Click [here](https://dedimc.link/unifiedmetrics) for live preview!
 
 ## Features
 
