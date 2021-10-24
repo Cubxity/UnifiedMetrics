@@ -1,0 +1,7 @@
+name: example-collector-zombies
+main: dev.cubxity.plugins.example.ExampleCollectorZombies
+description: "Example collector using UnifiedMetrics' API"
+softdepend: [ UnifiedMetrics ]
+api-version: 1.16
+author: Cubxity
+version: ${version}

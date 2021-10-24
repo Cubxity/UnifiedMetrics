@@ -15,41 +15,36 @@
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.github.johnrengelman.shadow")
-}
+package dev.cubxity.plugins.example.collector;
 
-repositories {
-    maven("https://repo.spongepowered.org/maven")
-    maven("https://jitpack.io")
-}
+import dev.cubxity.plugins.metrics.api.metric.collector.Collector;
+import dev.cubxity.plugins.metrics.api.metric.collector.CollectorCollection;
+import org.jetbrains.annotations.NotNull;
 
-dependencies {
-    api(project(":unifiedmetrics-core"))
+import java.util.Collections;
+import java.util.List;
 
-    compileOnly("com.github.Minestom:Minestom:a3ff3b25c4")
-    testImplementation("com.github.Minestom:Minestom:9152c40753")
-}
+public class ZombiesCollectorCollection implements CollectorCollection {
+    private final List<Collector> collectors = Collections.singletonList(new ZombiesCollector());
 
-java {
-    targetCompatibility = JavaVersion.VERSION_17
-}
-
-tasks {
-    shadowJar {
-        archiveClassifier.set("")
+    @NotNull
+    @Override
+    public List<Collector> getCollectors() {
+        return this.collectors;
     }
-    compileKotlin {
-        kotlinOptions {
-            jvmTarget = "17"
-        }
-    }
-    processResources {
-        duplicatesStrategy = DuplicatesStrategy.INCLUDE
 
-        from("src/main/resources") {
-            expand("version" to version)
-            include("extension.json")
-        }
+    @Override
+    public boolean isAsync() {
+        return false;
+    }
+
+    @Override
+    public void initialize() {
+        // Do nothing
+    }
+
+    @Override
+    public void dispose() {
+        // Do nothing
     }
 }

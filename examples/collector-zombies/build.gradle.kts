@@ -16,40 +16,30 @@
  */
 
 plugins {
-    id("com.github.johnrengelman.shadow")
+    java
 }
 
+group = "dev.cubxity.plugins.metrics"
+version = "0.0.1-SNAPSHOT"
+
 repositories {
-    maven("https://repo.spongepowered.org/maven")
-    maven("https://jitpack.io")
+    mavenCentral()
+    maven("https://papermc.io/repo/repository/maven-public/")
+    maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
 }
 
 dependencies {
-    api(project(":unifiedmetrics-core"))
-
-    compileOnly("com.github.Minestom:Minestom:a3ff3b25c4")
-    testImplementation("com.github.Minestom:Minestom:9152c40753")
-}
-
-java {
-    targetCompatibility = JavaVersion.VERSION_17
+    compileOnly("com.destroystokyo.paper", "paper-api", "1.16.5-R0.1-SNAPSHOT")
+    compileOnly("dev.cubxity.plugins", "unifiedmetrics-api", "0.3.3-SNAPSHOT")
 }
 
 tasks {
-    shadowJar {
-        archiveClassifier.set("")
-    }
-    compileKotlin {
-        kotlinOptions {
-            jvmTarget = "17"
-        }
-    }
     processResources {
         duplicatesStrategy = DuplicatesStrategy.INCLUDE
 
         from("src/main/resources") {
             expand("version" to version)
-            include("extension.json")
+            include("plugin.yml")
         }
     }
 }

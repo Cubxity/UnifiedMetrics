@@ -15,41 +15,23 @@
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.github.johnrengelman.shadow")
-}
+package dev.cubxity.plugins.example;
 
-repositories {
-    maven("https://repo.spongepowered.org/maven")
-    maven("https://jitpack.io")
-}
+import dev.cubxity.plugins.example.collector.ZombiesCollectorCollection;
+import dev.cubxity.plugins.metrics.api.UnifiedMetrics;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.java.JavaPlugin;
 
-dependencies {
-    api(project(":unifiedmetrics-core"))
+@SuppressWarnings("unused")
+public class ExampleCollectorZombies extends JavaPlugin {
+    @Override
+    public void onEnable() {
+        RegisteredServiceProvider<UnifiedMetrics> registration =
+            getServer().getServicesManager().getRegistration(UnifiedMetrics.class);
 
-    compileOnly("com.github.Minestom:Minestom:a3ff3b25c4")
-    testImplementation("com.github.Minestom:Minestom:9152c40753")
-}
-
-java {
-    targetCompatibility = JavaVersion.VERSION_17
-}
-
-tasks {
-    shadowJar {
-        archiveClassifier.set("")
-    }
-    compileKotlin {
-        kotlinOptions {
-            jvmTarget = "17"
-        }
-    }
-    processResources {
-        duplicatesStrategy = DuplicatesStrategy.INCLUDE
-
-        from("src/main/resources") {
-            expand("version" to version)
-            include("extension.json")
+        if (registration != null) {
+            UnifiedMetrics api = registration.getProvider();
+            api.getMetricsManager().registerCollection(new ZombiesCollectorCollection());
         }
     }
 }

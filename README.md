@@ -58,8 +58,8 @@ Read the [wiki](https://github.com/Cubxity/UnifiedMetrics/wiki) for instructions
 
 ## Special Thanks
 
-UnifiedMetrics is a proud partner of DedicatedMC! Get your Raw Power Hosting today with **15% OFF** using
-code `UnifiedMetrics`!
+UnifiedMetrics is a proud partner of [DedicatedMC](https://dedimc.promo/UnifiedMetrics)! Get your Raw Power Hosting
+today with **15% OFF** using code `UnifiedMetrics`!
 
 [![DedicatedMC Logo](.github/assets/dmc.png)](https://dedimc.promo/UnifiedMetrics)
 
@@ -98,7 +98,7 @@ and [YourKit YouMonitor](https://www.yourkit.com/youmonitor/).
 
 **Requirements:**
 
-- JDK 8+ (11+ for Minestom, 16+ for Fabric)
+- JDK 8+ (16+ for Fabric, 17+ for Minestom)
 - Git (Optional)
 
 To build UnifiedMetrics, you need to obtain the source code first. You can download the source from GitHub or use the
@@ -127,7 +127,32 @@ The output artifacts can be found in `subproject/build/libs`.
 
 ## API
 
-Add `:unifiedmetrics-api` as a dependency (compileOnly/provided).
+<details> 
+  <summary>Instructions (click to show)</summary>
+
+### Examples
+
+Example plugins can be found under [examples](examples) directory.
+
+### Gradle (Kotlin)
+
+```kotlin
+repositories {
+    mavenCentral()
+    maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+}
+```
+
+```kotlin
+dependencies {
+    // ...
+    compileOnly("dev.cubxity.plugins", "unifiedmetrics-api", "0.3.3-SNAPSHOT")
+}
+```
+
+### Usage
+
+Add `:unifiedmetrics-api` as a dependency (compileOnly/provided). Prefer using platform's service manager if possible.
 
 ```kotlin
 import dev.cubxity.plugins.metrics.api.UnifiedMetricsProvider
@@ -136,3 +161,5 @@ import dev.cubxity.plugins.metrics.api.UnifiedMetricsProvider
 
 val api = UnifiedMetricsProvider.get()
 ```
+
+</details>
