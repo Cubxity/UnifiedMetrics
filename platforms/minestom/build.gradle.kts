@@ -32,7 +32,7 @@ dependencies {
 }
 
 java {
-    targetCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 tasks {
@@ -41,7 +41,7 @@ tasks {
     }
     compileKotlin {
         kotlinOptions {
-            jvmTarget = "11"
+            jvmTarget = "17"
         }
     }
     processResources {
