@@ -143,7 +143,7 @@ repositories {
 }
 ```
 
-```
+```kotlin
 dependencies {
     // ...
     compileOnly("dev.cubxity.plugins", "unifiedmetrics-api", "0.3.3-SNAPSHOT")
