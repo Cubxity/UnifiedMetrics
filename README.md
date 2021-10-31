@@ -1,8 +1,8 @@
 ![UnifiedMetrics](.github/assets/banner.png)
 
 [![License](https://img.shields.io/github/license/Cubxity/UnifiedMetrics?style=flat-square)](COPYING.LESSER)
-[![Issues](https://img.shields.io/github/issues/Cubxity/UnifiedMetrics?style=flat-square)](https://github.com/Cubxity/UnifiedMetrics/issues)
 [![Workflow Status](https://img.shields.io/github/workflow/status/Cubxity/UnifiedMetrics/gradle-preview-ci/master?style=flat-square)](https://github.com/Cubxity/UnifiedMetrics/actions)
+[![Maven Central](https://img.shields.io/maven-central/v/dev.cubxity.plugins/unifiedmetrics-api?color=green&style=flat-square)](https://search.maven.org/search?q=g:dev.cubxity.plugins%20a:unifiedmetrics-api)
 [![Discord](https://img.shields.io/badge/join-discord-blue?style=flat-square)](https://discord.gg/kDDhqJmPpA)
 
 UnifiedMetrics is a fully-featured free and open-source metrics collection plugin for Minecraft servers. This project is
@@ -128,6 +128,9 @@ The output artifacts can be found in `subproject/build/libs`.
 
 ## API
 
+[![Maven Central](https://img.shields.io/maven-central/v/dev.cubxity.plugins/unifiedmetrics-api?color=green&style=flat-square)](https://search.maven.org/search?q=g:dev.cubxity.plugins%20a:unifiedmetrics-api)
+![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/dev.cubxity.plugins/unifiedmetrics-api?color=yellow&label=snapshots&server=https%3A%2F%2Fs01.oss.sonatype.org&style=flat-square)
+
 <details> 
   <summary>Instructions (click to show)</summary>
 
@@ -140,14 +143,16 @@ Example plugins can be found under [examples](examples) directory.
 ```kotlin
 repositories {
     mavenCentral()
+    
+    // Snapshots repository (only required for -SNAPSHOT versions)
     maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
 }
 ```
 
 ```kotlin
 dependencies {
-    // ...
-    compileOnly("dev.cubxity.plugins", "unifiedmetrics-api", "0.3.3-SNAPSHOT")
+    // Replace this with the desired version
+    compileOnly("dev.cubxity.plugins", "unifiedmetrics-api", "0.3.3") 
 }
 ```
 
