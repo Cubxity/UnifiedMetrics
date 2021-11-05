@@ -44,16 +44,20 @@ Read the [wiki](https://github.com/Cubxity/UnifiedMetrics/wiki) for instructions
 <details> 
   <summary>Table of metrics (click to show)</summary>
 
-| Collector     | Description                                     | Platform            | Default |
-| ------------- | ----------------------------------------------- | ------------------- | ------- |
-| systemGc      | Garbage collection duration and freed bytes     | All                 | true    |
-| systemMemory  | Memory used, committed, max and init            | All                 | true    |
-| systemProcess | CPU load, seconds, and process start time       | All                 | true    |
-| systemThread  | Current, daemon, started, and peak thread count | All                 | true    |
-| events        | Login, join, quit, chat, and ping event counter | All                 | true    |
-| server        | Plugins count and player counts                 | All                 | true    |
-| tick          | Tick duration histogram                         | Bukkit, Minestom    | true    |
-| world         | World entities, players, and chunks count       | Bukkit, Minestom    | true    |
+| Collector      | Description                                     | Platform                 | Default |
+| -------------- | ----------------------------------------------- | ------------------------ | ------- |
+| system.gc      | Garbage collection duration and freed bytes     | All                      | true    |
+| system.memory  | Memory used, committed, max and init            | All                      | true    |
+| system.process | CPU load, seconds, and process start time       | All                      | true    |
+| system.thread  | Current, daemon, started, and peak thread count | All                      | true    |
+| server.player  | Player count and max                            | All, Minestom*           | true    |
+| server.plugin  | Plugin/mod count                                | All                      | false    |
+| server.tick    | Tick duration histogram                         | Bukkit, Fabric, Minestom | true    |
+| server.world   | World entities, players, and chunks count       | Bukkit, Fabric, Minestom | true    |
+| events.player  | Player login, join, quit, chat  event counter   | All                      | true    |
+| events.server  | Server list ping event counter                  | All                      | true    |
+
+`*`: This may not accurately reflect the actual value. 
 
 </details>
 
