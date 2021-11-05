@@ -19,10 +19,12 @@ package dev.cubxity.plugins.metrics.bukkit
 
 import dev.cubxity.plugins.metrics.api.UnifiedMetrics
 import dev.cubxity.plugins.metrics.bukkit.bootstrap.UnifiedMetricsBukkitBootstrap
-import dev.cubxity.plugins.metrics.bukkit.metric.events.EventsCollection
-import dev.cubxity.plugins.metrics.bukkit.metric.server.ServerCollection
-import dev.cubxity.plugins.metrics.bukkit.metric.tick.TickCollection
-import dev.cubxity.plugins.metrics.bukkit.metric.world.WorldCollection
+import dev.cubxity.plugins.metrics.bukkit.metric.events.player.EventsPlayerCollection
+import dev.cubxity.plugins.metrics.bukkit.metric.events.server.EventsServerCollection
+import dev.cubxity.plugins.metrics.bukkit.metric.server.player.ServerPlayerCollection
+import dev.cubxity.plugins.metrics.bukkit.metric.server.plugin.ServerPluginCollection
+import dev.cubxity.plugins.metrics.bukkit.metric.server.tick.ServerTickCollection
+import dev.cubxity.plugins.metrics.bukkit.metric.server.world.ServerWorldCollection
 import dev.cubxity.plugins.metrics.core.plugin.CoreUnifiedMetricsPlugin
 import org.bukkit.plugin.ServicePriority
 import java.util.concurrent.Executors
@@ -46,10 +48,12 @@ class UnifiedMetricsBukkitPlugin(
 
         apiProvider.metricsManager.apply {
             with(config.metrics.collectors) {
-                if (server) registerCollection(ServerCollection(bootstrap))
-                if (world) registerCollection(WorldCollection(bootstrap))
-                if (tick) registerCollection(TickCollection(bootstrap))
-                if (events) registerCollection(EventsCollection(bootstrap))
+                if (server.player) registerCollection(ServerPlayerCollection(bootstrap))
+                if (server.plugin) registerCollection(ServerPluginCollection(bootstrap))
+                if (server.world) registerCollection(ServerWorldCollection(bootstrap))
+                if (server.tick) registerCollection(ServerTickCollection(bootstrap))
+                if (events.player) registerCollection(EventsPlayerCollection(bootstrap))
+                if (events.server) registerCollection(EventsServerCollection(bootstrap))
             }
         }
     }

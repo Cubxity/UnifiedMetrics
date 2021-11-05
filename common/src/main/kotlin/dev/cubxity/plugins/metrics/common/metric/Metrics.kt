@@ -19,11 +19,11 @@ package dev.cubxity.plugins.metrics.common.metric
 
 object Metrics {
     object Events {
-        const val Login = "minecraft_events_login_total"
-        const val Join = "minecraft_events_join_total"
-        const val Quit = "minecraft_events_quit_total"
-        const val Chat = "minecraft_events_chat_total"
-        const val Ping = "minecraft_events_ping_total"
+        const val PlayerLogin = "minecraft_events_player_login_total"
+        const val PlayerJoin = "minecraft_events_player_join_total"
+        const val PlayerQuit = "minecraft_events_player_quit_total"
+        const val PlayerChat = "minecraft_events_player_chat_total"
+        const val ServerPing = "minecraft_events_server_ping_total"
     }
 
     object Server {

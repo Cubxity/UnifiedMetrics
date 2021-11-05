@@ -20,11 +20,12 @@ package dev.cubxity.plugins.metrics.fabric
 import dev.cubxity.plugins.metrics.api.UnifiedMetrics
 import dev.cubxity.plugins.metrics.core.plugin.CoreUnifiedMetricsPlugin
 import dev.cubxity.plugins.metrics.fabric.bootstrap.UnifiedMetricsFabricBootstrap
-import dev.cubxity.plugins.metrics.fabric.metrics.events.EventsCollection
-import dev.cubxity.plugins.metrics.fabric.metrics.server.ServerCollection
-import dev.cubxity.plugins.metrics.fabric.metrics.tick.TickCollection
-import dev.cubxity.plugins.metrics.fabric.metrics.world.WorldCollection
-import java.util.concurrent.Executors
+import dev.cubxity.plugins.metrics.fabric.metrics.events.player.EventsPlayerCollection
+import dev.cubxity.plugins.metrics.fabric.metrics.events.server.EventsServerCollection
+import dev.cubxity.plugins.metrics.fabric.metrics.server.player.ServerPlayerCollection
+import dev.cubxity.plugins.metrics.fabric.metrics.server.plugin.ServerPluginCollection
+import dev.cubxity.plugins.metrics.fabric.metrics.server.tick.ServerTickCollection
+import dev.cubxity.plugins.metrics.fabric.metrics.server.world.ServerWorldCollection
 
 class UnifiedMetricsFabricPlugin(
     override val bootstrap: UnifiedMetricsFabricBootstrap
@@ -39,10 +40,12 @@ class UnifiedMetricsFabricPlugin(
 
         apiProvider.metricsManager.apply {
             with(config.metrics.collectors) {
-                if (server) registerCollection(ServerCollection(bootstrap))
-                if (world) registerCollection(WorldCollection(bootstrap))
-                if (tick) registerCollection(TickCollection())
-                if (events) registerCollection(EventsCollection())
+                if (server.player) registerCollection(ServerPlayerCollection(bootstrap))
+                if (server.plugin) registerCollection(ServerPluginCollection())
+                if (server.world) registerCollection(ServerWorldCollection(bootstrap))
+                if (server.tick) registerCollection(ServerTickCollection())
+                if (events.player) registerCollection(EventsPlayerCollection())
+                if (events.server) registerCollection(EventsServerCollection())
             }
         }
     }

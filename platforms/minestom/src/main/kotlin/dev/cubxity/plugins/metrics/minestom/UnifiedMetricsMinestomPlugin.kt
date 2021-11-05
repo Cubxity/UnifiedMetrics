@@ -20,10 +20,12 @@ package dev.cubxity.plugins.metrics.minestom
 import dev.cubxity.plugins.metrics.api.UnifiedMetrics
 import dev.cubxity.plugins.metrics.core.plugin.CoreUnifiedMetricsPlugin
 import dev.cubxity.plugins.metrics.minestom.bootstrap.UnifiedMetricsMinestomBootstrap
-import dev.cubxity.plugins.metrics.minestom.metric.events.EventsCollection
-import dev.cubxity.plugins.metrics.minestom.metric.server.ServerCollection
-import dev.cubxity.plugins.metrics.minestom.metric.tick.TickCollection
-import dev.cubxity.plugins.metrics.minestom.metric.world.WorldCollection
+import dev.cubxity.plugins.metrics.minestom.metric.events.player.EventsPlayerCollection
+import dev.cubxity.plugins.metrics.minestom.metric.events.server.EventsServerCollection
+import dev.cubxity.plugins.metrics.minestom.metric.server.player.ServerPlayerCollection
+import dev.cubxity.plugins.metrics.minestom.metric.server.plugin.ServerPluginCollection
+import dev.cubxity.plugins.metrics.minestom.metric.server.tick.ServerTickCollection
+import dev.cubxity.plugins.metrics.minestom.metric.server.world.ServerWorldCollection
 
 class UnifiedMetricsMinestomPlugin(
     override val bootstrap: UnifiedMetricsMinestomBootstrap
@@ -37,10 +39,12 @@ class UnifiedMetricsMinestomPlugin(
 
         apiProvider.metricsManager.apply {
             with(config.metrics.collectors) {
-                if (server) registerCollection(ServerCollection())
-                if (world) registerCollection(WorldCollection())
-                if (tick) registerCollection(TickCollection())
-                if (events) registerCollection(EventsCollection())
+                if (server.player) registerCollection(ServerPlayerCollection())
+                if (server.plugin) registerCollection(ServerPluginCollection())
+                if (server.tick) registerCollection(ServerTickCollection())
+                if (server.world) registerCollection(ServerWorldCollection())
+                if (events.player) registerCollection(EventsPlayerCollection())
+                if (events.server) registerCollection(EventsServerCollection())
             }
         }
     }

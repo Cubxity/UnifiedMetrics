@@ -39,14 +39,31 @@ data class UnifiedMetricsMetricsConfig(
 
 @Serializable
 data class UnifiedMetricsCollectorsConfig(
-    val systemGc: Boolean = true,
-    val systemMemory: Boolean = true,
-    val systemProcess: Boolean = true,
-    val systemThread: Boolean = true,
-    val server: Boolean = true,
+    val system: UnifiedMetricsSystemCollectorsConfig = UnifiedMetricsSystemCollectorsConfig(),
+    val server: UnifiedMetricsServerCollectorsConfig = UnifiedMetricsServerCollectorsConfig(),
+    val events: UnifiedMetricsEventsCollectorsConfig = UnifiedMetricsEventsCollectorsConfig()
+)
+
+@Serializable
+data class UnifiedMetricsSystemCollectorsConfig(
+    val gc: Boolean = true,
+    val memory: Boolean = true,
+    val process: Boolean = true,
+    val thread: Boolean = true
+)
+
+@Serializable
+data class UnifiedMetricsServerCollectorsConfig(
+    val player: Boolean = true,
+    val plugin: Boolean = false,
     val world: Boolean = true,
-    val tick: Boolean = true,
-    val events: Boolean = true
+    val tick: Boolean = true
+)
+
+@Serializable
+data class UnifiedMetricsEventsCollectorsConfig(
+    val player: Boolean = true,
+    val server: Boolean = true
 )
 
 private fun env(name: String, default: String): String =

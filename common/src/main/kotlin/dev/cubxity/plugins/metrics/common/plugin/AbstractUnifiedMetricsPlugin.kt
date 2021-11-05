@@ -84,10 +84,10 @@ abstract class AbstractUnifiedMetricsPlugin : UnifiedMetricsPlugin {
     open fun registerPlatformMetrics() {
         apiProvider.metricsManager.apply {
             with(config.metrics.collectors) {
-                if (systemGc) registerCollection(GCCollection())
-                if (systemMemory) registerCollection(MemoryCollection())
-                if (systemProcess) registerCollection(ProcessCollection())
-                if (systemThread) registerCollection(ThreadCollection())
+                if (system.gc) registerCollection(GCCollection())
+                if (system.memory) registerCollection(MemoryCollection())
+                if (system.process) registerCollection(ProcessCollection())
+                if (system.thread) registerCollection(ThreadCollection())
             }
         }
     }
