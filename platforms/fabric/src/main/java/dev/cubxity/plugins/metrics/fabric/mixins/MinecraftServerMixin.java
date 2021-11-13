@@ -19,11 +19,9 @@ package dev.cubxity.plugins.metrics.fabric.mixins;
 
 import dev.cubxity.plugins.metrics.fabric.events.TickEvent;
 import net.minecraft.server.MinecraftServer;
-import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static dev.cubxity.plugins.metrics.api.metric.collector.CollectorKt.NANOSECONDS_PER_MILLISECOND;
@@ -59,19 +57,9 @@ public class MinecraftServerMixin {
 
     @Inject(
         method = "tick",
-        slice = @Slice(
-            from = @At(
-                value = "INVOKE",
-                target = "Lnet/minecraft/util/snooper/Snooper;update()V"
-            ),
-            to = @At(
-                value = "FIELD",
-                target = "Lnet/minecraft/server/MinecraftServer;lastTickLengths:[J"
-            )
-        ),
         at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/util/profiler/Profiler;pop()V"
+            value = "CONSTANT",
+            args = "stringValue=tallying"
         )
     )
     private void onTickEnd(CallbackInfo ci) {
