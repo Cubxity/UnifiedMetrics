@@ -1,0 +1,32 @@
+name: Enhancement
+description: Suggest a new feature or enhancement to the software.
+labels: [enhancement]
+body:
+- type: checkboxes
+  attributes:
+    label: Is there an existing feature request for this?
+    description: Please [search here](https://github.com/Cubxity/UnifiedMetrics/issues?q=is%3Aissue) to see if someone else has already suggested this.
+    options:
+    - label: I have searched the existing issues before opening this feature request.
+      required: true
+
+- type: textarea
+  attributes:
+    label: Describe the feature you would like to see.
+    description: "Explain in detail what is the feature/enhancement you would like to add and what issue it could solve."
+  validations:
+    required: true
+
+- type: textarea
+  attributes:
+    label: How would you like to see this implemented?
+    description: "Provide an explanation on how the feature should be implemented into UnifiedMetrics and how it would work with your server"
+  validations:
+    required: true
+
+- type: textarea
+  attributes:
+    label: Additional information to this request.
+    description: "You can provide more information like references and screenshots related to the feature request."
+  validations:
+    required: false
