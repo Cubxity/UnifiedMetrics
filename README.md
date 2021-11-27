@@ -46,14 +46,15 @@ Read the [wiki](https://github.com/Cubxity/UnifiedMetrics/wiki) for instructions
 
 | Collector      | Description                                     | Platform                 | Default |
 | -------------- | ----------------------------------------------- | ------------------------ | ------- |
-| system.gc      | Garbage collection duration and freed bytes     | All                      | true    |
+| system.gc      | Garbage collection duration and freed bytes     | All                      | true    |      
 | system.memory  | Memory used, committed, max and init            | All                      | true    |
 | system.process | CPU load, seconds, and process start time       | All                      | true    |
 | system.thread  | Current, daemon, started, and peak thread count | All                      | true    |
 | server.player  | Player count and max                            | All, Minestom*           | true    |
-| server.plugin  | Plugin/mod count                                | All                      | false    |
+| server.plugin  | Plugin/mod count                                | All                      | false   |
 | server.tick    | Tick duration histogram                         | Bukkit, Fabric, Minestom | true    |
 | server.world   | World entities, players, and chunks count       | Bukkit, Fabric, Minestom | true    |
+| server.worldfs | World storage metrics                           | Bukkit                   | true    |
 | events.player  | Player login, join, quit, chat  event counter   | All                      | true    |
 | events.server  | Server list ping event counter                  | All                      | true    |
 

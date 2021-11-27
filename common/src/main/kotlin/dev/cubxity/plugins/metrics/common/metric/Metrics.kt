@@ -34,5 +34,8 @@ object Metrics {
         const val WorldEntitiesCount = "minecraft_world_entities_count"
         const val WorldPlayersCount = "minecraft_world_players_count"
         const val WorldLoadedChunks = "minecraft_world_loaded_chunks"
+        const val WorldFileSystemSize = "minecraft_world_filesystem_size_bytes"
+        const val WorldFileSystemFree = "minecraft_world_filesystem_free_bytes"
+        const val WorldFileSystemAvailable = "minecraft_world_filesystem_avail_bytes"
     }
 }

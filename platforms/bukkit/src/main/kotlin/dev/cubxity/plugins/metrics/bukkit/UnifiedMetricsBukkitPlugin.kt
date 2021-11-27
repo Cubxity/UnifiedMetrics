@@ -25,6 +25,7 @@ import dev.cubxity.plugins.metrics.bukkit.metric.server.player.ServerPlayerColle
 import dev.cubxity.plugins.metrics.bukkit.metric.server.plugin.ServerPluginCollection
 import dev.cubxity.plugins.metrics.bukkit.metric.server.tick.ServerTickCollection
 import dev.cubxity.plugins.metrics.bukkit.metric.server.world.ServerWorldCollection
+import dev.cubxity.plugins.metrics.bukkit.metric.server.world.ServerWorldFSCollection
 import dev.cubxity.plugins.metrics.core.plugin.CoreUnifiedMetricsPlugin
 import org.bukkit.plugin.ServicePriority
 import java.util.concurrent.Executors
@@ -51,6 +52,7 @@ class UnifiedMetricsBukkitPlugin(
                 if (server.player) registerCollection(ServerPlayerCollection(bootstrap))
                 if (server.plugin) registerCollection(ServerPluginCollection(bootstrap))
                 if (server.world) registerCollection(ServerWorldCollection(bootstrap))
+                if (server.worldfs) registerCollection(ServerWorldFSCollection(bootstrap))
                 if (server.tick) registerCollection(ServerTickCollection(bootstrap))
                 if (events.player) registerCollection(EventsPlayerCollection(bootstrap))
                 if (events.server) registerCollection(EventsServerCollection(bootstrap))

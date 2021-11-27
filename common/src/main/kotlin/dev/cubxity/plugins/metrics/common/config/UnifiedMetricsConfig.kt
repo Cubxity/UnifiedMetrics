@@ -49,7 +49,8 @@ data class UnifiedMetricsSystemCollectorsConfig(
     val gc: Boolean = true,
     val memory: Boolean = true,
     val process: Boolean = true,
-    val thread: Boolean = true
+    val thread: Boolean = true,
+    val fs: Boolean = false
 )
 
 @Serializable
@@ -57,6 +58,7 @@ data class UnifiedMetricsServerCollectorsConfig(
     val player: Boolean = true,
     val plugin: Boolean = false,
     val world: Boolean = true,
+    val worldfs: Boolean = true,
     val tick: Boolean = true
 )
 

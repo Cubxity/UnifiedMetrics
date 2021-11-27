@@ -26,6 +26,7 @@ import dev.cubxity.plugins.metrics.fabric.metrics.server.player.ServerPlayerColl
 import dev.cubxity.plugins.metrics.fabric.metrics.server.plugin.ServerPluginCollection
 import dev.cubxity.plugins.metrics.fabric.metrics.server.tick.ServerTickCollection
 import dev.cubxity.plugins.metrics.fabric.metrics.server.world.ServerWorldCollection
+import dev.cubxity.plugins.metrics.fabric.metrics.server.world.ServerWorldFSCollection
 
 class UnifiedMetricsFabricPlugin(
     override val bootstrap: UnifiedMetricsFabricBootstrap
@@ -43,6 +44,7 @@ class UnifiedMetricsFabricPlugin(
                 if (server.player) registerCollection(ServerPlayerCollection(bootstrap))
                 if (server.plugin) registerCollection(ServerPluginCollection())
                 if (server.world) registerCollection(ServerWorldCollection(bootstrap))
+                if (server.worldfs) registerCollection(ServerWorldFSCollection(bootstrap))
                 if (server.tick) registerCollection(ServerTickCollection())
                 if (events.player) registerCollection(EventsPlayerCollection())
                 if (events.server) registerCollection(EventsServerCollection())
