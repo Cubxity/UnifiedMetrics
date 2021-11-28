@@ -1,0 +1,67 @@
+name: Bug Report
+description: Is something now working as it should?
+labels: [bug]
+body:
+- type: checkboxes
+  attributes:
+    label: Is there an existing issue for this bug?
+    description: Please [search here](https://github.com/Cubxity/UnifiedMetrics/issues?q=is%3Aissue) to see if someone else has already reported this.
+    options:
+    - label: I have searched the existing issues before opening this bug report.
+      required: true
+
+- type: textarea
+  attributes:
+    label: Current Behavior 
+    description: "Explain in detail what is the error or issue you are facing when using UnifiedMetrics in your server"
+  validations:
+    required: true
+
+- type: textarea
+  attributes:
+    label: Expected Behavior 
+    description: "Explain how it should work or respond"
+  validations:
+    required: true
+
+- type: dropdown
+  attributes:
+    label: Server type
+    description: "What type of server software are you using?"
+    multiple: false
+    options:
+      - Spigot (includes Spigot-based forks)
+      - Fabric
+      - Minestom
+      - Velocity
+      - Bungeecord / Waterfall
+  validations:
+    required: true
+
+- type: textarea
+  attributes:
+    label: Server Version
+    description: "What is the server version being used? Eg 1.18, 1.17.1"
+  validations:
+    required: true
+
+- type: textarea
+  attributes:
+    label: Other Mods / Plugins in your server
+    description: "Provide a list of other Plugins / Mods than UnifiedMetrics which was in your server when this issue happened. (If none, enter N/A)"
+  validations:
+    required: true
+
+- type: textarea
+  attributes:
+    label: Error log
+    description: "Paste the error log from your console to paste sites like https://paste.gg/ or http://hastebin.com/ (Do include complete log for better error checking and do hide sensitive informations)"
+  validations:
+    required: false
+
+- type: textarea
+  attributes:
+    label: More information
+    description: "Feel free to add in more details like screenshot, spark reports, etc"
+  validations:
+    required: false
