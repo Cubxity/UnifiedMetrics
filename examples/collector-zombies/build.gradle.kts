@@ -25,12 +25,11 @@ version = "0.0.1-SNAPSHOT"
 repositories {
     mavenCentral()
     maven("https://papermc.io/repo/repository/maven-public/")
-    maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
 }
 
 dependencies {
     compileOnly("com.destroystokyo.paper", "paper-api", "1.16.5-R0.1-SNAPSHOT")
-    compileOnly("dev.cubxity.plugins", "unifiedmetrics-api", "0.3.3-SNAPSHOT")
+    compileOnly("dev.cubxity.plugins", "unifiedmetrics-api", "0.3.3")
 }
 
 tasks {
