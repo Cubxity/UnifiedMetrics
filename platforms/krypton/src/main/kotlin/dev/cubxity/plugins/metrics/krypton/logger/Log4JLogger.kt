@@ -15,16 +15,28 @@
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.platform
+package dev.cubxity.plugins.metrics.krypton.logger
 
-sealed class PlatformType(val name: String) {
-    // Server implementations
-    object Bukkit : PlatformType("Bukkit")
-    object Minestom : PlatformType("Minestom")
-    object Fabric : PlatformType("Fabric")
-    object Krypton : PlatformType("Krypton")
+import dev.cubxity.plugins.metrics.api.logging.Logger
 
-    // Proxies
-    object Velocity : PlatformType("Velocity")
-    object BungeeCord : PlatformType("BungeeCord")
+class Log4JLogger(private val logger: org.apache.logging.log4j.Logger) : Logger {
+    override fun info(message: String) {
+        logger.info(message)
+    }
+
+    override fun warn(message: String) {
+        logger.warn(message)
+    }
+
+    override fun warn(message: String, error: Throwable) {
+        logger.warn(message, error)
+    }
+
+    override fun severe(message: String) {
+        logger.error(message)
+    }
+
+    override fun severe(message: String, error: Throwable) {
+        logger.error(message, error)
+    }
 }

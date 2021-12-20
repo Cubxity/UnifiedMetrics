@@ -30,6 +30,7 @@ include(modulePrefix + platformPrefix + "minestom")
 include(modulePrefix + platformPrefix + "velocity")
 include(modulePrefix + platformPrefix + "bungee")
 include(modulePrefix + platformPrefix + "fabric")
+include(modulePrefix + platformPrefix + "krypton")
 
 include(modulePrefix + driverPrefix + "influx")
 include(modulePrefix + driverPrefix + "prometheus")
@@ -44,6 +45,7 @@ project(modulePrefix + platformPrefix + "minestom").projectDir = File(platformsD
 project(modulePrefix + platformPrefix + "velocity").projectDir = File(platformsDir, "velocity")
 project(modulePrefix + platformPrefix + "bungee").projectDir = File(platformsDir, "bungee")
 project(modulePrefix + platformPrefix + "fabric").projectDir = File(platformsDir, "fabric")
+project(modulePrefix + platformPrefix + "krypton").projectDir = File(platformsDir, "krypton")
 
 val driversDir = File(rootDir, "drivers")
 project(modulePrefix + driverPrefix + "influx").projectDir = File(driversDir, "influx")

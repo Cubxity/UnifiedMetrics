@@ -15,16 +15,33 @@
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.platform
+plugins {
+    kotlin("kapt")
+    id("com.github.johnrengelman.shadow")
+    id("net.kyori.blossom")
+}
 
-sealed class PlatformType(val name: String) {
-    // Server implementations
-    object Bukkit : PlatformType("Bukkit")
-    object Minestom : PlatformType("Minestom")
-    object Fabric : PlatformType("Fabric")
-    object Krypton : PlatformType("Krypton")
+repositories {
+    maven("https://repo.kryptonmc.org/releases")
+}
 
-    // Proxies
-    object Velocity : PlatformType("Velocity")
-    object BungeeCord : PlatformType("BungeeCord")
+dependencies {
+    api(project(":unifiedmetrics-core"))
+
+    compileOnly("org.kryptonmc:krypton-api:0.60.2")
+    kapt("org.kryptonmc:krypton-annotation-processor:0.60.2")
+}
+
+tasks {
+    compileKotlin {
+        kotlinOptions.jvmTarget = "17"
+    }
+    shadowJar {
+        archiveClassifier.set("")
+    }
+}
+
+blossom {
+    replaceTokenIn("src/main/kotlin/dev/cubxity/plugins/metrics/krypton/bootstrap/UnifiedMetricsKryptonBootstrap.kt")
+    replaceToken("@version@", version)
 }

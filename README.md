@@ -29,6 +29,7 @@ Click [here](https://dedimc.link/unifiedmetrics) for live preview!
 - Minestom
 - Velocity
 - BungeeCord
+- Krypton
 
 **Metrics:**
 
@@ -44,16 +45,16 @@ Read the [wiki](https://github.com/Cubxity/UnifiedMetrics/wiki) for instructions
 <details> 
   <summary>Table of metrics (click to show)</summary>
 
-| Collector     | Description                                     | Platform            | Default |
-| ------------- | ----------------------------------------------- | ------------------- | ------- |
-| systemGc      | Garbage collection duration and freed bytes     | All                 | true    |
-| systemMemory  | Memory used, committed, max and init            | All                 | true    |
-| systemProcess | CPU load, seconds, and process start time       | All                 | true    |
-| systemThread  | Current, daemon, started, and peak thread count | All                 | true    |
-| events        | Login, join, quit, chat, and ping event counter | All                 | true    |
-| server        | Plugins count and player counts                 | All                 | true    |
-| tick          | Tick duration histogram                         | Bukkit, Minestom    | true    |
-| world         | World entities, players, and chunks count       | Bukkit, Minestom    | true    |
+| Collector     | Description                                     | Platform                     | Default |
+| ------------- | ----------------------------------------------- | ---------------------------- | ------- |
+| systemGc      | Garbage collection duration and freed bytes     | All                          | true    |
+| systemMemory  | Memory used, committed, max and init            | All                          | true    |
+| systemProcess | CPU load, seconds, and process start time       | All                          | true    |
+| systemThread  | Current, daemon, started, and peak thread count | All                          | true    |
+| events        | Login, join, quit, chat, and ping event counter | All                          | true    |
+| server        | Plugins count and player counts                 | All                          | true    |
+| tick          | Tick duration histogram                         | Bukkit, Minestom, Krypton    | true    |
+| world         | World entities, players, and chunks count       | Bukkit, Minestom, Krypton    | true    |
 
 </details>
 
@@ -99,7 +100,7 @@ and [YourKit YouMonitor](https://www.yourkit.com/youmonitor/).
 
 **Requirements:**
 
-- JDK 8+ (16+ for Fabric, 17+ for Minestom)
+- JDK 8+ (16+ for Fabric, 17+ for Minestom and Krypton)
 - Git (Optional)
 
 To build UnifiedMetrics, you need to obtain the source code first. You can download the source from GitHub or use the
