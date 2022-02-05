@@ -25,10 +25,10 @@ import dev.cubxity.plugins.metrics.api.metric.store.VolatileDoubleStore
 import dev.cubxity.plugins.metrics.api.metric.store.VolatileLongStore
 import dev.cubxity.plugins.metrics.common.metric.Metrics
 import net.minestom.server.MinecraftServer
-import net.minestom.server.monitoring.TickMonitor
-import java.util.function.Consumer
+import net.minestom.server.event.EventListener
+import net.minestom.server.event.server.ServerTickMonitorEvent
 
-class TickCollection : Consumer<TickMonitor>, CollectorCollection {
+class TickCollection : CollectorCollection {
     // The callback is called from a single thread
     private val tickDuration = Histogram(
         Metrics.Server.TickDurationSeconds,
@@ -36,17 +36,17 @@ class TickCollection : Consumer<TickMonitor>, CollectorCollection {
         countStoreFactory = VolatileLongStore
     )
 
+    private val listener = EventListener.of(ServerTickMonitorEvent::class.java) { event ->
+        tickDuration += event.tickMonitor.tickTime / MILLISECONDS_PER_SECOND
+    }
+
     override val collectors: List<Collector> = listOf(tickDuration)
 
     override fun initialize() {
-        MinecraftServer.getUpdateManager().addTickMonitor(this)
+        MinecraftServer.getGlobalEventHandler().addListener(listener)
     }
 
     override fun dispose() {
-        MinecraftServer.getUpdateManager().removeTickMonitor(this)
-    }
-
-    override fun accept(monitor: TickMonitor) {
-        tickDuration += monitor.tickTime / MILLISECONDS_PER_SECOND
+        MinecraftServer.getGlobalEventHandler().removeListener(listener)
     }
 }
