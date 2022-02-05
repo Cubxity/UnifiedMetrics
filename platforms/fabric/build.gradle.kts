@@ -34,7 +34,7 @@ dependencies {
     include(project(":unifiedmetrics-core"))
     include(project(":unifiedmetrics-common"))
     include("com.charleskorn.kaml:kaml:0.40.0")
-    include("com.charleskorn.kaml:kamkaml-jvm:0.40.0")
+    include("com.charleskorn.kaml:kaml-jvm:0.40.0")
     include("org.snakeyaml:snakeyaml-engine:2.3")
     include(project(":unifiedmetrics-api"))
     include(project(":unifiedmetrics-driver-influx"))
