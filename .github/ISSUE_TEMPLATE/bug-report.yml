@@ -1,5 +1,5 @@
 name: Bug Report
-description: Is something now working as it should?
+description: Is something not working as it should?
 labels: [bug]
 body:
 - type: checkboxes
