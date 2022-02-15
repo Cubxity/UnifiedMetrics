@@ -35,6 +35,12 @@ dependencies {
 tasks {
     shadowJar {
         archiveClassifier.set("")
+        relocate("retrofit2", "dev.cubxity.plugins.metrics.libs.retrofit2")
+        relocate("com.charleskorn", "dev.cubxity.plugins.metrics.libs.com.charleskorn")
+        relocate("com.influxdb", "dev.cubxity.plugins.metrics.libs.com.influxdb")
+        relocate("okhttp", "dev.cubxity.plugins.metrics.libs.okhttp")
+        relocate("okio", "dev.cubxity.plugins.metrics.libs.okio")
+        relocate("io.prometheus", "dev.cubxity.plugins.metrics.libs.io.prometheus")
     }
 }
 
