@@ -8,9 +8,9 @@
 UnifiedMetrics is a fully-featured free and open-source metrics collection plugin for Minecraft servers. This project is
 licensed under [GNU LGPLv3](COPYING.LESSER).
 
-[![Grafana Dashboard](.github/assets/grafana.png)](https://dedimc.link/unifiedmetrics)
+[![Grafana Dashboard](.github/assets/grafana.png)](https://unifiedmetrics-demo.cubxity.dev)
 *Dashboard [included](https://github.com/Cubxity/UnifiedMetrics/wiki/Grafana) out-of-box!*
-Click [here](https://dedimc.link/unifiedmetrics) for live preview!
+Click [here](https://unifiedmetrics-demo.cubxity.dev) for live preview!
 
 ## Features
 
@@ -44,25 +44,20 @@ Read the [wiki](https://github.com/Cubxity/UnifiedMetrics/wiki) for instructions
 <details> 
   <summary>Table of metrics (click to show)</summary>
 
-| Collector     | Description                                     | Platform            | Default |
-| ------------- | ----------------------------------------------- | ------------------- | ------- |
-| systemGc      | Garbage collection duration and freed bytes     | All                 | true    |
-| systemMemory  | Memory used, committed, max and init            | All                 | true    |
-| systemProcess | CPU load, seconds, and process start time       | All                 | true    |
-| systemThread  | Current, daemon, started, and peak thread count | All                 | true    |
-| events        | Login, join, quit, chat, and ping event counter | All                 | true    |
-| server        | Plugins count and player counts                 | All                 | true    |
-| tick          | Tick duration histogram                         | Bukkit, Minestom    | true    |
-| world         | World entities, players, and chunks count       | Bukkit, Minestom    | true    |
+| Collector     | Description                                     | Platform         | Default |
+|---------------|-------------------------------------------------|------------------|---------|
+| systemGc      | Garbage collection duration and freed bytes     | All              | true    |
+| systemMemory  | Memory used, committed, max and init            | All              | true    |
+| systemProcess | CPU load, seconds, and process start time       | All              | true    |
+| systemThread  | Current, daemon, started, and peak thread count | All              | true    |
+| events        | Login, join, quit, chat, and ping event counter | All              | true    |
+| server        | Plugins count and player counts                 | All              | true    |
+| tick          | Tick duration histogram                         | Bukkit, Minestom | true    |
+| world         | World entities, players, and chunks count       | Bukkit, Minestom | true    |
 
 </details>
 
 ## Special Thanks
-
-UnifiedMetrics is a proud partner of [DedicatedMC](https://dedimc.promo/UnifiedMetrics)! Get your Raw Power Hosting
-today with **15% OFF** using code `UnifiedMetrics`!
-
-[![DedicatedMC Logo](.github/assets/dmc.png)](https://dedimc.promo/UnifiedMetrics)
 
 YourKit supports open source projects with innovative and intelligent tools for monitoring and profiling Java and .NET
 applications. YourKit is the creator of [YourKit Java Profiler](https://www.yourkit.com/java/profiler/),
@@ -145,7 +140,7 @@ repositories {
 ```kotlin
 dependencies {
     // Replace this with the desired version
-    compileOnly("dev.cubxity.plugins", "unifiedmetrics-api", "0.3.3") 
+    compileOnly("dev.cubxity.plugins", "unifiedmetrics-api", "0.3.6") 
 }
 ```
 
