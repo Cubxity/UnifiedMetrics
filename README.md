@@ -59,6 +59,12 @@ Read the [wiki](https://github.com/Cubxity/UnifiedMetrics/wiki) for instructions
 
 ## Special Thanks
 
+[Bloom Host](https://billing.bloom.host/aff.php?aff=9) has kindly provided UnifiedMetrics with development servers.
+Bloom has server splitting built-in, which makes it extremely easy to build your monitoring stack. Get high performance
+servers at Bloom by using [this link](https://billing.bloom.host/aff.php?aff=9).
+
+[![Bloom logo](https://billing.bloom.host/templates/lagom/assets/img/logo/logo_big_inverse.svg)](https://billing.bloom.host/aff.php?aff=9)
+
 YourKit supports open source projects with innovative and intelligent tools for monitoring and profiling Java and .NET
 applications. YourKit is the creator of [YourKit Java Profiler](https://www.yourkit.com/java/profiler/),
 [YourKit .NET Profiler](https://www.yourkit.com/.net/profiler/),
@@ -131,7 +137,7 @@ Example plugins can be found under [examples](examples) directory.
 ```kotlin
 repositories {
     mavenCentral()
-    
+
     // Snapshots repository (only required for -SNAPSHOT versions)
     maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
 }
@@ -140,7 +146,7 @@ repositories {
 ```kotlin
 dependencies {
     // Replace this with the desired version
-    compileOnly("dev.cubxity.plugins", "unifiedmetrics-api", "0.3.6") 
+    compileOnly("dev.cubxity.plugins", "unifiedmetrics-api", "0.3.6")
 }
 ```
 
