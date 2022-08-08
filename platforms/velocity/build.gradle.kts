@@ -22,14 +22,14 @@ plugins {
 }
 
 repositories {
-    maven("https://nexus.velocitypowered.com/repository/maven-public/")
+    maven("https://repo.papermc.io/repository/maven-public/")
 }
 
 dependencies {
     api(project(":unifiedmetrics-core"))
 
-    compileOnly("com.velocitypowered:velocity-api:3.1.0")
-    kapt("com.velocitypowered:velocity-api:3.1.0")
+    compileOnly("com.velocitypowered:velocity-api:3.1.1")
+    kapt("com.velocitypowered:velocity-api:3.1.1")
 }
 
 tasks {

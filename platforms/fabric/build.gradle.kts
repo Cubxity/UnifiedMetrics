@@ -20,6 +20,12 @@ plugins {
     id("net.kyori.blossom")
 }
 
+val transitiveInclude: Configuration by configurations.creating {
+    exclude(group = "com.mojang")
+    exclude(group = "org.jetbrains.kotlin")
+    exclude(group = "org.jetbrains.kotlinx")
+}
+
 dependencies {
     // https://fabricmc.net/versions.html
     minecraft("com.mojang:minecraft:1.17.1")
@@ -31,36 +37,16 @@ dependencies {
 
     api(project(":unifiedmetrics-core"))
 
-    include(project(":unifiedmetrics-core"))
-    include(project(":unifiedmetrics-common"))
-    include("com.charleskorn.kaml:kaml:0.43.0")
-    include("com.charleskorn.kaml:kaml-jvm:0.43.0")
-    include("org.snakeyaml:snakeyaml-engine:2.3")
-    include(project(":unifiedmetrics-api"))
-    include(project(":unifiedmetrics-driver-influx"))
-    include("com.influxdb:influxdb-client-java:5.0.0")
-    include("com.influxdb:influxdb-client-core:5.0.0")
-    include("com.influxdb:influxdb-client-utils:5.0.0")
-    include("com.google.code.findbugs:jsr305:3.0.2")
-    include("com.squareup.retrofit2:retrofit:2.9.0")
-    include("com.squareup.okhttp3:okhttp:4.7.2")
-    include("com.squareup.okio:okio:2.6.0")
-    include("com.squareup.okhttp3:logging-interceptor:4.7.2")
-    include("org.apache.commons:commons-csv:1.8")
-    include("io.reactivex.rxjava2:rxjava:2.2.19")
-    include("org.reactivestreams:reactive-streams:1.0.3")
-    include("io.swagger:swagger-annotations:1.6.1")
-    include("io.gsonfire:gson-fire:1.8.4")
-    include("com.squareup.retrofit2:converter-scalars:2.9.0")
-    include("com.squareup.retrofit2:converter-gson:2.9.0")
-    include(project(":unifiedmetrics-driver-prometheus"))
-    include("io.prometheus:simpleclient_httpserver:0.15.0")
-    include("io.prometheus:simpleclient:0.14.1")
-    include("io.prometheus:simpleclient_tracer_otel:0.15.0")
-    include("io.prometheus:simpleclient_tracer_common:0.15.0")
-    include("io.prometheus:simpleclient_tracer_otel_agent:0.15.0")
-    include("io.prometheus:simpleclient_common:0.15.0")
-    include("io.prometheus:simpleclient_pushgateway:0.15.0")
+    transitiveInclude(project(":unifiedmetrics-core"))
+
+    transitiveInclude.incoming.artifacts.forEach {
+        val dependency: Any = when (val component = it.id.componentIdentifier) {
+            is ProjectComponentIdentifier -> project(component.projectPath)
+            else -> component.toString()
+        }
+
+        include(dependency)
+    }
 }
 
 loom {
