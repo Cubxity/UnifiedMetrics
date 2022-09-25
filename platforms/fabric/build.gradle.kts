@@ -16,7 +16,7 @@
  */
 
 plugins {
-    id("fabric-loom") version "0.13.7"
+    id("fabric-loom") version "0.13.20"
     id("net.kyori.blossom")
 }
 
