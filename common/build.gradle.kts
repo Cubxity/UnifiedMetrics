@@ -19,5 +19,5 @@ apply(plugin = "kotlinx-serialization")
 
 dependencies {
     api(project(":unifiedmetrics-api"))
-    implementation("com.charleskorn.kaml:kaml:0.46.0")
+    implementation("com.charleskorn.kaml:kaml:0.48.0")
 }
