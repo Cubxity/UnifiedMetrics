@@ -48,6 +48,7 @@ abstract class AbstractUnifiedMetricsPlugin : UnifiedMetricsPlugin {
         Files.createDirectories(bootstrap.configDirectory)
 
         _config = loadConfig()
+        _apiProvider = UnifiedMetricsApiProvider(this)
 
         try {
             saveConfig()
@@ -55,7 +56,6 @@ abstract class AbstractUnifiedMetricsPlugin : UnifiedMetricsPlugin {
             apiProvider.logger.severe("An error occurred whilst saving plugin config file", exception)
         }
 
-        _apiProvider = UnifiedMetricsApiProvider(this)
         UnifiedMetricsProvider.register(apiProvider)
         registerPlatformService(apiProvider)
 
