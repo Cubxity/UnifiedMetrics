@@ -33,7 +33,7 @@ class WorldCollector(private val bootstrap: UnifiedMetricsSpongeBootstrap): Coll
         val samples = ArrayList<Metric>(worlds.size * 3)
 
         worlds.fastForEach {
-            val tags = mapOf("world" to it.key().namespace())
+            val tags = mapOf("world" to it.key().value())
             samples.add(GaugeMetric(Metrics.Server.WorldEntitiesCount, tags, it.entities().size))
             samples.add(GaugeMetric(Metrics.Server.WorldPlayersCount, tags, it.players().size))
             samples.add(GaugeMetric(Metrics.Server.WorldLoadedChunks, tags, it.loadedChunks().toSet().size))
