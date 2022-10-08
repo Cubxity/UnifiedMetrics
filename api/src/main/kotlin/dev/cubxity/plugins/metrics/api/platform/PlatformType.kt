@@ -22,10 +22,10 @@ sealed class PlatformType(val name: String) {
     object Bukkit : PlatformType("Bukkit")
     object Minestom : PlatformType("Minestom")
     object Fabric : PlatformType("Fabric")
+    object Sponge : PlatformType("Sponge")
+
 
     // Proxies
     object Velocity : PlatformType("Velocity")
     object BungeeCord : PlatformType("BungeeCord")
-
-    object Sponge : PlatformType("Sponge")
 }

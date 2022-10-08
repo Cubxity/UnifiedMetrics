@@ -58,7 +58,6 @@ class EventsCollection(private val bootstrap: UnifiedMetricsSpongeBootstrap) : C
 
     @Listener
     fun onDisconnect(event: Disconnect) {
-        println("disconnect")
         quitCounter.inc()
     }
 

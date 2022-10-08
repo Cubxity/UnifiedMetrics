@@ -34,7 +34,7 @@ dependencies {
 
 sponge {
     apiVersion("8.0.0")
-    license("GNU")
+    license("LGPL-3.0")
     loader {
         name(PluginLoaders.JAVA_PLAIN)
         version("1.0")
