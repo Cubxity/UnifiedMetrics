@@ -15,17 +15,20 @@
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.platform
+package dev.cubxity.metrics.sponge.metric.server
 
-sealed class PlatformType(val name: String) {
-    // Server implementations
-    object Bukkit : PlatformType("Bukkit")
-    object Minestom : PlatformType("Minestom")
-    object Fabric : PlatformType("Fabric")
+import dev.cubxity.metrics.sponge.bootstrap.UnifiedMetricsSpongeBootstrap
+import dev.cubxity.plugins.metrics.api.metric.collector.Collector
+import dev.cubxity.plugins.metrics.api.metric.data.GaugeMetric
+import dev.cubxity.plugins.metrics.api.metric.data.Metric
 
-    // Proxies
-    object Velocity : PlatformType("Velocity")
-    object BungeeCord : PlatformType("BungeeCord")
+class ServerCollector(private val bootstrap: UnifiedMetricsSpongeBootstrap): Collector {
 
-    object Sponge : PlatformType("Sponge")
+    override fun collect(): List<Metric> {
+        return listOf(
+            GaugeMetric("minecraft_plugins", value = bootstrap.pluginManager.plugins().size),
+            GaugeMetric("minecraft_players_count", value = bootstrap.server.onlinePlayers().size),
+            GaugeMetric("minecraft_players_max", value = bootstrap.server.maxPlayers())
+        )
+    }
 }
