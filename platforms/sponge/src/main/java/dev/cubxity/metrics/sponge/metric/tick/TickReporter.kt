@@ -18,23 +18,60 @@
 package dev.cubxity.metrics.sponge.metric.tick
 
 import dev.cubxity.metrics.sponge.bootstrap.UnifiedMetricsSpongeBootstrap
+import dev.cubxity.plugins.metrics.api.metric.collector.MILLISECONDS_PER_SECOND
 import org.spongepowered.api.Sponge
 import org.spongepowered.api.scheduler.ScheduledTask
 import org.spongepowered.api.scheduler.Task
 import org.spongepowered.api.util.Ticks
+
+//class TickReporter(
+//    private val metric: TickCollection,
+//    bootstrap: UnifiedMetricsSpongeBootstrap
+//) {
+//
+//    private lateinit var task: ScheduledTask
+//
+//    private val taskExecutor = Task.builder()
+//        .delay(Ticks.of(1))
+//        .execute(Runnable {
+//            metric.onTick(0.0)
+//            this.startTask()
+//        })
+//        .plugin(bootstrap.container)
+//
+//    fun initialize() {
+//        startTask()
+//    }
+//
+//    private fun startTask() {
+//        task = Sponge.asyncScheduler().submit(taskExecutor.build())
+//    }
+//
+//    fun dispose() {
+//        task.cancel()
+//    }
+//
+//}
 
 class TickReporter(
     private val metric: TickCollection,
     bootstrap: UnifiedMetricsSpongeBootstrap
 ) {
 
+
     private lateinit var task: ScheduledTask
+    private var lastTick: Long? = null
 
     private val taskExecutor = Task.builder()
         .delay(Ticks.of(1))
         .execute(Runnable {
-            metric.onTick(0.0)
+            if(lastTick != null) {
+                metric.onTick((System.currentTimeMillis() - lastTick!!) / MILLISECONDS_PER_SECOND)
+            }else {
+                metric.onTick(0.0)
+            }
             this.startTask()
+            lastTick = System.currentTimeMillis()
         })
         .plugin(bootstrap.container)
 
@@ -49,5 +86,4 @@ class TickReporter(
     fun dispose() {
         task.cancel()
     }
-
 }
