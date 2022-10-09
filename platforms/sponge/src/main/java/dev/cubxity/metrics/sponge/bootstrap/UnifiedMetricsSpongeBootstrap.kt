@@ -61,13 +61,10 @@ class UnifiedMetricsSpongeBootstrap @Inject constructor(
         get() = serverVersion.name()
     override val configDirectory: Path
         get() = configManager.pluginConfig(container).configPath()
-    override val dataDirectory: Path
-        get() = configDirectory
-
+    override val dataDirectory: Path = configDirectory
     override val logger: Logger
         get() = Log4jLogger(serverLogger)
-    override val dispatcher: CoroutineDispatcher
-        get() = SpongeDispatcher(this)
+    override val dispatcher: CoroutineDispatcher = SpongeDispatcher(this)
 
     @Listener
     fun onServerStart(event: StartedEngineEvent<Server>) {
