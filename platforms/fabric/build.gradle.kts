@@ -29,7 +29,7 @@ val transitiveInclude: Configuration by configurations.creating {
 dependencies {
     // https://fabricmc.net/versions.html
     minecraft("com.mojang:minecraft:1.17.1")
-    mappings("net.fabricmc:yarn:1.17.1+build.65:v2")
+    mappings("net.fabricmc:yarn:22w13oneblockatatime+build.1:v2")
     modImplementation("net.fabricmc:fabric-loader:0.14.9")
 
     modImplementation("net.fabricmc.fabric-api:fabric-api:0.62.0+1.19.2")
