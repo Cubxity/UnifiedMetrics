@@ -29,10 +29,10 @@ val transitiveInclude: Configuration by configurations.creating {
 dependencies {
     // https://fabricmc.net/versions.html
     minecraft("com.mojang:minecraft:1.17.1")
-    mappings("net.fabricmc:yarn:1.19.2+build.28:v2")
+    mappings("net.fabricmc:yarn:1.17.1+build.65:v2")
     modImplementation("net.fabricmc:fabric-loader:0.14.10")
 
-    modImplementation("net.fabricmc.fabric-api:fabric-api:0.65.3+1.19.3")
+    modImplementation("net.fabricmc.fabric-api:fabric-api:0.46.1+1.17")
     modImplementation("net.fabricmc:fabric-language-kotlin:1.8.5+kotlin.1.7.20")
 
     api(project(":unifiedmetrics-core"))
