@@ -14,6 +14,18 @@
       ],
       "groupName": "all non-major dependencies",
       "groupSlug": "all-minor-patch"
+    },
+    {
+      "matchPackageNames": [
+        "net.fabricmc:yarn"
+      ],
+      "allowedVersions": "1.17.*"
+    },
+    {
+      "matchPackageNames": [
+        "net.fabricmc.fabric-api:fabric-api"
+      ],
+      "allowedVersions": "/^[^\\+]+\\+1\\.17$/"
     }
   ]
 }
