@@ -1,4 +1,4 @@
-.idea/**
+.idea/*
 !.idea/copyright
 *.iml
 *.ipr
