@@ -19,7 +19,7 @@
       "matchPackageNames": [
         "net.fabricmc:yarn"
       ],
-      "allowedVersions": "1.17.*"
+      "enabled": false
     },
     {
       "matchPackageNames": [
