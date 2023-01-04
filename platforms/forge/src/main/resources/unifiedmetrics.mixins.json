@@ -5,6 +5,6 @@
     "compatibilityLevel": "JAVA_8",
     "mixins": [
         "ServerLoginNetworkHandlerMixin",
-        "ServerQueryNetworkHandlerMixin",
+        "ServerQueryNetworkHandlerMixin"
     ]
 }

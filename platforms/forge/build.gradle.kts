@@ -20,6 +20,12 @@ plugins {
     id("net.kyori.blossom")
 }
 
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
 val transitiveInclude: Configuration by configurations.creating {
     exclude(group = "com.mojang")
     exclude(group = "org.jetbrains.kotlin")

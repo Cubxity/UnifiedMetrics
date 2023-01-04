@@ -17,7 +17,7 @@ license="LGPL-3.0"
 # The modid of the mod
 modId="unifiedmetrics" #mandatory
 # The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
-# ${file.jarVersion} will substitute the value of the Implementation-Version as read from the mod's JAR file metadata
+# The plugin version will substitute the value of the Implementation-Version as read from the mod's JAR file metadata
 # see the associated build.gradle script for how to populate this completely automatically during a build
 version="${version}" #mandatory
  # A display name for the mod
