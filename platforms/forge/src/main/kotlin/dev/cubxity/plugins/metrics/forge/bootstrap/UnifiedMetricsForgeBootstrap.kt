@@ -56,7 +56,7 @@ class UnifiedMetricsForgeBootstrap : UnifiedMetricsBootstrap {
     lateinit var server: MinecraftServer
 
     override val type: PlatformType
-        get() = PlatformType.Fabric
+        get() = PlatformType.Forge
 
     override val version: String
         get() = pluginVersion
