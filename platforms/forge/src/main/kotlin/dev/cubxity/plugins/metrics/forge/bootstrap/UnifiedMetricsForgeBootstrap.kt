@@ -37,19 +37,6 @@ import java.nio.file.Path
 
 private const val pluginVersion = "@version@"
 
-//class ExampleModForge {
-//    init {
-//        // Submit our event bus to let architectury register our content on the right time
-//        EventBuses.registerModEventBus(ExampleMod.MOD_ID, FMLJavaModLoadingContext.get().modEventBus)
-//        FMLJavaModLoadingContext.get().modEventBus.addListener(this::onGatherData)
-//        init()
-//    }
-//
-//    private fun onGatherData(event: GatherDataEvent) {
-//        val gen = event.generator
-//        gen.addProvider(true, ChineseProvider(gen))
-//    }
-//}
 @Mod("unifiedmetrics")
 class UnifiedMetricsForgeBootstrap : UnifiedMetricsBootstrap {
     private val plugin = UnifiedMetricsForgePlugin(this)

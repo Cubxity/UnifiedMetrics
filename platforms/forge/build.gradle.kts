@@ -38,6 +38,8 @@ apply {
     plugin("org.parchmentmc.librarian.forgegradle")
 }
 
+apply(from = "https://raw.githubusercontent.com/thedarkcolour/KotlinForForge/site/thedarkcolour/kotlinforforge/gradle/kff-3.8.0.gradle")
+
 java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
@@ -63,21 +65,10 @@ configure<net.minecraftforge.gradle.userdev.UserDevExtension> {
     }
 }
 
-repositories {
-    // Add KFF Maven repository
-    maven {
-        name = "Kotlin for Forge"
-        url = uri("https://thedarkcolour.github.io/KotlinForForge/")
-    }
-}
-
 dependencies {
     "minecraft"("net.minecraftforge:forge:1.18.2-40.2.0")
     val fg = project.extensions.getByType<net.minecraftforge.gradle.userdev.DependencyManagementExtension>()
     api(project(":unifiedmetrics-core"))
-    implementation("thedarkcolour:kotlinforforge:3.8.0")
-
-    implementation(kotlin("stdlib"))
 }
 
 tasks {
