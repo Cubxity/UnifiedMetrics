@@ -14,22 +14,53 @@
  *     You should have received a copy of the GNU Lesser General Public License
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
-
-plugins {
-    id("dev.architectury.loom") version "0.12.0-SNAPSHOT"
-    id("net.kyori.blossom")
+buildscript {
+    repositories {
+        maven("https://maven.minecraftforge.net")
+        maven("https://maven.parchmentmc.org")
+        mavenCentral()
+    }
+    dependencies {
+        classpath(group = "net.minecraftforge.gradle", name = "ForgeGradle", version = "5.1.+") {
+            isChanging = true
+        }
+        classpath("org.parchmentmc:librarian:1.+")
+    }
 }
 
+plugins {
+    id("net.kyori.blossom")
+    id("com.github.johnrengelman.shadow")
+}
+
+apply {
+    plugin("net.minecraftforge.gradle")
+    plugin("org.parchmentmc.librarian.forgegradle")
+}
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
 }
 
-val transitiveInclude: Configuration by configurations.creating {
-    exclude(group = "com.mojang")
-    exclude(group = "org.jetbrains.kotlin")
-    exclude(group = "org.jetbrains.kotlinx")
+configure<net.minecraftforge.gradle.userdev.UserDevExtension> {
+    mappings("parchment", "2022.11.06-1.18.2")
+
+    runs {
+        create("server") {
+            workingDirectory = project.file("run").canonicalPath
+            // "SCAN": For mods scan.
+            // "REGISTRIES": For firing of registry events.
+            // "REGISTRYDUMP": For getting the contents of all registries.
+            property("forge.logging.markers", "REGISTRIES")
+            property("forge.logging.console.level", "debug")
+            mods {
+                create("unifiedmetrics") {
+                    source(sourceSets["main"])
+                }
+            }
+        }
+    }
 }
 
 repositories {
@@ -41,74 +72,27 @@ repositories {
 }
 
 dependencies {
-    minecraft("com.mojang:minecraft:1.18.2")
-    mappings("net.fabricmc:yarn:1.18.2+build.4:v2")
-    forge("net.minecraftforge:forge:1.18.2-40.1.73")
-    modApi("thedarkcolour:kotlinforforge:3.8.0")
-
+    "minecraft"("net.minecraftforge:forge:1.18.2-40.2.0")
+    val fg = project.extensions.getByType<net.minecraftforge.gradle.userdev.DependencyManagementExtension>()
     api(project(":unifiedmetrics-core"))
+    implementation("thedarkcolour:kotlinforforge:3.8.0")
 
-    transitiveInclude(project(":unifiedmetrics-core"))
-
-    transitiveInclude.incoming.artifacts.forEach {
-        val dependency: Any = when (val component = it.id.componentIdentifier) {
-            is ProjectComponentIdentifier -> project(component.projectPath)
-            else -> component.toString()
-        }
-
-        include(dependency)
-    }
-}
-
-loom {
-    // since loom 0.10, you are **required** to use the
-    // "forge" block to configure forge-specific features,
-    // such as the mixinConfigs array or datagen
-    forge {
-        // specify the mixin configs used in this mod
-        // this will be added to the jar manifest as well!
-        mixinConfigs(
-            "unifiedmetrics.mixins.json"
-        )
-
-        // missing access transformers?
-        // don't worry, you can still use them!
-        // note that your AT *MUST* be located at
-        // src/main/resources/META-INF/accesstransformer.cfg
-        // to work as there is currently no config option to change this.
-        // also, any names used in your access transformer will need to be
-        // in SRG mapped ("func_" / "field_" with MCP class names) to work!
-        // (both of these things may be subject to change in the future)
-
-        // this will create a data generator configuration
-        // that you can use to automatically generate assets and data
-        // using architectury loom. Note that this currently *only* works
-        // for forge projects made with architectury loom!
-        dataGen {
-            mod("unifiedmetrics")
-        }
-    }
-
-    // This allows you to modify your launch configurations,
-    // for example to add custom arguments. In this case, we want
-    // the data generator to check our resources directory for
-    // existing files. (see Forge's ExistingFileHelper for more info)
-    launches {
-        named("data") {
-            arg("--existing", file("src/main/resources").absolutePath)
-        }
-    }
-
-    runs {
-        named("server") {
-            isIdeConfigGenerated = true
-        }
-    }
+    implementation(kotlin("stdlib"))
 }
 
 tasks {
     compileKotlin {
         kotlinOptions.jvmTarget = "17"
+    }
+
+    shadowJar {
+        archiveClassifier.set("")
+        relocate("retrofit2", "dev.cubxity.plugins.metrics.libs.retrofit2")
+        relocate("com.charleskorn", "dev.cubxity.plugins.metrics.libs.com.charleskorn")
+        relocate("com.influxdb", "dev.cubxity.plugins.metrics.libs.com.influxdb")
+        relocate("okhttp", "dev.cubxity.plugins.metrics.libs.okhttp")
+        relocate("okio", "dev.cubxity.plugins.metrics.libs.okio")
+        relocate("io.prometheus", "dev.cubxity.plugins.metrics.libs.io.prometheus")
     }
 
     processResources {
@@ -122,6 +106,10 @@ tasks {
     compileJava {
         options.encoding = "UTF-8"
         options.release.set(17)
+    }
+
+    jar {
+        finalizedBy("reobfJar")
     }
 
 }

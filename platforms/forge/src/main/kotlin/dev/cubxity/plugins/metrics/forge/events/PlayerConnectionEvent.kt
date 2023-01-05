@@ -18,10 +18,10 @@
 package dev.cubxity.plugins.metrics.forge.events
 
 import net.minecraft.server.MinecraftServer
-import net.minecraft.server.network.ServerLoginNetworkHandler
+import net.minecraft.server.network.ServerLoginPacketListenerImpl
 import net.minecraftforge.eventbus.api.Event
 
 class PlayerConnectionEvent(
-    val handler: ServerLoginNetworkHandler,
+    val handler: ServerLoginPacketListenerImpl,
     val server: MinecraftServer
 ): Event()

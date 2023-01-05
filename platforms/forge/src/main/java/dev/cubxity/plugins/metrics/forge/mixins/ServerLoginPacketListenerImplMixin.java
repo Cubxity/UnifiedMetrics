@@ -17,20 +17,29 @@
 
 package dev.cubxity.plugins.metrics.forge.mixins;
 
-import dev.cubxity.plugins.metrics.forge.events.ServerPingEvent;
-import net.minecraft.server.network.ServerQueryNetworkHandler;
+import dev.cubxity.plugins.metrics.forge.events.PlayerConnectionEvent;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerLoginPacketListenerImpl;
 import net.minecraftforge.common.MinecraftForge;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(ServerQueryNetworkHandler.class)
-public abstract class ServerQueryNetworkHandlerMixin {
+@Mixin(ServerLoginPacketListenerImpl.class)
+public abstract class ServerLoginPacketListenerImplMixin {
 
-    @Inject(method = "onRequest", at = @At("HEAD"))
-    private void handleOnRequest(CallbackInfo ci) {
-        MinecraftForge.EVENT_BUS.post(new ServerPingEvent());
+
+    @Shadow
+    @Final
+    MinecraftServer server;
+
+    @Inject(method = "<init>", at = @At("RETURN"))
+    private void initConnection(CallbackInfo ci) {
+        ServerLoginPacketListenerImpl handler = (ServerLoginPacketListenerImpl) (Object) this;
+        MinecraftServer server = this.server;
+        MinecraftForge.EVENT_BUS.post(new PlayerConnectionEvent(handler, server));
     }
-
 }

@@ -17,29 +17,20 @@
 
 package dev.cubxity.plugins.metrics.forge.mixins;
 
-import dev.cubxity.plugins.metrics.forge.events.PlayerConnectionEvent;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerLoginNetworkHandler;
+import dev.cubxity.plugins.metrics.forge.events.ServerPingEvent;
+import net.minecraft.server.network.ServerStatusPacketListenerImpl;
 import net.minecraftforge.common.MinecraftForge;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(ServerLoginNetworkHandler.class)
-public abstract class ServerLoginNetworkHandlerMixin {
+@Mixin(ServerStatusPacketListenerImpl.class)
+public abstract class ServerStatusPacketListenerImplMixin {
 
-
-    @Shadow
-    @Final
-    private MinecraftServer server;
-
-    @Inject(method = "<init>", at = @At("RETURN"))
-    private void initConnection(CallbackInfo ci) {
-        ServerLoginNetworkHandler handler = (ServerLoginNetworkHandler) (Object) this;
-        MinecraftServer server = this.server;
-        MinecraftForge.EVENT_BUS.post(new PlayerConnectionEvent(handler, server));
+    @Inject(method = "handleStatusRequest", at = @At("HEAD"))
+    private void handleHandleStatusRequest(CallbackInfo ci) {
+        MinecraftForge.EVENT_BUS.post(new ServerPingEvent());
     }
+
 }
