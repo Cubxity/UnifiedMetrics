@@ -77,7 +77,6 @@ tasks {
     }
 
     shadowJar {
-        dependsOn("reobfJar")
         archiveClassifier.set("")
         configurations =  listOf(project.configurations.shadow.get())
         relocate("retrofit2", "dev.cubxity.plugins.metrics.libs.retrofit2")
@@ -93,6 +92,8 @@ tasks {
         relocate("org.apache.common", "dev.cubxity.plugins.metrics.libs.org.apache.common")
         relocate("org.reactivestreams", "dev.cubxity.plugins.metrics.libs.org.reactivestreams")
         exclude("javax/**", "kotlin/**", "kotlinx/**", "org/jetbrains/**", "org/intellij/**")
+
+        finalizedBy("reobfJar")
     }
 
     processResources {
