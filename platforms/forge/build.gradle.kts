@@ -67,8 +67,8 @@ configure<net.minecraftforge.gradle.userdev.UserDevExtension> {
 
 dependencies {
     "minecraft"("net.minecraftforge:forge:1.18.2-40.2.0")
-    val fg = project.extensions.getByType<net.minecraftforge.gradle.userdev.DependencyManagementExtension>()
-    api(project(":unifiedmetrics-core"))
+    val f = project.extensions.getByType<net.minecraftforge.gradle.userdev.DependencyManagementExtension>()
+    shadow(project(":unifiedmetrics-core"))
 }
 
 tasks {
@@ -77,13 +77,16 @@ tasks {
     }
 
     shadowJar {
+        dependsOn("reobfJar")
         archiveClassifier.set("")
+        configurations =  listOf(project.configurations.shadow.get())
         relocate("retrofit2", "dev.cubxity.plugins.metrics.libs.retrofit2")
         relocate("com.charleskorn", "dev.cubxity.plugins.metrics.libs.com.charleskorn")
         relocate("com.influxdb", "dev.cubxity.plugins.metrics.libs.com.influxdb")
         relocate("okhttp", "dev.cubxity.plugins.metrics.libs.okhttp")
         relocate("okio", "dev.cubxity.plugins.metrics.libs.okio")
         relocate("io.prometheus", "dev.cubxity.plugins.metrics.libs.io.prometheus")
+        exclude("com/**", "io/**", "javax/**", "kotlin/**", "kotlinx/**", "org/**")
     }
 
     processResources {
@@ -102,7 +105,6 @@ tasks {
     jar {
         finalizedBy("reobfJar")
     }
-
 }
 
 blossom {
