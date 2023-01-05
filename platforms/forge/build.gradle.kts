@@ -90,7 +90,9 @@ tasks {
         relocate("org.snakeyaml", "dev.cubxity.plugins.metrics.libs.org.snakeyaml")
         relocate("com.google.gson", "dev.cubxity.plugins.metrics.libs.org.yaml.snakeyaml")
         relocate("io.reactivex", "dev.cubxity.plugins.metrics.libs.io.reactivex")
-        exclude("javax/**", "kotlin/**", "kotlinx/**")
+        relocate("org.apache.common", "dev.cubxity.plugins.metrics.libs.org.apache.common")
+        relocate("org.reactivestreams", "dev.cubxity.plugins.metrics.libs.org.reactivestreams")
+        exclude("javax/**", "kotlin/**", "kotlinx/**", "org/jetbrains/**", "org/intellij/**")
     }
 
     processResources {
