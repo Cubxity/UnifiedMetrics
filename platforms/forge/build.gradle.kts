@@ -86,7 +86,11 @@ tasks {
         relocate("okhttp", "dev.cubxity.plugins.metrics.libs.okhttp")
         relocate("okio", "dev.cubxity.plugins.metrics.libs.okio")
         relocate("io.prometheus", "dev.cubxity.plugins.metrics.libs.io.prometheus")
-        exclude("com/google/**", "io/reactivex/**", "javax/**", "kotlin/**", "kotlinx/**", "org/**")
+        relocate("org.yaml.snakeyaml", "dev.cubxity.plugins.metrics.libs.org.yaml.snakeyaml")
+        relocate("org.snakeyaml", "dev.cubxity.plugins.metrics.libs.org.snakeyaml")
+        relocate("com.google.gson", "dev.cubxity.plugins.metrics.libs.org.yaml.snakeyaml")
+        relocate("io.reactivex", "dev.cubxity.plugins.metrics.libs.io.reactivex")
+        exclude("javax/**", "kotlin/**", "kotlinx/**")
     }
 
     processResources {
