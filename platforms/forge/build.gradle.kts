@@ -86,7 +86,7 @@ tasks {
         relocate("okhttp", "dev.cubxity.plugins.metrics.libs.okhttp")
         relocate("okio", "dev.cubxity.plugins.metrics.libs.okio")
         relocate("io.prometheus", "dev.cubxity.plugins.metrics.libs.io.prometheus")
-        exclude("com/**", "io/**", "javax/**", "kotlin/**", "kotlinx/**", "org/**")
+        exclude("com/google/**", "io/reactivex/**", "javax/**", "kotlin/**", "kotlinx/**", "org/**")
     }
 
     processResources {
