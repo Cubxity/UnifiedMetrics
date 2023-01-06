@@ -29,7 +29,7 @@ class WorldCollector(private val bootstrap: UnifiedMetricsForgeBootstrap) : Coll
         val samples = ArrayList<Metric>(worlds.count() * 3)
 
         worlds.forEach { world ->
-            val tags = mapOf("world" to world.dimension().registry().toString())
+            val tags = mapOf("world" to world.dimension().location().toString())
             samples.add(GaugeMetric(Metrics.Server.WorldEntitiesCount, tags, world.allEntities.count()))
             samples.add(GaugeMetric(Metrics.Server.WorldPlayersCount, tags, world.players().size))
             samples.add(GaugeMetric(Metrics.Server.WorldLoadedChunks, tags, world.chunkSource.loadedChunksCount))
