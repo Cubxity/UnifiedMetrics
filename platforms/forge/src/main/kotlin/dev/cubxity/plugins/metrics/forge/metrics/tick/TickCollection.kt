@@ -20,7 +20,7 @@ package dev.cubxity.plugins.metrics.forge.metrics.tick
 import dev.cubxity.plugins.metrics.api.metric.collector.Collector
 import dev.cubxity.plugins.metrics.api.metric.collector.CollectorCollection
 import dev.cubxity.plugins.metrics.api.metric.collector.Histogram
-import dev.cubxity.plugins.metrics.api.metric.collector.MILLISECONDS_PER_SECOND
+import dev.cubxity.plugins.metrics.api.metric.collector.NANOSECONDS_PER_SECOND
 import dev.cubxity.plugins.metrics.api.metric.store.VolatileDoubleStore
 import dev.cubxity.plugins.metrics.api.metric.store.VolatileLongStore
 import dev.cubxity.plugins.metrics.common.metric.Metrics
@@ -52,12 +52,11 @@ class TickCollection : CollectorCollection {
         }
     }
 
-
     @SubscribeEvent(priority = EventPriority.LOWEST)
     fun onTickPost(event: TickEvent.ServerTickEvent) {
         if(event.phase == TickEvent.Phase.END) {
             val tickTime = System.nanoTime() - lastTickTime
-            tickDuration += (tickTime / MILLISECONDS_PER_SECOND)
+            tickDuration += (tickTime / NANOSECONDS_PER_SECOND)
         }
     }
 }
