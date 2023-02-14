@@ -50,7 +50,7 @@ class EventsCollection(private val bootstrap: UnifiedMetricsVelocityBootstrap) :
 
     @Subscribe
     fun onLogin(event: PreLoginEvent) {
-        joinCounter.inc()
+        loginCounter.inc()
     }
 
     @Subscribe
