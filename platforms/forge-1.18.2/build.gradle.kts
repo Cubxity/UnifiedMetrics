@@ -14,61 +14,64 @@
  *     You should have received a copy of the GNU Lesser General Public License
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
-buildscript {
-    repositories {
-        maven("https://maven.minecraftforge.net")
-        maven("https://maven.parchmentmc.org")
-        mavenCentral()
-    }
-    dependencies {
-        classpath(group = "net.minecraftforge.gradle", name = "ForgeGradle", version = "5.1.+") {
-            isChanging = true
-        }
-        classpath("org.parchmentmc:librarian:1.+")
-    }
-}
 
 plugins {
     id("net.kyori.blossom")
     id("com.github.johnrengelman.shadow")
+    id("dev.architectury.loom") version "0.12.0-SNAPSHOT"
 }
 
-apply {
-    plugin("net.minecraftforge.gradle")
-    plugin("org.parchmentmc.librarian.forgegradle")
-}
-
-apply(from = "https://raw.githubusercontent.com/thedarkcolour/KotlinForForge/site/thedarkcolour/kotlinforforge/gradle/kff-3.8.0.gradle")
+//apply(from = "https://raw.githubusercontent.com/thedarkcolour/KotlinForForge/site/thedarkcolour/kotlinforforge/gradle/kff-3.8.0.gradle")
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
 }
 
-configure<net.minecraftforge.gradle.userdev.UserDevExtension> {
-    mappings("parchment", "2022.11.06-1.18.2")
 
-    runs {
-        create("server") {
-            workingDirectory = project.file("run").canonicalPath
-            // "SCAN": For mods scan.
-            // "REGISTRIES": For firing of registry events.
-            // "REGISTRYDUMP": For getting the contents of all registries.
-            property("forge.logging.markers", "REGISTRIES")
-            property("forge.logging.console.level", "debug")
-            mods {
-                create("unifiedmetrics") {
-                    source(sourceSets["main"])
-                }
-            }
-        }
+
+loom {
+    silentMojangMappingsLicense()
+
+    forge {
+        mixinConfigs("unifiedmetrics.mixins.json")
     }
 }
 
+repositories {
+    maven {
+        name = "ParchmentMC"
+        url = uri("https://maven.parchmentmc.org")
+    }
+
+    maven {
+        name = "Kotlin for Forge"
+        url = uri("https://thedarkcolour.github.io/KotlinForForge/")
+    }
+}
+
+
 dependencies {
-    "minecraft"("net.minecraftforge:forge:1.18.2-40.2.0")
-    val f = project.extensions.getByType<net.minecraftforge.gradle.userdev.DependencyManagementExtension>()
+
+
+    minecraft("com.mojang:minecraft:1.18.2")
+    mappings(loom.layered {
+        officialMojangMappings()
+        parchment("org.parchmentmc.data:parchment-1.18.2:2022.11.06@zip")
+    })
+
+    forge("net.minecraftforge:forge:1.18.2-40.2.0")
+
+    implementation("thedarkcolour:kotlinforforge:3.8.0")
+
     shadow(project(":unifiedmetrics-core"))
+
+    forgeRuntimeLibrary(project(":unifiedmetrics-core"))
+    forgeRuntimeLibrary("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.0")
+    forgeRuntimeLibrary("org.jetbrains.kotlin:kotlin-reflect:1.8.0")
+    forgeRuntimeLibrary("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
+    forgeRuntimeLibrary("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.5.2")
+    forgeRuntimeLibrary("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
 }
 
 tasks {
@@ -78,7 +81,7 @@ tasks {
 
     shadowJar {
         archiveClassifier.set("")
-        configurations =  listOf(project.configurations.shadow.get())
+        configurations = listOf(project.configurations.shadow.get())
         relocate("retrofit2", "dev.cubxity.plugins.metrics.libs.retrofit2")
         relocate("com.charleskorn", "dev.cubxity.plugins.metrics.libs.com.charleskorn")
         relocate("com.influxdb", "dev.cubxity.plugins.metrics.libs.com.influxdb")
@@ -93,12 +96,10 @@ tasks {
         relocate("org.reactivestreams", "dev.cubxity.plugins.metrics.libs.org.reactivestreams")
         exclude("javax/**", "kotlin/**", "kotlinx/**", "org/jetbrains/**", "org/intellij/**")
 
-        finalizedBy("reobfJar")
     }
 
     processResources {
         inputs.property("version", project.version)
-
         filesMatching("META-INF/mods.toml") {
             expand("version" to project.version)
         }
@@ -107,10 +108,6 @@ tasks {
     compileJava {
         options.encoding = "UTF-8"
         options.release.set(17)
-    }
-
-    jar {
-        finalizedBy("reobfJar")
     }
 }
 

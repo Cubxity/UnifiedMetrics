@@ -59,8 +59,18 @@ pluginManagement {
             url = uri("https://maven.fabricmc.net/")
         }
         maven {
+            name = "ArchitecturyLoom"
+            url = uri("https://maven.architectury.dev/")
+        }
+
+        maven {
+            name = "ParchmentMC"
+            url = uri("https://maven.parchmentmc.org")
+        }
+        maven {
             name = "Forge"
             url = uri("https://files.minecraftforge.net/maven/")
         }
+
     }
 }
