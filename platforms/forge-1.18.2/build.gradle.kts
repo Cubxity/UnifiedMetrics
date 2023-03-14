@@ -75,8 +75,18 @@ dependencies {
 }
 
 tasks {
+    java {
+        withSourcesJar()
+    }
+
     compileKotlin {
         kotlinOptions.jvmTarget = "17"
+    }
+
+    remapJar {
+        dependsOn(shadowJar)
+        mustRunAfter(shadowJar)
+        inputFile.set(shadowJar.get().archiveFile)
     }
 
     shadowJar {
@@ -95,7 +105,6 @@ tasks {
         relocate("org.apache.common", "dev.cubxity.plugins.metrics.libs.org.apache.common")
         relocate("org.reactivestreams", "dev.cubxity.plugins.metrics.libs.org.reactivestreams")
         exclude("javax/**", "kotlin/**", "kotlinx/**", "org/jetbrains/**", "org/intellij/**")
-
     }
 
     processResources {
