@@ -15,6 +15,7 @@
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -43,9 +44,11 @@ subprojects {
 
     tasks.withType<KotlinCompile> {
         kotlinOptions {
-            jvmTarget = "1.8"
             freeCompilerArgs = listOf("-opt-in=kotlin.RequiresOptIn")
         }
+    }
+    configure<KotlinJvmProjectExtension> {
+        jvmToolchain(8)
     }
     configure<JavaPluginExtension> {
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -69,6 +72,7 @@ subprojects {
     afterEvaluate {
         tasks.findByName("shadowJar")?.also {
             tasks.named("assemble") { dependsOn(it) }
+            tasks.named("signArchives") { dependsOn(it) }
         }
         configure<SigningExtension> {
             sign(configurations["archives"])
