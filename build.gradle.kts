@@ -21,7 +21,7 @@ plugins {
     kotlin("jvm") version "1.8.10" apply false
     kotlin("kapt") version "1.8.10" apply false
     kotlin("plugin.serialization") version "1.8.10" apply false
-    id("com.github.johnrengelman.shadow") version "7.1.2" apply false
+    id("com.github.johnrengelman.shadow") version "8.1.1" apply false
     id("net.kyori.blossom") version "1.3.1" apply false
 }
 
