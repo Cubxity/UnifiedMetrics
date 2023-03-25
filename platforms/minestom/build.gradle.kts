@@ -31,10 +31,6 @@ dependencies {
     testImplementation("com.github.minestom.minestom:Minestom:a9e319f961")
 }
 
-java {
-    targetCompatibility = JavaVersion.VERSION_17
-}
-
 tasks {
     shadowJar {
         archiveClassifier.set("")
@@ -46,9 +42,10 @@ tasks {
         relocate("io.prometheus", "dev.cubxity.plugins.metrics.libs.io.prometheus")
     }
     compileKotlin {
-        kotlinOptions {
-            jvmTarget = "17"
-        }
+        kotlinOptions.jvmTarget = "17"
+    }
+    compileTestKotlin {
+        kotlinOptions.jvmTarget = "17"
     }
     processResources {
         duplicatesStrategy = DuplicatesStrategy.INCLUDE
@@ -58,4 +55,8 @@ tasks {
             include("extension.json")
         }
     }
+}
+
+java {
+    targetCompatibility = JavaVersion.VERSION_17
 }

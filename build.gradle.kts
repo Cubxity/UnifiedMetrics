@@ -44,11 +44,9 @@ subprojects {
 
     tasks.withType<KotlinCompile> {
         kotlinOptions {
+            kotlinOptions.jvmTarget = "1.8"
             freeCompilerArgs = listOf("-opt-in=kotlin.RequiresOptIn")
         }
-    }
-    configure<KotlinJvmProjectExtension> {
-        jvmToolchain(8)
     }
     configure<JavaPluginExtension> {
         targetCompatibility = JavaVersion.VERSION_1_8
