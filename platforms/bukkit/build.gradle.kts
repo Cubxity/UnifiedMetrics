@@ -17,18 +17,24 @@
 
 plugins {
     id("com.github.johnrengelman.shadow")
+    id("io.papermc.paperweight.userdev") version "1.5.3"
 }
 
 repositories {
+    mavenLocal()
     maven("https://papermc.io/repo/repository/maven-public/")
 }
 
 dependencies {
     api(project(":unifiedmetrics-core"))
-    compileOnly("com.destroystokyo.paper", "paper-api", "1.16.5-R0.1-SNAPSHOT")
+//    compileOnly("com.destroystokyo.paper", "paper-api", "1.16.5-R0.1-SNAPSHOT")
+    paperweight.devBundle("dev.folia", "1.19.4-R0.1-SNAPSHOT")
 }
 
 tasks {
+    assemble {
+        dependsOn(reobfJar)
+    }
     shadowJar {
         archiveClassifier.set("")
         relocate("retrofit2", "dev.cubxity.plugins.metrics.libs.retrofit2")
@@ -45,4 +51,8 @@ tasks {
             )
         }
     }
+}
+
+java {
+    disableAutoTargetJvm()
 }
