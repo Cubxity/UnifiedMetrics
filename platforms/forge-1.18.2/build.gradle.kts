@@ -14,6 +14,7 @@
  *     You should have received a copy of the GNU Lesser General Public License
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
     id("net.kyori.blossom")
@@ -52,8 +53,6 @@ repositories {
 
 
 dependencies {
-
-
     minecraft("com.mojang:minecraft:1.18.2")
     mappings(loom.layered {
         officialMojangMappings()
@@ -75,22 +74,24 @@ dependencies {
 }
 
 tasks {
-    java {
-        withSourcesJar()
-    }
-
     compileKotlin {
         kotlinOptions.jvmTarget = "17"
     }
 
-    remapJar {
+    prepareRemapJar {
         dependsOn(shadowJar)
         mustRunAfter(shadowJar)
-        inputFile.set(shadowJar.get().archiveFile)
+    }
+
+    remapJar {
+        archiveClassifier.set("remap")
+        dependsOn(shadowJar)
+        mustRunAfter(shadowJar)
+        inputFile.set(shadowJar.get().archiveFile.get())
     }
 
     shadowJar {
-        archiveClassifier.set("")
+        archiveClassifier.set("all")
         configurations = listOf(project.configurations.shadow.get())
         relocate("retrofit2", "dev.cubxity.plugins.metrics.libs.retrofit2")
         relocate("com.charleskorn", "dev.cubxity.plugins.metrics.libs.com.charleskorn")
