@@ -59,9 +59,8 @@ loom {
 
 tasks {
     compileKotlin {
-        kotlinOptions.jvmTarget = "1.8"
+        kotlinOptions.jvmTarget = "16"
     }
-
     processResources {
         inputs.property("version", project.version)
 
@@ -73,6 +72,11 @@ tasks {
     compileJava {
         options.encoding = "UTF-8"
     }
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_16
+    targetCompatibility = JavaVersion.VERSION_16
 }
 
 blossom {
