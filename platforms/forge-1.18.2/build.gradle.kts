@@ -80,12 +80,12 @@ tasks {
 
     remapJar {
         archiveClassifier.set("remap")
-        dependsOn(shadowJar)
-        mustRunAfter(shadowJar)
-        inputFile.set(shadowJar.get().archiveFile.get())
+        inputFile.set(jar.get().archiveFile.get())
     }
 
     shadowJar {
+        dependsOn(remapJar)
+        mustRunAfter(remapJar)
         archiveClassifier.set("all")
         configurations = listOf(project.configurations.shadow.get())
         relocate("retrofit2", "dev.cubxity.plugins.metrics.libs.retrofit2")
