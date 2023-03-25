@@ -19,7 +19,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 plugins {
     id("net.kyori.blossom")
     id("com.github.johnrengelman.shadow")
-    id("dev.architectury.loom") version "0.12.0-SNAPSHOT"
+    id("dev.architectury.loom") version "1.1-SNAPSHOT"
 }
 
 //apply(from = "https://raw.githubusercontent.com/thedarkcolour/KotlinForForge/site/thedarkcolour/kotlinforforge/gradle/kff-3.8.0.gradle")
@@ -76,11 +76,6 @@ dependencies {
 tasks {
     compileKotlin {
         kotlinOptions.jvmTarget = "17"
-    }
-
-    prepareRemapJar {
-        dependsOn(shadowJar)
-        mustRunAfter(shadowJar)
     }
 
     remapJar {
