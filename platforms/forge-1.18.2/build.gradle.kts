@@ -14,22 +14,17 @@
  *     You should have received a copy of the GNU Lesser General Public License
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
     id("net.kyori.blossom")
     id("com.github.johnrengelman.shadow")
-    id("dev.architectury.loom") version "1.1-SNAPSHOT"
+    id("dev.architectury.loom") version "1.1.324"
 }
-
-//apply(from = "https://raw.githubusercontent.com/thedarkcolour/KotlinForForge/site/thedarkcolour/kotlinforforge/gradle/kff-3.8.0.gradle")
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
 }
-
-
 
 loom {
     silentMojangMappingsLicense()
@@ -54,7 +49,6 @@ repositories {
         url = uri("https://thedarkcolour.github.io/KotlinForForge/")
     }
 }
-
 
 dependencies {
     minecraft("com.mojang:minecraft:1.18.2")
@@ -88,9 +82,10 @@ tasks {
     }
 
     shadowJar {
+        archiveClassifier.set("")
         dependsOn(remapJar)
         mustRunAfter(remapJar)
-        archiveClassifier.set("")
+        from(remapJar)
         configurations = listOf(project.configurations.shadow.get())
         relocate("retrofit2", "dev.cubxity.plugins.metrics.libs.retrofit2")
         relocate("com.charleskorn", "dev.cubxity.plugins.metrics.libs.com.charleskorn")
