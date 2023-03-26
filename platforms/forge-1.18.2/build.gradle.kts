@@ -37,6 +37,10 @@ loom {
     forge {
         mixinConfigs("unifiedmetrics.mixins.json")
     }
+
+    mixin {
+        defaultRefmapName.set("mixin.refmap.json")
+    }
 }
 
 repositories {
@@ -79,14 +83,14 @@ tasks {
     }
 
     remapJar {
-        archiveClassifier.set("remap")
+        archiveClassifier.set("")
         inputFile.set(jar.get().archiveFile.get())
     }
 
     shadowJar {
         dependsOn(remapJar)
         mustRunAfter(remapJar)
-        archiveClassifier.set("all")
+        archiveClassifier.set("")
         configurations = listOf(project.configurations.shadow.get())
         relocate("retrofit2", "dev.cubxity.plugins.metrics.libs.retrofit2")
         relocate("com.charleskorn", "dev.cubxity.plugins.metrics.libs.com.charleskorn")
