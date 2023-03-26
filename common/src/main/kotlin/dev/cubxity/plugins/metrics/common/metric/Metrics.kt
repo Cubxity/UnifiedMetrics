@@ -35,4 +35,9 @@ object Metrics {
         const val WorldPlayersCount = "minecraft_world_players_count"
         const val WorldLoadedChunks = "minecraft_world_loaded_chunks"
     }
+
+    object RegionizedServer {
+        const val RegionCount = "minecraft_regionized_region_count"
+        const val RegionTick = "minecraft_regionized_region_tick_total"
+    }
 }
