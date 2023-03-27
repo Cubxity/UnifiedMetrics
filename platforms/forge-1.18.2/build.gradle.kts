@@ -86,7 +86,7 @@ tasks {
     }
 
     create<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("fatJar") {
-        archiveClassifier.set("all")
+        archiveClassifier.set("")
         dependsOn(remapJar)
         mustRunAfter(remapJar)
         from(zipTree(remapJar.get().archiveFile))
