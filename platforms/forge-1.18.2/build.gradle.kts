@@ -77,15 +77,20 @@ tasks {
     }
 
     remapJar {
-        archiveClassifier.set("")
+        archiveClassifier.set("remap")
         inputFile.set(jar.get().archiveFile.get())
     }
 
     shadowJar {
-        archiveClassifier.set("")
+        enabled = false // disable shadowJar for default settings can not satisfy out requirement.
+    }
+
+    create<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("fatJar") {
+        archiveClassifier.set("all")
         dependsOn(remapJar)
         mustRunAfter(remapJar)
-        from(remapJar)
+        from(zipTree(remapJar.get().archiveFile))
+        duplicatesStrategy = DuplicatesStrategy.WARN
         configurations = listOf(project.configurations.shadow.get())
         relocate("retrofit2", "dev.cubxity.plugins.metrics.libs.retrofit2")
         relocate("com.charleskorn", "dev.cubxity.plugins.metrics.libs.com.charleskorn")
@@ -112,6 +117,10 @@ tasks {
     compileJava {
         options.encoding = "UTF-8"
         options.release.set(17)
+    }
+
+    assemble {
+        dependsOn(named("fatJar"))
     }
 }
 
