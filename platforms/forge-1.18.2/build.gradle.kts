@@ -1,3 +1,5 @@
+import com.github.jengelman.gradle.plugins.shadow.transformers.ManifestAppenderTransformer
+
 /*
  *     This file is part of UnifiedMetrics.
  *
@@ -26,11 +28,13 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
+val mixinConfigName = "unifiedmetrics.mixins.json"
+
 loom {
     silentMojangMappingsLicense()
 
     forge {
-        mixinConfigs("unifiedmetrics.mixins.json")
+        mixinConfigs(mixinConfigName)
     }
 
     mixin {
@@ -89,8 +93,8 @@ tasks {
         archiveClassifier.set("")
         dependsOn(remapJar)
         mustRunAfter(remapJar)
-        from(zipTree(remapJar.get().archiveFile))
-        duplicatesStrategy = DuplicatesStrategy.WARN
+        from(zipTree(remapJar.get().archiveFile.get()))
+        duplicatesStrategy = DuplicatesStrategy.FAIL
         configurations = listOf(project.configurations.shadow.get())
         relocate("retrofit2", "dev.cubxity.plugins.metrics.libs.retrofit2")
         relocate("com.charleskorn", "dev.cubxity.plugins.metrics.libs.com.charleskorn")
@@ -105,6 +109,9 @@ tasks {
         relocate("org.apache.common", "dev.cubxity.plugins.metrics.libs.org.apache.common")
         relocate("org.reactivestreams", "dev.cubxity.plugins.metrics.libs.org.reactivestreams")
         exclude("javax/**", "kotlin/**", "kotlinx/**", "org/jetbrains/**", "org/intellij/**")
+        manifest {
+            attributes["MixinConfigs"] = mixinConfigName
+        }
     }
 
     processResources {
