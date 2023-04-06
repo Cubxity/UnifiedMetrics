@@ -1,5 +1,3 @@
-import com.github.jengelman.gradle.plugins.shadow.transformers.ManifestAppenderTransformer
-
 /*
  *     This file is part of UnifiedMetrics.
  *
