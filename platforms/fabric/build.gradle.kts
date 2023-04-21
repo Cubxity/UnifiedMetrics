@@ -16,7 +16,7 @@
  */
 
 plugins {
-    id("fabric-loom") version "1.1.10"
+    id("fabric-loom") version "1.2.2"
     id("net.kyori.blossom")
 }
 
@@ -30,10 +30,10 @@ dependencies {
     // https://fabricmc.net/versions.html
     minecraft("com.mojang:minecraft:1.17.1")
     mappings("net.fabricmc:yarn:1.17.1+build.65:v2")
-    modImplementation("net.fabricmc:fabric-loader:0.14.18")
+    modImplementation("net.fabricmc:fabric-loader:0.14.19")
 
     modImplementation("net.fabricmc.fabric-api:fabric-api:0.46.1+1.17")
-    modImplementation("net.fabricmc:fabric-language-kotlin:1.9.2+kotlin.1.8.10")
+    modImplementation("net.fabricmc:fabric-language-kotlin:1.9.3+kotlin.1.8.20")
 
     api(project(":unifiedmetrics-core"))
 
