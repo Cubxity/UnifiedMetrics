@@ -19,5 +19,5 @@ apply(plugin = "kotlinx-serialization")
 
 dependencies {
     compileOnly(project(":unifiedmetrics-api"))
-    api("com.influxdb:influxdb-client-java:6.7.0")
+    api("com.influxdb:influxdb-client-java:6.8.0")
 }
