@@ -72,20 +72,6 @@ and [YourKit YouMonitor](https://www.yourkit.com/youmonitor/).
 
 [![YourKit Logo](https://www.yourkit.com/images/yklogo.png)](https://www.yourkit.com/)
 
-## Servers using UnifiedMetrics
-
-<p float="left">
-  <a href="https://craftadia.com">
-    <img
-      src="https://craftadia.com/content/images/2021/01/Webp.net-resizeimage--1-.png"
-      alt="Craftadia"
-      width="200"
-    />
-  </a>
-</p>
-
-> **Pssst!** You can add your server here by submitting a *Pull Request*!
-
 ## Building from source
 
 <details> 
