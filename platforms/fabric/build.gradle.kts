@@ -16,7 +16,7 @@
  */
 
 plugins {
-    id("fabric-loom") version "1.2.2"
+    id("fabric-loom") version "1.2.5"
     id("net.kyori.blossom")
 }
 
@@ -33,7 +33,7 @@ dependencies {
     modImplementation("net.fabricmc:fabric-loader:0.14.19")
 
     modImplementation("net.fabricmc.fabric-api:fabric-api:0.46.1+1.17")
-    modImplementation("net.fabricmc:fabric-language-kotlin:1.9.3+kotlin.1.8.20")
+    modImplementation("net.fabricmc:fabric-language-kotlin:1.9.4+kotlin.1.8.21")
 
     api(project(":unifiedmetrics-core"))
 
