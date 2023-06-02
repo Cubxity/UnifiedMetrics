@@ -55,7 +55,7 @@ class UnifiedMetricsBukkitBootstrap : JavaPlugin(), UnifiedMetricsBootstrap {
     }
 
     override fun onEnable() {
-        logger.info("Running on Bukkit platform ${BukkitPlatform.current}")
+        (this as UnifiedMetricsBootstrap).logger.info("Running on Bukkit platform ${BukkitPlatform.current}")
         plugin.enable()
     }
 

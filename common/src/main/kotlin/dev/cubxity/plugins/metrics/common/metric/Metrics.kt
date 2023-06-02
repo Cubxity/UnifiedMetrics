@@ -39,5 +39,6 @@ object Metrics {
     object RegionizedServer {
         const val RegionCount = "minecraft_regionized_region_count"
         const val RegionTick = "minecraft_regionized_region_tick_total"
+        const val RegionOwnedSections = "minecraft_regionized_region_owned_sections"
     }
 }

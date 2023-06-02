@@ -21,47 +21,32 @@ import dev.cubxity.plugins.metrics.api.metric.collector.Collector
 import dev.cubxity.plugins.metrics.api.metric.data.CounterMetric
 import dev.cubxity.plugins.metrics.api.metric.data.GaugeMetric
 import dev.cubxity.plugins.metrics.api.metric.data.Metric
+import dev.cubxity.plugins.metrics.bukkit.util.regioniser
 import dev.cubxity.plugins.metrics.common.metric.Metrics
-import io.papermc.paper.threadedregions.ThreadedRegionizer
 import io.papermc.paper.threadedregions.ThreadedRegionizer.ThreadedRegion
 import io.papermc.paper.threadedregions.TickRegions.TickRegionData
 import io.papermc.paper.threadedregions.TickRegions.TickRegionSectionData
 import org.bukkit.Bukkit
-import org.bukkit.World
-import java.lang.reflect.Field
-import java.lang.reflect.Method
 
 
 class FoliaServerCollector : Collector {
     override fun collect(): List<Metric> {
         val worlds = Bukkit.getWorlds()
-        val samples = ArrayList<Metric>(worlds.size * 3 + 1)
 
         val regions = ArrayList<ThreadedRegion<TickRegionData, TickRegionSectionData>>()
         for (world in worlds) {
-//            val world = (bukkitWorld as CraftWorld).handle
-            getRegioniser(world).computeForAllRegions(regions::add)
+            world.regioniser.computeForAllRegions(regions::add)
         }
 
+        val samples = ArrayList<Metric>(regions.size * 2 + 1)
         for (region in regions) {
-            val tags = mapOf("world" to region.data.world.world.name, "region" to "${region.id}")
+            val tags = mapOf("world" to region.data.world.serverLevelData.levelName, "region" to "${region.id}")
             samples.add(CounterMetric(Metrics.RegionizedServer.RegionTick, tags, region.data.currentTick))
+            samples.add(GaugeMetric(Metrics.RegionizedServer.RegionOwnedSections, tags, region.ownedSections.size))
         }
 
         samples.add(GaugeMetric(Metrics.RegionizedServer.RegionCount, value = regions.size))
 
         return samples
-    }
-
-    private fun getRegioniser(world: World): ThreadedRegionizer<TickRegionData, TickRegionSectionData> {
-        // return ((CraftWorld) world).getHandle().regioniser;
-        // TODO: Cache reflection
-
-        val craftWorldClass: Class<*> = world.javaClass
-        val getHandleMethod: Method = craftWorldClass.getMethod("getHandle")
-        val serverLevel: Any = getHandleMethod.invoke(world)
-        val serverLevelClass: Class<*> = serverLevel.javaClass
-        val regioniserField: Field = serverLevelClass.getField("regioniser")
-        return regioniserField.get(serverLevel) as ThreadedRegionizer<TickRegionData, TickRegionSectionData>
     }
 }
