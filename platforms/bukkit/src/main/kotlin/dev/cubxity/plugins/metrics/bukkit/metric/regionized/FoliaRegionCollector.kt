@@ -29,7 +29,7 @@ import io.papermc.paper.threadedregions.TickRegions.TickRegionSectionData
 import org.bukkit.Bukkit
 
 
-class FoliaServerCollector : Collector {
+class FoliaRegionCollector : Collector {
     override fun collect(): List<Metric> {
         val worlds = Bukkit.getWorlds()
 

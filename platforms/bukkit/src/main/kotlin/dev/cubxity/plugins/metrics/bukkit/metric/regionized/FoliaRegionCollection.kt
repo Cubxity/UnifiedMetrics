@@ -20,6 +20,8 @@ package dev.cubxity.plugins.metrics.bukkit.metric.regionized
 import dev.cubxity.plugins.metrics.api.metric.collector.Collector
 import dev.cubxity.plugins.metrics.api.metric.collector.CollectorCollection
 
-class FoliaServerCollection : CollectorCollection {
-    override val collectors: List<Collector> = listOf(FoliaServerCollector())
+class FoliaRegionCollection : CollectorCollection {
+    override val collectors: List<Collector> = listOf(FoliaRegionCollector())
+    override val isAsync: Boolean
+        get() = true
 }
