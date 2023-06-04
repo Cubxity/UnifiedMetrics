@@ -38,11 +38,15 @@ class FoliaServerCollector : Collector {
             world.regioniser.computeForAllRegions(regions::add)
         }
 
-        val samples = ArrayList<Metric>(regions.size * 2 + 1)
+        val samples = ArrayList<Metric>(regions.size * 4 + 1)
         for (region in regions) {
             val tags = mapOf("world" to region.data.world.serverLevelData.levelName, "region" to "${region.id}")
             samples.add(CounterMetric(Metrics.RegionizedServer.RegionTick, tags, region.data.currentTick))
-            samples.add(GaugeMetric(Metrics.RegionizedServer.RegionOwnedSections, tags, region.ownedSections.size))
+
+            val stats = region.data.regionStats
+            samples.add(GaugeMetric(Metrics.RegionizedServer.RegionEntitiesCount, tags, stats.entityCount))
+            samples.add(GaugeMetric(Metrics.RegionizedServer.RegionPlayersCount, tags, stats.playerCount))
+            samples.add(GaugeMetric(Metrics.RegionizedServer.RegionChunksCount, tags, stats.chunkCount))
         }
 
         samples.add(GaugeMetric(Metrics.RegionizedServer.RegionCount, value = regions.size))
