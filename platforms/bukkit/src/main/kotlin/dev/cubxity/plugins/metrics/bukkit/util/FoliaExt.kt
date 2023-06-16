@@ -21,7 +21,7 @@ import io.papermc.paper.threadedregions.ThreadedRegionizer
 import io.papermc.paper.threadedregions.TickRegions.TickRegionData
 import io.papermc.paper.threadedregions.TickRegions.TickRegionSectionData
 import org.bukkit.World
-import org.bukkit.craftbukkit.v1_19_R3.CraftWorld
+import org.bukkit.craftbukkit.v1_20_R1.CraftWorld
 
 val World.regioniser: ThreadedRegionizer<TickRegionData, TickRegionSectionData>
     get() = (this as CraftWorld).handle.regioniser
