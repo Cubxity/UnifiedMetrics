@@ -15,19 +15,19 @@
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.core.plugin
+package dev.cubxity.plugins.metrics.datadog
 
-import dev.cubxity.plugins.metrics.common.plugin.AbstractUnifiedMetricsPlugin
-import dev.cubxity.plugins.metrics.influx.InfluxMetricsDriverFactory
-import dev.cubxity.plugins.metrics.prometheus.PrometheusMetricsDriverFactory
-import dev.cubxity.plugins.metrics.datadog.DataDogMetricsDriverFactory
+import dev.cubxity.plugins.metrics.api.UnifiedMetrics
+import dev.cubxity.plugins.metrics.api.metric.MetricsDriver
+import dev.cubxity.plugins.metrics.api.metric.MetricsDriverFactory
+import kotlinx.serialization.KSerializer
 
-abstract class CoreUnifiedMetricsPlugin : AbstractUnifiedMetricsPlugin() {
-    override fun registerMetricsDrivers() {
-        apiProvider.metricsManager.apply {
-            registerDriver("influx", InfluxMetricsDriverFactory)
-            registerDriver("prometheus", PrometheusMetricsDriverFactory)
-            registerDriver("datadog", DataDogMetricsDriverFactory)
-        }
-    }
+object DataDogMetricsDriverFactory : MetricsDriverFactory<DataDogConfig> {
+    override val configSerializer: KSerializer<DataDogConfig>
+        get() = DataDogConfig.serializer()
+
+    override val defaultConfig: DataDogConfig
+        get() = DataDogConfig("")
+
+    override fun createDriver(api: UnifiedMetrics, config: DataDogConfig): MetricsDriver = DataDogMetricsDriver(api, config)
 }

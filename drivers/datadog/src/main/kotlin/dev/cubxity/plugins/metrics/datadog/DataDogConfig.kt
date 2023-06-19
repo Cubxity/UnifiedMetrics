@@ -15,19 +15,11 @@
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.core.plugin
+package dev.cubxity.plugins.metrics.datadog
 
-import dev.cubxity.plugins.metrics.common.plugin.AbstractUnifiedMetricsPlugin
-import dev.cubxity.plugins.metrics.influx.InfluxMetricsDriverFactory
-import dev.cubxity.plugins.metrics.prometheus.PrometheusMetricsDriverFactory
-import dev.cubxity.plugins.metrics.datadog.DataDogMetricsDriverFactory
+import kotlinx.serialization.Serializable
 
-abstract class CoreUnifiedMetricsPlugin : AbstractUnifiedMetricsPlugin() {
-    override fun registerMetricsDrivers() {
-        apiProvider.metricsManager.apply {
-            registerDriver("influx", InfluxMetricsDriverFactory)
-            registerDriver("prometheus", PrometheusMetricsDriverFactory)
-            registerDriver("datadog", DataDogMetricsDriverFactory)
-        }
-    }
-}
+@Serializable
+data class DataDogConfig (
+        val output: String = "temp",
+)

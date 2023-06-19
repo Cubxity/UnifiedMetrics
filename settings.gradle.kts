@@ -33,6 +33,7 @@ include(modulePrefix + platformPrefix + "fabric")
 
 include(modulePrefix + driverPrefix + "influx")
 include(modulePrefix + driverPrefix + "prometheus")
+include(modulePrefix + driverPrefix + "datadog")
 
 project(modulePrefix + "api").projectDir = File(rootDir, "api")
 project(modulePrefix + "common").projectDir = File(rootDir, "common")
@@ -48,6 +49,7 @@ project(modulePrefix + platformPrefix + "fabric").projectDir = File(platformsDir
 val driversDir = File(rootDir, "drivers")
 project(modulePrefix + driverPrefix + "influx").projectDir = File(driversDir, "influx")
 project(modulePrefix + driverPrefix + "prometheus").projectDir = File(driversDir, "prometheus")
+project(modulePrefix + driverPrefix + "datadog").projectDir = File(driversDir, "datadog")
 
 pluginManagement {
     repositories {

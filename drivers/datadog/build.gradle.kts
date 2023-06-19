@@ -15,19 +15,9 @@
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.core.plugin
+apply(plugin = "kotlinx-serialization")
 
-import dev.cubxity.plugins.metrics.common.plugin.AbstractUnifiedMetricsPlugin
-import dev.cubxity.plugins.metrics.influx.InfluxMetricsDriverFactory
-import dev.cubxity.plugins.metrics.prometheus.PrometheusMetricsDriverFactory
-import dev.cubxity.plugins.metrics.datadog.DataDogMetricsDriverFactory
-
-abstract class CoreUnifiedMetricsPlugin : AbstractUnifiedMetricsPlugin() {
-    override fun registerMetricsDrivers() {
-        apiProvider.metricsManager.apply {
-            registerDriver("influx", InfluxMetricsDriverFactory)
-            registerDriver("prometheus", PrometheusMetricsDriverFactory)
-            registerDriver("datadog", DataDogMetricsDriverFactory)
-        }
-    }
+dependencies {
+    compileOnly(project(":unifiedmetrics-api"))
+    implementation ("com.datadoghq","java-dogstatsd-client","4.2.0")
 }
