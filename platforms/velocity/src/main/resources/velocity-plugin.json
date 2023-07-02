@@ -1,0 +1,11 @@
+{
+  "id": "unifiedmetrics",
+  "name": "UnifiedMetrics",
+  "version": "${version}",
+  "description": "Fully-featured metrics plugin for Minecraft servers",
+  "authors": [
+    "Cubxity"
+  ],
+  "dependencies": [],
+  "main": "dev.cubxity.plugins.metrics.velocity.bootstrap.UnifiedMetricsVelocityBootstrap"
+}

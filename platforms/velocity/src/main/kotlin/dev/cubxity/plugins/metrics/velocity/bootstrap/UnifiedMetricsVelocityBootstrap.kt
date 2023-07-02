@@ -23,6 +23,7 @@ import com.velocitypowered.api.event.Subscribe
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent
 import com.velocitypowered.api.event.proxy.ProxyShutdownEvent
 import com.velocitypowered.api.plugin.Plugin
+import com.velocitypowered.api.plugin.PluginDescription
 import com.velocitypowered.api.plugin.annotation.DataDirectory
 import com.velocitypowered.api.proxy.ProxyServer
 import dev.cubxity.plugins.metrics.api.platform.PlatformType
@@ -32,13 +33,11 @@ import dev.cubxity.plugins.metrics.velocity.UnifiedMetricsVelocityPlugin
 import dev.cubxity.plugins.metrics.velocity.logger.Slf4jLogger
 import kotlinx.coroutines.CoroutineDispatcher
 import java.nio.file.Path
-
-private const val pluginVersion = "@version@"
+import kotlin.jvm.optionals.getOrDefault
 
 @Plugin(
     id = "unifiedmetrics",
     name = "UnifiedMetrics",
-    version = pluginVersion,
     description = "Fully-featured metrics plugin for Minecraft servers",
     authors = ["Cubxity"]
 )
@@ -46,7 +45,8 @@ class UnifiedMetricsVelocityBootstrap @Inject constructor(
     @DataDirectory
     override val dataDirectory: Path,
     val server: ProxyServer,
-    pluginLogger: org.slf4j.Logger
+    pluginLogger: org.slf4j.Logger,
+    private val description: PluginDescription,
 ) : UnifiedMetricsBootstrap {
     private val plugin = UnifiedMetricsVelocityPlugin(this)
 
@@ -54,7 +54,7 @@ class UnifiedMetricsVelocityBootstrap @Inject constructor(
         get() = PlatformType.Velocity
 
     override val version: String
-        get() = pluginVersion
+        get() = description.version.getOrDefault("<unknown>")
 
     override val serverBrand: String
         get() = server.version.name

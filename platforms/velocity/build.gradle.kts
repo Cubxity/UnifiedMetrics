@@ -16,9 +16,7 @@
  */
 
 plugins {
-    kotlin("kapt")
     id("com.github.johnrengelman.shadow")
-    id("net.kyori.blossom")
 }
 
 repositories {
@@ -29,7 +27,6 @@ dependencies {
     api(project(":unifiedmetrics-core"))
 
     compileOnly("com.velocitypowered:velocity-api:3.1.1")
-    kapt("com.velocitypowered:velocity-api:3.1.1")
 }
 
 tasks {
@@ -42,9 +39,12 @@ tasks {
         relocate("okio", "dev.cubxity.plugins.metrics.libs.okio")
         relocate("io.prometheus", "dev.cubxity.plugins.metrics.libs.io.prometheus")
     }
-}
+    processResources {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
 
-blossom {
-    replaceTokenIn("src/main/kotlin/dev/cubxity/plugins/metrics/velocity/bootstrap/UnifiedMetricsVelocityBootstrap.kt")
-    replaceToken("@version@", version)
+        from("src/main/resources") {
+            expand("version" to version)
+            include("velocity-plugin.json")
+        }
+    }
 }
