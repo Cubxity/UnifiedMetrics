@@ -40,11 +40,10 @@ tasks {
         relocate("io.prometheus", "dev.cubxity.plugins.metrics.libs.io.prometheus")
     }
     processResources {
-        duplicatesStrategy = DuplicatesStrategy.INCLUDE
-
-        from("src/main/resources") {
-            expand("version" to version)
-            include("plugin.yml")
+        filesMatching("plugin.yml") {
+            expand(
+                "version" to project.version
+            )
         }
     }
 }

@@ -29,8 +29,7 @@ import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.server.MinecraftServer
 import org.apache.logging.log4j.LogManager
 import java.nio.file.Path
-
-private const val pluginVersion = "@version@"
+import kotlin.jvm.optionals.getOrNull
 
 class UnifiedMetricsFabricBootstrap : DedicatedServerModInitializer, UnifiedMetricsBootstrap {
     private val plugin = UnifiedMetricsFabricPlugin(this)
@@ -39,17 +38,16 @@ class UnifiedMetricsFabricBootstrap : DedicatedServerModInitializer, UnifiedMetr
     override val type: PlatformType
         get() = PlatformType.Fabric
 
-    override val version: String
-        get() = pluginVersion
+    override val version: String = FabricLoader.getInstance()
+        .getModContainer("unifiedmetrics").getOrNull()
+        ?.metadata?.version?.friendlyString ?: "<unknown>"
 
     override val serverBrand: String
         get() = server.serverModName
 
-    override val dataDirectory: Path
-        = FabricLoader.getInstance().configDir.resolve("unifiedmetrics")
+    override val dataDirectory: Path = FabricLoader.getInstance().configDir.resolve("unifiedmetrics")
 
-    override val configDirectory: Path
-        = FabricLoader.getInstance().configDir.resolve("unifiedmetrics")
+    override val configDirectory: Path = FabricLoader.getInstance().configDir.resolve("unifiedmetrics")
 
     override val logger = Log4jLogger(LogManager.getLogger("UnifiedMetrics"))
 

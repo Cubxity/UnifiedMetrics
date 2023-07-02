@@ -48,11 +48,10 @@ tasks {
         kotlinOptions.jvmTarget = "17"
     }
     processResources {
-        duplicatesStrategy = DuplicatesStrategy.INCLUDE
-
-        from("src/main/resources") {
-            expand("version" to version)
-            include("extension.json")
+        filesMatching("extension.json") {
+            expand(
+                "version" to project.version
+            )
         }
     }
 }

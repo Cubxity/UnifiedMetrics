@@ -3,7 +3,7 @@
     "id": "unifiedmetrics",
     "version": "${version}",
 
-    "name": "Unified Metrics",
+    "name": "UnifiedMetrics",
     "description": "Fully-featured metrics plugin for Minecraft servers",
     "authors": [
         "Cubxity"

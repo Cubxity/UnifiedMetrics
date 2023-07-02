@@ -62,13 +62,12 @@ tasks {
         kotlinOptions.jvmTarget = "16"
     }
     processResources {
-        inputs.property("version", project.version)
-
         filesMatching("fabric.mod.json") {
-            expand("version" to project.version)
+            expand(
+                "version" to project.version
+            )
         }
     }
-
     compileJava {
         options.encoding = "UTF-8"
     }
