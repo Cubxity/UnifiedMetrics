@@ -18,6 +18,7 @@
 package dev.cubxity.plugins.metrics.common.metric.system.thread
 
 import dev.cubxity.plugins.metrics.api.metric.collector.Collector
+import dev.cubxity.plugins.metrics.api.metric.collector.NANOSECONDS_PER_SECOND
 import dev.cubxity.plugins.metrics.api.metric.data.CounterMetric
 import dev.cubxity.plugins.metrics.api.metric.data.GaugeMetric
 import dev.cubxity.plugins.metrics.api.metric.data.Metric
@@ -26,10 +27,29 @@ import java.lang.management.ManagementFactory
 class ThreadCollector : Collector {
     private val bean = ManagementFactory.getThreadMXBean()
 
-    override fun collect(): List<Metric> = listOf(
-        GaugeMetric("jvm_threads_current_count", value = bean.threadCount),
-        GaugeMetric("jvm_threads_daemon_count", value = bean.daemonThreadCount),
-        CounterMetric("jvm_threads_started_total", value = bean.totalStartedThreadCount),
-        GaugeMetric("jvm_threads_peak", value = bean.peakThreadCount),
-    )
+    override fun collect(): List<Metric> {
+        val ids = bean.allThreadIds
+        val list = ArrayList<Metric>(4 + 2 * ids.size)
+
+        list += GaugeMetric("jvm_threads_current_count", value = bean.threadCount)
+        list += GaugeMetric("jvm_threads_daemon_count", value = bean.daemonThreadCount)
+        list += CounterMetric("jvm_threads_started_total", value = bean.totalStartedThreadCount)
+        list += GaugeMetric("jvm_threads_peak", value = bean.peakThreadCount)
+
+        ids.forEach { id ->
+            val info = bean.getThreadInfo(id)
+            val labels = mapOf("thread" to info.threadName)
+            list += CounterMetric(
+                "jvm_threads_cpu_time_total",
+                value = bean.getThreadCpuTime(id) / NANOSECONDS_PER_SECOND,
+                labels = labels
+            )
+            list += CounterMetric(
+                "jvm_threads_user_time_total",
+                value = bean.getThreadUserTime(id) / NANOSECONDS_PER_SECOND,
+                labels = labels
+            )
+        }
+        return list
+    }
 }
