@@ -37,7 +37,7 @@ class ThreadCollector : Collector {
         list += GaugeMetric("jvm_threads_peak", value = bean.peakThreadCount)
 
         ids.forEach { id ->
-            val info = bean.getThreadInfo(id)
+            val info = bean.getThreadInfo(id) ?: return@forEach
             val labels = mapOf("thread" to info.threadName)
             list += CounterMetric(
                 "jvm_threads_cpu_time_total",
