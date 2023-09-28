@@ -9,7 +9,7 @@ UnifiedMetrics is a fully-featured free and open-source metrics collection plugi
 licensed under [GNU LGPLv3](COPYING.LESSER).
 
 [![Grafana Dashboard](.github/assets/grafana.png)](https://unifiedmetrics-demo.cubxity.dev)
-*Dashboard [included](https://github.com/Cubxity/UnifiedMetrics/wiki/Grafana) out-of-box!*
+*Dashboard [included](https://docs.cubxity.dev/docs/unifiedmetrics/guides/grafana) out-of-box!*
 Click [here](https://unifiedmetrics-demo.cubxity.dev) for live preview!
 
 ## Features
@@ -37,7 +37,7 @@ Click [here](https://unifiedmetrics-demo.cubxity.dev) for live preview!
 
 ## Getting started
 
-Read the [wiki](https://github.com/Cubxity/UnifiedMetrics/wiki) for instructions on how to get started.
+Read the [wiki](https://docs.cubxity.dev/docs/unifiedmetrics/intro) for instructions on how to get started.
 
 ## Metrics
 
@@ -45,7 +45,7 @@ Read the [wiki](https://github.com/Cubxity/UnifiedMetrics/wiki) for instructions
   <summary>Table of metrics (click to show)</summary>
 
 | Collector     | Description                                     | Platform         | Default |
-|---------------|-------------------------------------------------|------------------|---------|
+| ------------- | ----------------------------------------------- | ---------------- | ------- |
 | systemGc      | Garbage collection duration and freed bytes     | All              | true    |
 | systemMemory  | Memory used, committed, max and init            | All              | true    |
 | systemProcess | CPU load, seconds, and process start time       | All              | true    |
