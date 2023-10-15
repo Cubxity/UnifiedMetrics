@@ -46,7 +46,8 @@ data class UnifiedMetricsCollectorsConfig(
     val server: Boolean = true,
     val world: Boolean = true,
     val tick: Boolean = true,
-    val events: Boolean = true
+    val events: Boolean = true,
+    val regionizedServer: Boolean = true
 )
 
 private fun env(name: String, default: String): String =
