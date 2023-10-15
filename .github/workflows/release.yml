@@ -7,7 +7,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Configure GPG Key
         run: echo "${{secrets.SIGNING_KEY}}" | base64 --decode > /tmp/keyring.gpg
       - name: Set up JDK 17
@@ -34,7 +34,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Configure GPG Key
         run: echo "${{secrets.SIGNING_KEY}}" | base64 --decode > /tmp/keyring.gpg
       - name: Set up JDK 17
