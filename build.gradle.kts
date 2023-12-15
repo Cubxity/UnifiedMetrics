@@ -19,9 +19,9 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.9.10" apply false
-    kotlin("kapt") version "1.9.10" apply false
-    kotlin("plugin.serialization") version "1.9.10" apply false
+    kotlin("jvm") version "1.9.21" apply false
+    kotlin("kapt") version "1.9.21" apply false
+    kotlin("plugin.serialization") version "1.9.21" apply false
     id("com.github.johnrengelman.shadow") version "8.1.1" apply false
     id("net.kyori.blossom") version "1.3.1" apply false
 }
