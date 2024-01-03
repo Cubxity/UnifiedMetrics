@@ -17,7 +17,6 @@
 
 plugins {
     id("fabric-loom") version "1.4.5"
-    id("net.kyori.blossom")
 }
 
 val transitiveInclude: Configuration by configurations.creating {
@@ -76,9 +75,4 @@ tasks {
 java {
     sourceCompatibility = JavaVersion.VERSION_16
     targetCompatibility = JavaVersion.VERSION_16
-}
-
-blossom {
-    replaceTokenIn("src/main/kotlin/dev/cubxity/plugins/metrics/fabric/bootstrap/UnifiedMetricsFabricBootstrap.kt")
-    replaceToken("@version@", version)
 }
