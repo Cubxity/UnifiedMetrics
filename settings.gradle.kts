@@ -30,6 +30,7 @@ include(modulePrefix + platformPrefix + "bukkit")
 include(modulePrefix + platformPrefix + "velocity")
 include(modulePrefix + platformPrefix + "bungee")
 include(modulePrefix + platformPrefix + "fabric")
+include(modulePrefix + platformPrefix + "forge-1.18.2")
 
 include(modulePrefix + driverPrefix + "influx")
 include(modulePrefix + driverPrefix + "prometheus")
@@ -44,6 +45,7 @@ project(modulePrefix + platformPrefix + "bukkit").projectDir = File(platformsDir
 project(modulePrefix + platformPrefix + "velocity").projectDir = File(platformsDir, "velocity")
 project(modulePrefix + platformPrefix + "bungee").projectDir = File(platformsDir, "bungee")
 project(modulePrefix + platformPrefix + "fabric").projectDir = File(platformsDir, "fabric")
+project(modulePrefix + platformPrefix + "forge-1.18.2").projectDir = File(platformsDir, "forge-1.18.2")
 
 val driversDir = File(rootDir, "drivers")
 project(modulePrefix + driverPrefix + "influx").projectDir = File(driversDir, "influx")
@@ -56,5 +58,19 @@ pluginManagement {
             name = "Fabric"
             url = uri("https://maven.fabricmc.net/")
         }
+        maven {
+            name = "ArchitecturyLoom"
+            url = uri("https://maven.architectury.dev/")
+        }
+
+        maven {
+            name = "ParchmentMC"
+            url = uri("https://maven.parchmentmc.org")
+        }
+        maven {
+            name = "Forge"
+            url = uri("https://files.minecraftforge.net/maven/")
+        }
+
     }
 }
