@@ -15,17 +15,12 @@
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.platform
+package dev.cubxity.metrics.sponge.metric.world
 
-sealed class PlatformType(val name: String) {
-    // Server implementations
-    object Bukkit : PlatformType("Bukkit")
-    object Minestom : PlatformType("Minestom")
-    object Fabric : PlatformType("Fabric")
-    object Sponge : PlatformType("Sponge")
+import dev.cubxity.metrics.sponge.bootstrap.UnifiedMetricsSpongeBootstrap
+import dev.cubxity.plugins.metrics.api.metric.collector.Collector
+import dev.cubxity.plugins.metrics.api.metric.collector.CollectorCollection
 
-
-    // Proxies
-    object Velocity : PlatformType("Velocity")
-    object BungeeCord : PlatformType("BungeeCord")
+class WorldCollection(bootstrap: UnifiedMetricsSpongeBootstrap): CollectorCollection {
+    override val collectors: List<Collector> = listOf(WorldCollector(bootstrap))
 }
