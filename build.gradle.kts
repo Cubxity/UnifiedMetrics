@@ -15,7 +15,7 @@
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -23,12 +23,15 @@ plugins {
     kotlin("kapt") version "2.0.0" apply false
     kotlin("plugin.serialization") version "2.0.0" apply false
     id("com.github.johnrengelman.shadow") version "8.1.1" apply false
+
+    // The fabric-loom plugin must be defined in the root project for it to function properly.
+    id("fabric-loom") version "1.7.1" apply false
 }
 
 allprojects {
     group = "dev.cubxity.plugins"
     description = "Fully featured metrics collector agent for Minecraft servers."
-    version = "0.3.9-SNAPSHOT"
+    version = "0.3.10-SNAPSHOT"
 
     repositories {
         mavenCentral()
@@ -42,8 +45,8 @@ subprojects {
     apply(plugin = "maven-publish")
 
     tasks.withType<KotlinCompile> {
-        kotlinOptions {
-            kotlinOptions.jvmTarget = "1.8"
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_1_8)
             freeCompilerArgs = listOf("-opt-in=kotlin.RequiresOptIn")
         }
     }

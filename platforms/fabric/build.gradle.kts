@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 /*
  *     This file is part of UnifiedMetrics.
  *
@@ -16,7 +18,7 @@
  */
 
 plugins {
-    id("fabric-loom") version "1.7.1"
+    id("fabric-loom")
 }
 
 val transitiveInclude: Configuration by configurations.creating {
@@ -54,11 +56,12 @@ loom {
             isIdeConfigGenerated = true
         }
     }
+    serverOnlyMinecraftJar()
 }
 
 tasks {
     compileKotlin {
-        kotlinOptions.jvmTarget = "16"
+        compilerOptions.jvmTarget.set(JvmTarget.JVM_16)
     }
     processResources {
         filesMatching("fabric.mod.json") {
