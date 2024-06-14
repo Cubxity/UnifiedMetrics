@@ -20,7 +20,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "2.0.0" apply false
-    kotlin("kapt") version "1.9.24" apply false
+    kotlin("kapt") version "2.0.0" apply false
     kotlin("plugin.serialization") version "2.0.0" apply false
     id("com.github.johnrengelman.shadow") version "8.1.1" apply false
 }
