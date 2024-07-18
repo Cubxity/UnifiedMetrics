@@ -15,16 +15,22 @@
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.cubxity.plugins.metrics.api.platform
+package dev.cubxity.plugins.metrics.forge.mixins;
 
-sealed class PlatformType(val name: String) {
-    // Server implementations
-    object Bukkit : PlatformType("Bukkit")
-    object Minestom : PlatformType("Minestom")
-    object Fabric : PlatformType("Fabric")
-    object Forge : PlatformType("Forge")
+import dev.cubxity.plugins.metrics.forge.events.ServerPingEvent;
+import net.minecraft.server.network.ServerStatusPacketListenerImpl;
+import net.minecraftforge.common.MinecraftForge;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-    // Proxies
-    object Velocity : PlatformType("Velocity")
-    object BungeeCord : PlatformType("BungeeCord")
+@Mixin(ServerStatusPacketListenerImpl.class)
+public abstract class ServerStatusPacketListenerImplMixin {
+
+    @Inject(method = "handleStatusRequest", at = @At("HEAD"))
+    private void handleHandleStatusRequest(CallbackInfo ci) {
+        MinecraftForge.EVENT_BUS.post(new ServerPingEvent());
+    }
+
 }
