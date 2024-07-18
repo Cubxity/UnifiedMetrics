@@ -37,6 +37,10 @@ tasks {
         relocate("okhttp", "dev.cubxity.plugins.metrics.libs.okhttp")
         relocate("okio", "dev.cubxity.plugins.metrics.libs.okio")
         relocate("io.prometheus", "dev.cubxity.plugins.metrics.libs.io.prometheus")
+
+        manifest {
+            attributes(mapOf("paperweight-mappings-namespace" to "mojang"))
+        }
     }
     processResources {
         filesMatching("plugin.yml") {
