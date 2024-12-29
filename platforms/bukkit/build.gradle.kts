@@ -17,7 +17,7 @@
 
 plugins {
     id("com.github.johnrengelman.shadow")
-    id("io.papermc.paperweight.userdev") version "1.5.3"
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.8"
 }
 
 repositories {
@@ -27,14 +27,11 @@ repositories {
 
 dependencies {
     api(project(":unifiedmetrics-core"))
-//    compileOnly("com.destroystokyo.paper", "paper-api", "1.16.5-R0.1-SNAPSHOT")
-    paperweight.devBundle("dev.folia", "1.20.1-R0.1-SNAPSHOT")
+    // compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
+    paperweight.devBundle("dev.folia", "1.21.4-R0.1-SNAPSHOT")
 }
 
 tasks {
-    assemble {
-        dependsOn(reobfJar)
-    }
     shadowJar {
         archiveClassifier.set("")
         relocate("retrofit2", "dev.cubxity.plugins.metrics.libs.retrofit2")
@@ -43,6 +40,10 @@ tasks {
         relocate("okhttp", "dev.cubxity.plugins.metrics.libs.okhttp")
         relocate("okio", "dev.cubxity.plugins.metrics.libs.okio")
         relocate("io.prometheus", "dev.cubxity.plugins.metrics.libs.io.prometheus")
+
+        manifest {
+            attributes(mapOf("paperweight-mappings-namespace" to "mojang"))
+        }
     }
     processResources {
         filesMatching("plugin.yml") {

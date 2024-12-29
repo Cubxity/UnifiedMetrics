@@ -1,0 +1,11 @@
+{
+    "required": true,
+    "minVersion": "0.8",
+    "package": "dev.cubxity.plugins.metrics.fabric.mixins",
+    "compatibilityLevel": "JAVA_8",
+    "mixins": [
+        "ServerPlayNetworkHandlerMixin",
+        "ServerQueryNetworkHandlerMixin",
+        "MinecraftServerMixin"
+    ]
+}
