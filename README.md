@@ -26,6 +26,7 @@ Click [here](https://unifiedmetrics-demo.cubxity.dev) for live preview!
 
 - 1.8+ Spigot servers *(includes Spigot-based forks)*
 - 1.16+ Fabric servers
+- Sponge API 12+
 - Minestom
 - Velocity
 - BungeeCord
