@@ -16,12 +16,28 @@
  */
 
 import org.spongepowered.gradle.plugin.config.PluginLoaders
+import org.spongepowered.gradle.vanilla.repository.MinecraftPlatform
 import org.spongepowered.plugin.metadata.model.PluginDependency
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id("org.spongepowered.gradle.plugin") version("2.0.2")
+    id("org.spongepowered.gradle.vanilla") version "0.2.1-SNAPSHOT"
     id("com.github.johnrengelman.shadow")
+}
+
+minecraft {
+    latestRelease()
+    platform(MinecraftPlatform.SERVER)
+}
+
+val mixinConfigsAttribute: String by extra { "unifiedmetrics.mixins.json" }
+tasks.withType<Jar> {
+    manifest {
+        attributes(
+            mapOf("MixinConfigs" to mixinConfigsAttribute)
+        )
+    }
 }
 
 sponge {
@@ -44,10 +60,12 @@ sponge {
 
 dependencies {
     api(project(":unifiedmetrics-core"))
+    compileOnly("org.spongepowered:mixin:0.8.6-SNAPSHOT")
 }
 
 tasks {
     shadowJar {
+        mergeServiceFiles()
         archiveClassifier.set("")
         relocate("retrofit2", "dev.cubxity.plugins.metrics.libs.retrofit2")
         relocate("com.charleskorn", "dev.cubxity.plugins.metrics.libs.com.charleskorn")

@@ -20,14 +20,16 @@ package dev.cubxity.plugins.metrics.sponge.metric.tick
 import dev.cubxity.plugins.metrics.api.metric.collector.Collector
 import dev.cubxity.plugins.metrics.api.metric.collector.CollectorCollection
 import dev.cubxity.plugins.metrics.api.metric.collector.Histogram
+import dev.cubxity.plugins.metrics.api.metric.collector.MILLISECONDS_PER_SECOND
 import dev.cubxity.plugins.metrics.api.metric.store.VolatileDoubleStore
 import dev.cubxity.plugins.metrics.api.metric.store.VolatileLongStore
 import dev.cubxity.plugins.metrics.common.metric.Metrics
 import dev.cubxity.plugins.metrics.sponge.bootstrap.UnifiedMetricsSpongeBootstrap
+import dev.cubxity.plugins.metrics.sponge.events.TickEndEvent
+import org.spongepowered.api.Sponge
+import org.spongepowered.api.event.Listener
 
-class TickCollection(bootstrap: UnifiedMetricsSpongeBootstrap): CollectorCollection {
-
-    private val reporter = TickReporter(this, bootstrap)
+class TickCollection(private val bootstrap: UnifiedMetricsSpongeBootstrap) : CollectorCollection {
 
     private val tickDuration = Histogram(
         Metrics.Server.TickDurationSeconds,
@@ -37,14 +39,17 @@ class TickCollection(bootstrap: UnifiedMetricsSpongeBootstrap): CollectorCollect
 
     override val collectors: List<Collector> = listOf(tickDuration)
 
-    override val isAsync: Boolean = true
-
     override fun initialize() {
-        reporter.initialize()
+        Sponge.eventManager().registerListeners(bootstrap.container, this)
     }
 
     override fun dispose() {
-        reporter.dispose()
+        Sponge.eventManager().unregisterListeners(this)
+    }
+
+    @Listener
+    fun onTickEnd(event: TickEndEvent) {
+        onTick(event.duration / MILLISECONDS_PER_SECOND)
     }
 
     fun onTick(duration: Double) {
