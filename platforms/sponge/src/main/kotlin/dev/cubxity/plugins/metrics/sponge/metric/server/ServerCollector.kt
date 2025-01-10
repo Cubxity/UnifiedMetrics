@@ -20,15 +20,16 @@ package dev.cubxity.plugins.metrics.sponge.metric.server
 import dev.cubxity.plugins.metrics.api.metric.collector.Collector
 import dev.cubxity.plugins.metrics.api.metric.data.GaugeMetric
 import dev.cubxity.plugins.metrics.api.metric.data.Metric
+import dev.cubxity.plugins.metrics.common.metric.Metrics
 import dev.cubxity.plugins.metrics.sponge.bootstrap.UnifiedMetricsSpongeBootstrap
 
 class ServerCollector(private val bootstrap: UnifiedMetricsSpongeBootstrap): Collector {
 
     override fun collect(): List<Metric> {
         return listOf(
-            GaugeMetric("minecraft_plugins", value = bootstrap.pluginManager.plugins().size),
-            GaugeMetric("minecraft_players_count", value = bootstrap.server.onlinePlayers().size),
-            GaugeMetric("minecraft_players_max", value = bootstrap.server.maxPlayers())
+            GaugeMetric(Metrics.Server.Plugins, value = bootstrap.pluginManager.plugins().size),
+            GaugeMetric(Metrics.Server.PlayersCount, value = bootstrap.server.onlinePlayers().size),
+            GaugeMetric(Metrics.Server.PlayersMax, value = bootstrap.server.maxPlayers())
         )
     }
 }
