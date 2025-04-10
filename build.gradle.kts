@@ -19,13 +19,13 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "2.1.0" apply false
-    kotlin("kapt") version "2.1.0" apply false
-    kotlin("plugin.serialization") version "2.1.0" apply false
+    kotlin("jvm") version "2.1.20" apply false
+    kotlin("kapt") version "2.1.20" apply false
+    kotlin("plugin.serialization") version "2.1.20" apply false
     id("com.github.johnrengelman.shadow") version "8.1.1" apply false
 
     // The fabric-loom plugin must be defined in the root project for it to function properly.
-    id("fabric-loom") version "1.9.2" apply false
+    id("fabric-loom") version "1.10.5" apply false
 }
 
 allprojects {

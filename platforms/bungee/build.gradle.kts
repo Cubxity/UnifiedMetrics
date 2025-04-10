@@ -27,7 +27,7 @@ repositories {
 dependencies {
     api(project(":unifiedmetrics-core"))
 
-    compileOnly("net.md-5", "bungeecord-api", "1.21-R0.1-SNAPSHOT")
+    compileOnly("net.md-5", "bungeecord-api", "1.21-R0.3-SNAPSHOT")
 }
 
 tasks {
