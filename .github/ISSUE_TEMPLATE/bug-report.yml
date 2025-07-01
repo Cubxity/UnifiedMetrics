@@ -32,6 +32,7 @@ body:
     options:
       - Spigot (includes Spigot-based forks)
       - Fabric
+      - Sponge
       - Minestom
       - Velocity
       - Bungeecord / Waterfall

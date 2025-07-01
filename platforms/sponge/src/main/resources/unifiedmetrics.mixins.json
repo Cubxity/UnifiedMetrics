@@ -1,0 +1,12 @@
+{
+    "required": true,
+    "minVersion": "0.8.2",
+    "package": "dev.cubxity.plugins.metrics.sponge.mixins",
+    "compatibilityLevel": "JAVA_21",
+    "mixins": [
+        "MinecraftServerMixin"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    }
+}

@@ -14,17 +14,14 @@
  *     You should have received a copy of the GNU Lesser General Public License
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
+package dev.cubxity.plugins.metrics.sponge.events
 
-package dev.cubxity.plugins.metrics.api.platform
+import org.spongepowered.api.event.Cause
+import org.spongepowered.api.event.impl.AbstractEvent
 
-sealed class PlatformType(val name: String) {
-    // Server implementations
-    object Bukkit : PlatformType("Bukkit")
-    object Minestom : PlatformType("Minestom")
-    object Fabric : PlatformType("Fabric")
-    object Sponge : PlatformType("Sponge")
+class TickEndEvent(val duration: Double, private val cause: Cause) : AbstractEvent() {
 
-    // Proxies
-    object Velocity : PlatformType("Velocity")
-    object BungeeCord : PlatformType("BungeeCord")
+    override fun cause(): Cause {
+        return cause
+    }
 }
