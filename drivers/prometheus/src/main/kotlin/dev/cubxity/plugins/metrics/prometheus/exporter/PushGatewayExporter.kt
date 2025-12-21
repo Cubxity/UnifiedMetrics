@@ -33,7 +33,8 @@ class PushGatewayExporter(
     private val driver: PrometheusMetricsDriver
 ) : PrometheusExporter {
     private val coroutineScope = CoroutineScope(Dispatchers.IO) + SupervisorJob()
-    private val groupingKey = mapOf("server" to api.serverName)
+    private val groupingKey: Map<String, String>
+        get() = mapOf("server" to api.serverName) + driver.config.pushGateway.groupingKey
 
     private var gateway: PushGateway? = null
 

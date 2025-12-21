@@ -48,7 +48,8 @@ data class PushGatewayConfig(
     val job: String = "unifiedmetrics",
     val url: String = "http://pushgateway:9091",
     val authentication: AuthenticationConfig = AuthenticationConfig(),
-    val interval: Long = 10
+    val interval: Long = 10,
+    val groupingKey: Map<String, String> = emptyMap()
 )
 
 @Serializable
