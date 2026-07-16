@@ -57,7 +57,9 @@ class FoliaGlobalDispatcher(private val plugin: JavaPlugin) : CoroutineDispatche
             )
 
         continuation.invokeOnCancellation {
-            task.javaClass.getMethod("cancel").invoke(task)
+            Class.forName("io.papermc.paper.threadedregions.scheduler.ScheduledTask")
+                .getMethod("cancel")
+                .invoke(task)
         }
     }
 
