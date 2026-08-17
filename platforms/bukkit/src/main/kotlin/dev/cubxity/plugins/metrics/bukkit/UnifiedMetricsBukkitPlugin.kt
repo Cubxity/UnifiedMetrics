@@ -20,6 +20,7 @@ package dev.cubxity.plugins.metrics.bukkit
 import dev.cubxity.plugins.metrics.api.UnifiedMetrics
 import dev.cubxity.plugins.metrics.bukkit.bootstrap.UnifiedMetricsBukkitBootstrap
 import dev.cubxity.plugins.metrics.bukkit.metric.events.EventsCollection
+import dev.cubxity.plugins.metrics.bukkit.metric.regionized.FoliaRegionCollection
 import dev.cubxity.plugins.metrics.bukkit.metric.server.ServerCollection
 import dev.cubxity.plugins.metrics.bukkit.metric.tick.TickCollection
 import dev.cubxity.plugins.metrics.bukkit.metric.world.WorldCollection
@@ -53,6 +54,9 @@ class UnifiedMetricsBukkitPlugin(
                     registerCollection(TickCollection(bootstrap))
                 }
                 if (events) registerCollection(EventsCollection(bootstrap))
+                if (regionizedServer && BukkitPlatform.current == BukkitPlatform.FOLIA) {
+                    registerCollection(FoliaRegionCollection())
+                }
             }
         }
     }
